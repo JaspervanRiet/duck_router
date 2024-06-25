@@ -108,7 +108,7 @@ class Child2Location extends StatefulChildLocation {
 
 That's it. Then, when navigating you have two options:
 
-```
+```dart
 // Navigate while still showing the bottom bar, i.e. inside the child navigator
 DuckRouter.of(context).navigate(to: const DetailLocation());
 

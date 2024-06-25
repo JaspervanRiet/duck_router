@@ -1,0 +1,33 @@
+name: onsi_packages
+repository: https://github.com/collectiveuk/packages
+
+packages:
+  - packages/**
+
+command:
+  version:
+    # Generate commit links in package changelogs.
+    linkToCommits: true
+
+  bootstrap:
+    # See https://github.com/dart-lang/pub/issues/3404
+    runPubGetInParallel: false
+
+scripts:
+  test:all:
+    run: |
+      melos run test --no-select
+    description: |
+      Run all tests available.
+
+  test:
+    run: |
+      melos exec -c 6 --fail-fast -- \
+        "flutter test"
+    description: Run `flutter test` for a specific package.
+    packageFilters:
+      dirExists:
+        - test
+      ignore:
+        - "*web*"
+        - "*example*"

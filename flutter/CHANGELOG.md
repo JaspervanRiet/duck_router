@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-07-02
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v1.0.1`](#duck_router---v101)
+
+---
+
+#### `duck_router` - `v1.0.1`
+
+ - **FIX**: add code highlighting to README. ([071845a2](https://github.com/collectiveuk/packages/commit/071845a299341f7338c0785095039d749d80f19f))
+
+
 ## 2024-06-25
 
 ### Changes

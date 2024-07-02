@@ -1,3 +1,7 @@
+## 1.0.1
+
+ - **FIX**: add code highlighting to README. ([071845a2](https://github.com/collectiveuk/packages/commit/071845a299341f7338c0785095039d749d80f19f))
+
 ## 1.0.0
 
  - Initial release

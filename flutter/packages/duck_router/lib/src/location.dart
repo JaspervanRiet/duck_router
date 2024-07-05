@@ -52,9 +52,19 @@ class LocationStack {
 }
 
 /// A builder that creates a widget for a location.
+///
+/// See also:
+/// - [LocationPageBuilder] for a more advanced builder that allows you to build
+/// a [Page].
 typedef LocationBuilder = Widget Function(BuildContext context);
 
 /// A builder that allows a fully custom [Page] to be built.
+///
+/// For example, you might use this to build a custom transition for a page,
+/// or to use it from within a modal.
+///
+/// See also:
+/// - [LocationBuilder] for a simpler builder that returns a [Widget].
 typedef LocationPageBuilder = Page<dynamic> Function(
   BuildContext context,
 );
@@ -79,6 +89,7 @@ abstract class Location extends Equatable {
   /// What [Widget] to build for this location.
   LocationBuilder? get builder => null;
 
+  /// Advanced builder for cases wherein you want to provide a custom [Page].
   LocationPageBuilder? get pageBuilder => null;
 
   @override

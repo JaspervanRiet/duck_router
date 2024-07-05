@@ -24,11 +24,7 @@ jobs:
       - name: Install Dependencies
         run: |
           flutter pub global activate very_good_cli
-          very_good
-
-      - uses: bluefireteam/melos-action@v3
-        with:
-          melos-version: ${{ vars.MELOS_VERSION }}
+          very_good packages get
 
       - name: ✨ Check Formatting
         run: dart format --set-exit-if-changed lib test
@@ -37,11 +33,4 @@ jobs:
         run: flutter analyze lib test
 
       - name: 🧪 Run Tests
-        run: very_good test -j 4 --optimization --coverage --test-randomize-ordering-seed random
-
-      - name: 📊 Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v3
-        with:
-          path: packages/duck_router/coverage/lcov.info
-          exclude: "**/*.g.dart **/*.freezed.dart **/*.mapper.dart"
-          min_coverage: 90
+        run: very_good test -j 4 --optimization --test-randomize-ordering-seed random

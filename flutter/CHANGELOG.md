@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-07-08
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v1.1.0`](#duck_router---v110)
+
+---
+
+#### `duck_router` - `v1.1.0`
+
+ - **FIX**: child back button dispatcher ([#8](https://github.com/collectiveuk/packages/issues/8)). ([a8cba916](https://github.com/collectiveuk/packages/commit/a8cba916b7b4037d6ef80909bcb3af3ba435b2e7))
+ - **FEAT**: catch case where users pushes duplicate path ([#9](https://github.com/collectiveuk/packages/issues/9)). ([5a504661](https://github.com/collectiveuk/packages/commit/5a504661770c19b9108e922e4c9a2b67f8a47002))
+
+
 ## 2024-07-02
 
 ### Changes

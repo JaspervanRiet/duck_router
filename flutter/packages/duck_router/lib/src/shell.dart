@@ -103,7 +103,7 @@ class DuckShellState extends State<DuckShell> {
           final backButtonDispatcher = DuckRouter.of(context)
               .backButtonDispatcher
               .createChildBackButtonDispatcher();
-          backButtonDispatcher.takePriority;
+          backButtonDispatcher.takePriority();
 
           return Router(
             routerDelegate: _routerDelegates[i],

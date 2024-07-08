@@ -432,6 +432,70 @@ void main() {
 
       expect(result, equals(1));
     });
+
+    testWidgets('Child back button dispatcher handles back button press',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+
+      // Navigate to a child route
+      router.navigate(to: HomeLocation());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HomeScreen), findsOneWidget);
+
+      // Simulate a back button press
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HomeScreen), findsNothing);
+      expect(find.byType(Page1Screen), findsOneWidget);
+    });
+
+    testWidgets('Nested back button handling works correctly', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+
+      // Navigate to a child route
+      router.navigate(to: HomeLocation());
+      await tester.pumpAndSettle();
+
+      // Navigate to another child route
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      // Simulate a back button press
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      // Check if we've returned to the HomeScreen
+      expect(find.byType(HomeScreen), findsOneWidget);
+      expect(find.byType(Page1Screen), findsNothing);
+
+      // Simulate another back button press
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      // Should now be at first page of RootLocation
+      // Which is the Page1Screen
+      expect(find.byType(Page1Screen), findsOneWidget);
+      expect(find.byType(HomeScreen), findsNothing);
+
+      // Try to go back again (should stay at RootLocation)
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      // Should still be at RootLocation
+      expect(find.byType(Page1Screen), findsOneWidget);
+    });
   });
 
   group('Deeplinking', () {

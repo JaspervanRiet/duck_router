@@ -172,6 +172,18 @@ void main() {
       expect(locations.uri.path, '/custom-page');
       expect(find.byType(CustomScreen), findsOneWidget);
     });
+
+    testWidgets('can specify custom page transition', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: CustomPageTransitionLocation(),
+      );
+
+      final router = await createRouterOnIos(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 1);
+      expect(locations.uri.path, '/custom-page-transition');
+      expect(find.byType(HomeScreen), findsOneWidget);
+    });
   });
 
   group('Interceptors', () {

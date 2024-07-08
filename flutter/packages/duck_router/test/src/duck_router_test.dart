@@ -428,10 +428,7 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
-      // Check if we're still on the HomeScreen (we shouldn't be)
       expect(find.byType(HomeScreen), findsNothing);
-
-      // We should have returned to the RootLocation, but we haven't
       expect(find.byType(Page1Screen), findsOneWidget);
     });
 
@@ -464,9 +461,9 @@ void main() {
       await tester.binding.handlePopRoute();
       await tester.pumpAndSettle();
 
-      // Check if we've returned to the RootLocation
-      expect(find.byType(Page1Screen),
-          findsOneWidget); // This should be the initial page in RootLocation
+      // Should now be at first page of RootLocation
+      // Which is the Page1Screen
+      expect(find.byType(Page1Screen), findsOneWidget);
       expect(find.byType(HomeScreen), findsNothing);
 
       // Try to go back again (should stay at RootLocation)

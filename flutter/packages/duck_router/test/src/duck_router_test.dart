@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unawaited_futures
 
 import 'package:duck_router/src/configuration.dart';
+import 'package:duck_router/src/exception.dart';
 import 'package:duck_router/src/location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -224,6 +225,28 @@ void main() {
 
       final locations = router.routerDelegate.currentConfiguration;
       expect(locations.uri.path, '/home/page1');
+    });
+
+    testWidgets('Errors when pushing a route with a duplicate path',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      await tester.pumpAndSettle();
+
+      // Second navigation to the same path
+      expect(
+        () => router.navigate(to: HomeLocation()),
+        throwsA(isA<DuckRouterException>().having(
+          (e) => e.toString(),
+          'message',
+          contains('Cannot push duplicate route: home'),
+        )),
+      );
+
+      await tester.pumpAndSettle();
     });
   });
 

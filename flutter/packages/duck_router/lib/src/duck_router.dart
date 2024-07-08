@@ -1,5 +1,6 @@
 import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/delegate.dart';
+import 'package:duck_router/src/exception.dart';
 import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
 import 'package:duck_router/src/parser.dart';
@@ -113,6 +114,11 @@ class DuckRouter implements RouterConfig<LocationStack> {
   }) {
     final currentStack = routerDelegate.currentConfiguration;
     final currentRootLocation = currentStack.locations.last;
+
+    if (!(replace ?? false) &&
+        currentStack.locations.any((loc) => loc.path == to.path)) {
+      throw DuckRouterException('Cannot push duplicate route: ${to.path}');
+    }
 
     if (currentRootLocation is StatefulLocation && !root) {
       return currentRootLocation.state.navigate(to, replace: replace);

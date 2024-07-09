@@ -4,6 +4,7 @@ import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/duck_router.dart';
 import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
+import 'package:duck_router/src/pages/pages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -236,6 +237,20 @@ class CustomPageLocation extends Location {
 
   @override
   LocationPageBuilder get pageBuilder => (context) => CustomPage();
+}
+
+class CustomPageTransitionLocation extends Location {
+  const CustomPageTransitionLocation();
+
+  @override
+  String get path => 'custom-page-transition';
+
+  @override
+  LocationPageBuilder get pageBuilder => (context) => DuckPage(
+        child: HomeScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      );
 }
 
 class CustomPage<T> extends Page<T> {

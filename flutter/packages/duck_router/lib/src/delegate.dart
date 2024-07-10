@@ -102,8 +102,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     state?.pop(result);
   }
 
-  /// Reset the router to the root
-  void root() {
+  void popUntil(Location location) {
     final currentLocation = currentConfiguration.locations.last;
 
     if (currentLocation is StatefulLocation) {
@@ -112,16 +111,16 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        return currentLocation.state.reset();
-      } else {
-        return;
+        return currentLocation.state.popUntil(location);
       }
     }
 
-    currentConfiguration = LocationStack(locations: [
-      currentConfiguration.locations.firstOrNull ??
-          _configuration.initialLocation
-    ]);
-    notifyListeners();
+    NavigatorState? state;
+    if (navigatorKey.currentState?.canPop() ?? false) {
+      state = navigatorKey.currentState;
+    }
+    state?.popUntil((route) {
+      return route.settings.name == location.path;
+    });
   }
 }

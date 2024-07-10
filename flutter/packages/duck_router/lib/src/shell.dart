@@ -153,6 +153,17 @@ class DuckShellState extends State<DuckShell> {
     navigatorKey.currentState?.pop(result);
   }
 
+  void popUntil(Location location) {
+    final navigatorKey = _navigatorKeys[_currentIndex];
+    if (navigatorKey.currentState == null) {
+      return;
+    }
+
+    navigatorKey.currentState?.popUntil((route) {
+      return route.settings.name == location.path;
+    });
+  }
+
   /// Resets the stack
   void reset() {
     final navigatorKey = _navigatorKeys[_currentIndex];

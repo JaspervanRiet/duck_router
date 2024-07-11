@@ -64,10 +64,10 @@ class RootLocation extends StatefulLocation {
         const Child2Location(),
       ];
 
-  /// Note: here, we have implemented the pagebuilder in place. We of
+  /// Note: here, we have implemented the childBuilder in place. We of
   /// course recommend making this its own class.
   @override
-  StatefulLocationBuilder get pageBuilder => (c, shell) => Scaffold(
+  StatefulLocationBuilder get childBuilder => (c, shell) => Scaffold(
         body: shell,
         bottomNavigationBar: BottomNavigationBar(
           items: const [

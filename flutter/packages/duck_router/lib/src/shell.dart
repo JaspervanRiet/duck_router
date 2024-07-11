@@ -24,7 +24,7 @@ class DuckShell extends StatefulWidget {
 
   /// The children of this [StatefulLocation]. Each child will have
   /// its own [DuckNavigator].
-  final List<StatefulChildLocation> children;
+  final List<Location> children;
 
   final DuckRouterConfiguration configuration;
 

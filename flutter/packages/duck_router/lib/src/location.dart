@@ -112,7 +112,7 @@ abstract class StatefulLocation extends Location {
 
   /// The children of this location, these will be the root of each
   /// [Navigator] in the [DuckShell].
-  List<StatefulChildLocation> get children;
+  List<Location> get children;
 
   final GlobalKey<DuckShellState> _key = GlobalKey<DuckShellState>(
     debugLabel: 'StatefulLocationShell',
@@ -138,18 +138,6 @@ abstract class StatefulLocation extends Location {
 
   @override
   List<Object?> get props => [children, path];
-}
-
-/// {@template stateful_child_location}
-/// A location that is a child of a [StatefulLocation]. This child will have
-/// its own [LocationStack].
-/// {@endtemplate}
-abstract class StatefulChildLocation extends Location {
-  /// {@macro stateful_child_location}
-  const StatefulChildLocation();
-
-  @override
-  LocationBuilder get builder;
 }
 
 /// {@template location_list_codec}

@@ -157,7 +157,7 @@ class RootLocation extends StatefulLocation {
   String get path => 'root';
 
   @override
-  List<StatefulChildLocation> get children => [
+  List<Location> get children => [
         const Child1Location(),
         const Child2Location(),
       ];
@@ -181,7 +181,7 @@ class RootLocation extends StatefulLocation {
       );
 }
 
-class Child1Location extends StatefulChildLocation {
+class Child1Location extends Location {
   const Child1Location();
 
   @override
@@ -191,7 +191,7 @@ class Child1Location extends StatefulChildLocation {
   LocationBuilder get builder => (context) => const Page1Screen();
 }
 
-class Child2Location extends StatefulChildLocation {
+class Child2Location extends Location {
   const Child2Location();
 
   @override

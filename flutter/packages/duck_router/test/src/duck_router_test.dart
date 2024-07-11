@@ -54,7 +54,7 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
-    testWidgets('Pops until', (tester) async {
+    testWidgets('Pops until X', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
       );

@@ -54,7 +54,7 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
-    testWidgets('Resets to root', (tester) async {
+    testWidgets('Pops until X', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
       );
@@ -64,42 +64,65 @@ void main() {
         to: Page1Location(),
       );
       await tester.pumpAndSettle();
+      router.navigate(
+        to: Page2Location(),
+      );
+      await tester.pumpAndSettle();
       final locations = router.routerDelegate.currentConfiguration;
-      expect(locations.locations.length, 2);
+      expect(locations.locations.length, 3);
 
-      router.root();
+      router.popUntil(
+        HomeLocation(),
+      );
       final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 1);
       expect(locations2.uri.path, '/home');
     });
 
-    testWidgets('Does not reset when already in root', (tester) async {
+    testWidgets('can popUntil just one pop', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
       );
 
       final router = await createRouter(config, tester);
       router.navigate(
-        to: RootLocation(),
-        replace: true,
+        to: Page1Location(),
+      );
+      await tester.pumpAndSettle();
+      router.navigate(
+        to: Page2Location(),
       );
       await tester.pumpAndSettle();
       final locations = router.routerDelegate.currentConfiguration;
-      expect(locations.uri.path, '/root');
-      router.navigate(
-        to: HomeLocation(),
-        replace: true,
+      expect(locations.locations.length, 3);
+
+      router.popUntil(
+        Page1Location(),
       );
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 2);
+      expect(locations2.uri.path, '/home/page1');
+    });
+
+    testWidgets('Does nothing for popUntil if already in the location',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
       await tester.pumpAndSettle();
 
-      router.root();
-      await tester.pumpAndSettle();
-      final locations3 = router.routerDelegate.currentConfiguration;
-      expect(locations3.uri.path, '/root');
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 1);
+      expect(locations.uri.path, '/home');
 
-      router.root();
+      router.popUntil(HomeLocation());
       await tester.pumpAndSettle();
-      final locations4 = router.routerDelegate.currentConfiguration;
-      expect(locations4.uri.path, '/root');
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 1);
+      expect(locations2.uri.path, '/home');
     });
 
     testWidgets('can await navigate', (tester) async {
@@ -330,7 +353,7 @@ void main() {
       expect(router.pop, throwsException);
     });
 
-    testWidgets('can reset', (tester) async {
+    testWidgets('Can popUntil in nested locations', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: RootLocation(),
       );
@@ -341,24 +364,19 @@ void main() {
 
       router.navigate(to: HomeLocation());
       await tester.pumpAndSettle();
-
-      final locations2 = router.routerDelegate.currentConfiguration;
-      final statefulLocation = locations2.locations.last as StatefulLocation;
-      final child =
-          statefulLocation.state.currentRouterDelegate.currentConfiguration;
-      expect(child.uri.path, '/child1/home');
       expect(find.byType(HomeScreen), findsOneWidget);
 
-      router.root();
+      router.navigate(to: Page1Location());
       await tester.pumpAndSettle();
-      expect(
-          statefulLocation
-              .state.currentRouterDelegate.currentConfiguration.uri.path,
-          '/child1');
+      expect(find.byType(Page1Screen), findsOneWidget);
 
-      // Now we should start seeing an error because we're trying to pop
-      // the root.
-      expect(router.pop, throwsException);
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      router.popUntil(HomeLocation());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeScreen), findsOneWidget);
     });
 
     testWidgets('can replace location', (tester) async {

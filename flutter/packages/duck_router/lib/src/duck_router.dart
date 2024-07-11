@@ -134,17 +134,16 @@ class DuckRouter implements RouterConfig<LocationStack> {
     );
   }
 
-  /// Reset the router to the root location.
-  void root() {
-    routerDelegate.root();
-  }
-
   /// Pop the top-most route off the current screen.
   ///
   /// If the top-most route is a pop up or dialog, this method pops it instead
   /// of any route under it.
   void pop<T extends Object?>([T? result]) {
     routerDelegate.pop<T>(result);
+  }
+
+  void popUntil(Location location) {
+    routerDelegate.popUntil(location);
   }
 
   LocationStack _initialLocation(Location userSpecifiedInitialLocation) {

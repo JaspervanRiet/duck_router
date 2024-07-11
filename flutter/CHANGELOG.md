@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-07-11
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`duck_router` - `v2.0.0`](#duck_router---v200)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `duck_router` - `v2.0.0`
+
+ - **FEAT**: create CONTRIBUTING.md ([#12](https://github.com/collectiveuk/packages/issues/12)). ([64f92e11](https://github.com/collectiveuk/packages/commit/64f92e11296459892afbf2247e4779524715a7e3))
+ - **FEAT**: create DuckPage ([#10](https://github.com/collectiveuk/packages/issues/10)). ([fdc1e56e](https://github.com/collectiveuk/packages/commit/fdc1e56eb22a249e582208b9955d311d64faa03b))
+ - **BREAKING** **FEAT**: remove StatefulChildLocation ([#15](https://github.com/collectiveuk/packages/issues/15)). ([6ab34175](https://github.com/collectiveuk/packages/commit/6ab3417519c15021d3d0cd2b318499a994337c90))
+ - **BREAKING** **FEAT**: replace root() with popUntil ([#14](https://github.com/collectiveuk/packages/issues/14)). ([df5e6639](https://github.com/collectiveuk/packages/commit/df5e66393366a7d729c27c2f4b057e734ece6ea4))
+
+
 ## 2024-07-08
 
 ### Changes

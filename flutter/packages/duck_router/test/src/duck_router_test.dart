@@ -79,6 +79,36 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
+    testWidgets('Pops until X from nested flow', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(
+        to: NestedChildRootLocation(),
+      );
+      await tester.pumpAndSettle();
+      router.navigate(
+        to: Child2Location(),
+      );
+      await tester.pumpAndSettle();
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+      final nestedLocations = (locations.locations.last as StatefulLocation)
+          .state
+          .currentRouterDelegate
+          .currentConfiguration;
+      expect(nestedLocations.locations.length, 2);
+
+      router.popUntil(
+        HomeLocation(),
+      );
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 1);
+      expect(locations2.uri.path, '/home');
+    });
+
     testWidgets('can popUntil just one pop', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),

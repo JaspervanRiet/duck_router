@@ -146,6 +146,11 @@ class DuckRouter implements RouterConfig<LocationStack> {
     routerDelegate.popUntil(location);
   }
 
+  /// Reset the router to the root location.
+  void root() {
+    routerDelegate.root();
+  }
+
   LocationStack _initialLocation(Location userSpecifiedInitialLocation) {
     Uri platformInitialLocation = Uri.parse(
       WidgetsBinding.instance.platformDispatcher.defaultRouteName,

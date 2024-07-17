@@ -125,6 +125,58 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
+    testWidgets('Resets to root', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(
+        to: Page1Location(),
+      );
+      await tester.pumpAndSettle();
+
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+
+      router.root();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+
+      expect(locations2.uri.path, '/home');
+    });
+
+    testWidgets('Does not reset when already in root', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(
+        to: RootLocation(),
+        replace: true,
+      );
+      await tester.pumpAndSettle();
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/root');
+      router.navigate(
+        to: HomeLocation(),
+        replace: true,
+      );
+      await tester.pumpAndSettle();
+
+      router.root();
+      await tester.pumpAndSettle();
+      final locations3 = router.routerDelegate.currentConfiguration;
+      expect(locations3.uri.path, '/root');
+
+      router.root();
+
+      await tester.pumpAndSettle();
+      final locations4 = router.routerDelegate.currentConfiguration;
+      expect(locations4.uri.path, '/root');
+    });
+
     testWidgets('can await navigate', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
@@ -525,6 +577,37 @@ void main() {
 
       // Should still be at RootLocation
       expect(find.byType(Page1Screen), findsOneWidget);
+    });
+
+    testWidgets('can reset', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/root');
+
+      router.navigate(to: HomeLocation());
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      final statefulLocation = locations2.locations.last as StatefulLocation;
+      final child =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(child.uri.path, '/child1/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+
+      router.root();
+      await tester.pumpAndSettle();
+      expect(
+          statefulLocation
+              .state.currentRouterDelegate.currentConfiguration.uri.path,
+          '/child1');
+
+      // Now we should start seeing an error because we're trying to pop
+      // the root.
+      expect(router.pop, throwsException);
     });
   });
 

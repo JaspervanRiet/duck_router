@@ -123,4 +123,27 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       return route.settings.name == location.path;
     });
   }
+
+  /// Reset the router to the root
+  void root() {
+    final currentLocation = currentConfiguration.locations.last;
+
+    if (currentLocation is StatefulLocation) {
+      /// Pop inside the stateful child location as long as that's possible.
+      /// Else we will pop the whole route.
+      if (currentLocation.state.currentRouterDelegate.currentConfiguration
+              .locations.length >
+          1) {
+        return currentLocation.state.reset();
+      } else {
+        return;
+      }
+    }
+
+    currentConfiguration = LocationStack(locations: [
+      currentConfiguration.locations.firstOrNull ??
+          _configuration.initialLocation
+    ]);
+    notifyListeners();
+  }
 }

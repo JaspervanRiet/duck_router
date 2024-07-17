@@ -114,7 +114,7 @@ abstract class StatefulLocation extends Location {
   /// [Navigator] in the [DuckShell].
   List<Location> get children;
 
-  final GlobalKey<DuckShellState> _key = GlobalKey<DuckShellState>(
+  final GlobalKey<DuckShellState> key = GlobalKey<DuckShellState>(
     debugLabel: 'StatefulLocationShell',
   );
 
@@ -122,14 +122,14 @@ abstract class StatefulLocation extends Location {
   StatefulLocationBuilder get childBuilder;
 
   /// The state of the [DuckShell] for this location.
-  DuckShellState get state => _key.currentState!;
+  DuckShellState get state => key.currentState!;
 
   @override
   LocationBuilder get builder => (context) {
         return childBuilder(
           context,
           DuckShell(
-            key: _key,
+            key: key,
             children: children,
             configuration: DuckRouter.of(context).configuration,
           ),

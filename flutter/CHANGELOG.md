@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-07-17
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v2.1.0`](#duck_router---v210)
+
+---
+
+#### `duck_router` - `v2.1.0`
+
+ - **FEAT**: revert removal of root() ([#19](https://github.com/collectiveuk/packages/issues/19)). ([23b862f3](https://github.com/collectiveuk/packages/commit/23b862f3bc613d24632a89c3cf915f5dd9fdfbed))
+
+
 ## 2024-07-11
 
 ### Changes

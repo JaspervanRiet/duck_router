@@ -1,3 +1,7 @@
+## 2.1.0
+
+ - **FEAT**: revert removal of root() ([#19](https://github.com/collectiveuk/packages/issues/19)). ([23b862f3](https://github.com/collectiveuk/packages/commit/23b862f3bc613d24632a89c3cf915f5dd9fdfbed))
+
 ## 2.0.0
 
 > Note: This release has breaking changes.

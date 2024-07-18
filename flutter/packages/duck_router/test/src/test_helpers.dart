@@ -181,6 +181,17 @@ class RootLocation extends StatefulLocation {
       );
 }
 
+class NestedChildRootLocation extends StatefulLocation {
+  @override
+  String get path => 'nested';
+
+  @override
+  List<Location> get children => [Child1Location()];
+
+  @override
+  StatefulLocationBuilder get childBuilder => (c, shell) => shell;
+}
+
 class Child1Location extends Location {
   const Child1Location();
 

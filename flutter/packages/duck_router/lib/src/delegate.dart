@@ -111,7 +111,10 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        return currentLocation.state.popUntil(location);
+        final result = currentLocation.state.popUntil(location);
+        if (result) {
+          return;
+        }
       }
     }
 

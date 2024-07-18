@@ -153,15 +153,24 @@ class DuckShellState extends State<DuckShell> {
     navigatorKey.currentState?.pop(result);
   }
 
-  void popUntil(Location location) {
+  bool popUntil(Location location) {
     final navigatorKey = _navigatorKeys[_currentIndex];
     if (navigatorKey.currentState == null) {
-      return;
+      return false;
+    }
+
+    final routerDelegate = _routerDelegates[_currentIndex];
+    final hasLocation =
+        routerDelegate.currentConfiguration.locations.contains(location);
+    if (!hasLocation) {
+      return false;
     }
 
     navigatorKey.currentState?.popUntil((route) {
       return route.settings.name == location.path;
     });
+
+    return true;
   }
 
   /// Resets the stack

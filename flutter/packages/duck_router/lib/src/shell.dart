@@ -132,8 +132,14 @@ class DuckShellState extends State<DuckShell> {
   }
 
   /// Pushes a new location to the current child's stack.
-  Future<T?> navigate<T extends Object?>(Location to, {bool? replace}) async {
-    if (replace ?? false) {
+  Future<T?> navigate<T extends Object?>(
+    Location to, {
+    bool? replace,
+    bool? clearStack,
+  }) async {
+    if (clearStack ?? false) {
+      currentRouterDelegate.currentConfiguration.locations.clear();
+    } else if (replace ?? false) {
       currentRouterDelegate.currentConfiguration.locations.removeLast();
     }
 

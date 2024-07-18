@@ -114,6 +114,8 @@ abstract class StatefulLocation extends Location {
   /// [Navigator] in the [DuckShell].
   List<Location> get children;
 
+  /// The key for the [DuckShell] of this location.
+  /// This is used to access the state of the [DuckShell].
   final GlobalKey<DuckShellState> key = GlobalKey<DuckShellState>(
     debugLabel: 'StatefulLocationShell',
   );

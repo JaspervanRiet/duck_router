@@ -176,6 +176,32 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
+    testWidgets('Clears stack', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(
+        to: Page1Location(),
+      );
+      await tester.pumpAndSettle();
+      router.navigate(
+        to: Page2Location(),
+      );
+      await tester.pumpAndSettle();
+
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 3);
+
+      router.navigate(to: LoginLocation(), clearStack: true);
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+
+      expect(locations2.uri.path, '/login');
+    });
+
     testWidgets('Does not reset when already in root', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
@@ -433,6 +459,66 @@ void main() {
       // Now we should start seeing an error because we're trying to pop
       // the root.
       expect(router.pop, throwsException);
+    });
+
+    testWidgets('can clear stack in nested locations', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/root');
+
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.uri.path, '/root');
+      final statefulLocation = locations2.locations.last as StatefulLocation;
+      final child =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(child.uri.path, '/child1/page1/page2');
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      router.navigate(to: HomeLocation(), clearStack: true);
+      await tester.pumpAndSettle();
+      expect(
+          statefulLocation
+              .state.currentRouterDelegate.currentConfiguration.uri.path,
+          '/home');
+    });
+
+    testWidgets('can clear root stack from nested location', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/root');
+
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.uri.path, '/root');
+      final statefulLocation = locations2.locations.last as StatefulLocation;
+      final child =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(child.uri.path, '/child1/page1/page2');
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      router.navigate(to: HomeLocation(), clearStack: true, root: true);
+      await tester.pumpAndSettle();
+      final locations3 = router.routerDelegate.currentConfiguration;
+      expect(locations3.uri.path, '/home');
     });
 
     testWidgets('Can popUntil in nested locations', (tester) async {

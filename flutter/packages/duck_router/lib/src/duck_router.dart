@@ -107,13 +107,33 @@ class DuckRouter implements RouterConfig<LocationStack> {
   /// Use [root] to navigate from the root navigator.
   ///
   /// If [replace] is set, the current location will be replaced with [to].
+  ///
+  /// If [clearStack] is set, the current stack will be cleared before navigating.
+  /// [clearStack] will take precedence over [replace].
   Future<T?> navigate<T extends Object?>({
     required Location to,
     bool root = false,
     bool? replace,
+    bool? clearStack,
   }) {
     final currentStack = routerDelegate.currentConfiguration;
     final currentRootLocation = currentStack.locations.last;
+
+    if (clearStack ?? false) {
+      if (currentRootLocation is StatefulLocation && !root) {
+        return currentRootLocation.state.navigate(
+          to,
+          replace: replace,
+          clearStack: clearStack,
+        );
+      }
+
+      currentStack.locations.clear();
+      return routeInformationProvider.navigate<T>(
+        to,
+        baseLocationStack: currentStack,
+      );
+    }
 
     if (!(replace ?? false) &&
         currentStack.locations.any((loc) => loc.path == to.path)) {
@@ -124,7 +144,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
       return currentRootLocation.state.navigate(to, replace: replace);
     }
 
-    if (replace ?? false) {
+    if ((replace ?? false)) {
       currentStack.locations.removeLast();
     }
 

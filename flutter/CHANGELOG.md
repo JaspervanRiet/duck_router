@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-07-19
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v2.2.0`](#duck_router---v220)
+
+---
+
+#### `duck_router` - `v2.2.0`
+
+ - **FEAT**: add clear stack ([#22](https://github.com/collectiveuk/packages/issues/22)). ([728a9a69](https://github.com/collectiveuk/packages/commit/728a9a6919b724734cc1be739d425f1d6092563e))
+ - **FEAT**: allow popping from a nested flow ([#20](https://github.com/collectiveuk/packages/issues/20)). ([ccedcbf2](https://github.com/collectiveuk/packages/commit/ccedcbf217ce3775b68cd124642c58a4ce6b198c))
+
+
 ## 2024-07-17
 
 ### Changes

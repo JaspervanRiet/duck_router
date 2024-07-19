@@ -1,3 +1,8 @@
+## 2.2.0
+
+ - **FEAT**: add clear stack ([#22](https://github.com/collectiveuk/packages/issues/22)). ([728a9a69](https://github.com/collectiveuk/packages/commit/728a9a6919b724734cc1be739d425f1d6092563e))
+ - **FEAT**: allow popping from a nested flow ([#20](https://github.com/collectiveuk/packages/issues/20)). ([ccedcbf2](https://github.com/collectiveuk/packages/commit/ccedcbf217ce3775b68cd124642c58a4ce6b198c))
+
 ## 2.1.0
 
  - **FEAT**: revert removal of root() ([#19](https://github.com/collectiveuk/packages/issues/19)). ([23b862f3](https://github.com/collectiveuk/packages/commit/23b862f3bc613d24632a89c3cf915f5dd9fdfbed))

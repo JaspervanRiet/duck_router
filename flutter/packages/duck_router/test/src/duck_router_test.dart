@@ -71,9 +71,7 @@ void main() {
       final locations = router.routerDelegate.currentConfiguration;
       expect(locations.locations.length, 3);
 
-      router.popUntil(
-        HomeLocation(),
-      );
+      router.popUntil<HomeLocation>();
       final locations2 = router.routerDelegate.currentConfiguration;
       expect(locations2.locations.length, 1);
       expect(locations2.uri.path, '/home');
@@ -101,9 +99,7 @@ void main() {
           .currentConfiguration;
       expect(nestedLocations.locations.length, 2);
 
-      router.popUntil(
-        HomeLocation(),
-      );
+      router.popUntil<HomeLocation>();
       final locations2 = router.routerDelegate.currentConfiguration;
       expect(locations2.locations.length, 1);
       expect(locations2.uri.path, '/home');
@@ -126,9 +122,7 @@ void main() {
       final locations = router.routerDelegate.currentConfiguration;
       expect(locations.locations.length, 3);
 
-      router.popUntil(
-        Page1Location(),
-      );
+      router.popUntil<Page1Location>();
       final locations2 = router.routerDelegate.currentConfiguration;
       expect(locations2.locations.length, 2);
       expect(locations2.uri.path, '/home/page1');
@@ -147,7 +141,7 @@ void main() {
       expect(locations.locations.length, 1);
       expect(locations.uri.path, '/home');
 
-      router.popUntil(HomeLocation());
+      router.popUntil<HomeLocation>();
       await tester.pumpAndSettle();
 
       final locations2 = router.routerDelegate.currentConfiguration;
@@ -542,7 +536,7 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(Page2Screen), findsOneWidget);
 
-      router.popUntil(HomeLocation());
+      router.popUntil<HomeLocation>();
       await tester.pumpAndSettle();
       expect(find.byType(HomeScreen), findsOneWidget);
     });

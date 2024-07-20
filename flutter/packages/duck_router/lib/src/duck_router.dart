@@ -162,8 +162,8 @@ class DuckRouter implements RouterConfig<LocationStack> {
     routerDelegate.pop<T>(result);
   }
 
-  void popUntil(Location location) {
-    routerDelegate.popUntil(location);
+  void popUntil<T extends Location>() {
+    routerDelegate.popUntil<T>();
   }
 
   /// Reset the router to the root location.

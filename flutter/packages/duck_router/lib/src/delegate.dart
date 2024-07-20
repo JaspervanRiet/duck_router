@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:duck_router/src/duck_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,12 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     state?.pop(result);
   }
 
-  void popUntil(Location location) {
+  void popUntil<T extends Location>() {
+    if (_isSameType<T, Location>()) {
+      throw const DuckRouterException(
+          'Provided type must be a subtype of Location!');
+    }
+
     final currentLocation = currentConfiguration.locations.last;
 
     if (currentLocation is StatefulLocation) {
@@ -111,11 +117,18 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        final result = currentLocation.state.popUntil(location);
+        final result = currentLocation.state.popUntil<T>();
         if (result) {
           return;
         }
       }
+    }
+
+    final destination = currentConfiguration.locations
+        .firstWhereOrNull((location) => location is T);
+    if (destination == null) {
+      throw const DuckRouterException(
+          'Provided Location type cannot be found in current stack!');
     }
 
     NavigatorState? state;
@@ -123,7 +136,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       state = navigatorKey.currentState;
     }
     state?.popUntil((route) {
-      return route.settings.name == location.path;
+      return route.settings.name == destination.path;
     });
   }
 
@@ -150,3 +163,5 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     notifyListeners();
   }
 }
+
+bool _isSameType<S, T>() => <S>[] is List<T> && <T>[] is List<S>;

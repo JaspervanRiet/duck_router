@@ -103,12 +103,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     state?.pop(result);
   }
 
-  void popUntil<T extends Location>() {
-    if (_isSameType<T, Location>()) {
-      throw const DuckRouterException(
-          'Provided type must be a subtype of Location!');
-    }
-
+  void popUntil(LocationPredicate predicate) {
     final currentLocation = currentConfiguration.locations.last;
 
     if (currentLocation is StatefulLocation) {
@@ -117,7 +112,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        final result = currentLocation.state.popUntil<T>();
+        final result = currentLocation.state.popUntil(predicate);
         if (result) {
           return;
         }
@@ -125,10 +120,10 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     }
 
     final destination = currentConfiguration.locations
-        .firstWhereOrNull((location) => location is T);
+        .firstWhereOrNull((location) => predicate(location));
     if (destination == null) {
       throw const DuckRouterException(
-          'Provided Location type cannot be found in current stack!');
+          'Provided Location predicate does not match any Locations in current stack!');
     }
 
     NavigatorState? state;
@@ -163,5 +158,3 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     notifyListeners();
   }
 }
-
-bool _isSameType<S, T>() => <S>[] is List<T> && <T>[] is List<S>;

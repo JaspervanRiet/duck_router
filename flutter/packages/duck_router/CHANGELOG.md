@@ -1,3 +1,9 @@
+## 3.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: use Location Type for popUntil ([#25](https://github.com/collectiveuk/packages/issues/25)). ([ea2ff70d](https://github.com/collectiveuk/packages/commit/ea2ff70d447915eff4ddb71b2a4093bfdede665f))
+
 ## 2.2.0
 
  - **FEAT**: add clear stack ([#22](https://github.com/collectiveuk/packages/issues/22)). ([728a9a69](https://github.com/collectiveuk/packages/commit/728a9a6919b724734cc1be739d425f1d6092563e))

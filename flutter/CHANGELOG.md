@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-08-06
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`duck_router` - `v3.0.0`](#duck_router---v300)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `duck_router` - `v3.0.0`
+
+ - **BREAKING** **FEAT**: use Location Type for popUntil ([#25](https://github.com/collectiveuk/packages/issues/25)). ([ea2ff70d](https://github.com/collectiveuk/packages/commit/ea2ff70d447915eff4ddb71b2a4093bfdede665f))
+
+
 ## 2024-07-19
 
 ### Changes

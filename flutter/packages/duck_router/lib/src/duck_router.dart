@@ -13,6 +13,9 @@ typedef DuckRouterShellBuilder = Widget Function(
   Widget child,
 );
 
+/// Signature for the [DuckRouter.popUntil] predicate argument.
+typedef LocationPredicate = bool Function(Location location);
+
 /// {@template duck_router}
 /// Creates a [DuckRouter].
 ///
@@ -162,8 +165,8 @@ class DuckRouter implements RouterConfig<LocationStack> {
     routerDelegate.pop<T>(result);
   }
 
-  void popUntil(Location location) {
-    routerDelegate.popUntil(location);
+  void popUntil(LocationPredicate predicate) {
+    routerDelegate.popUntil(predicate);
   }
 
   /// Reset the router to the root location.

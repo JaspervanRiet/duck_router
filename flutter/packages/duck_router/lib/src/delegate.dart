@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:duck_router/src/duck_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -102,7 +103,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     state?.pop(result);
   }
 
-  void popUntil(Location location) {
+  void popUntil(LocationPredicate predicate) {
     final currentLocation = currentConfiguration.locations.last;
 
     if (currentLocation is StatefulLocation) {
@@ -111,11 +112,18 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        final result = currentLocation.state.popUntil(location);
+        final result = currentLocation.state.popUntil(predicate);
         if (result) {
           return;
         }
       }
+    }
+
+    final destination = currentConfiguration.locations
+        .firstWhereOrNull((location) => predicate(location));
+    if (destination == null) {
+      throw const DuckRouterException(
+          'Provided Location predicate does not match any Locations in current stack!');
     }
 
     NavigatorState? state;
@@ -123,7 +131,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       state = navigatorKey.currentState;
     }
     state?.popUntil((route) {
-      return route.settings.name == location.path;
+      return route.settings.name == destination.path;
     });
   }
 

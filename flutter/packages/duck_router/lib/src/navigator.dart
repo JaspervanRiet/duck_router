@@ -1,10 +1,9 @@
+import 'package:duck_router/src/duck_router.dart';
 import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:duck_router/src/location.dart';
 import 'pages/cupertino.dart';
 import 'pages/material.dart';
-
-typedef OnPopInvokedCallback = void Function(bool didPop, Object? result);
 
 /// {@template duck_navigator}
 /// A [Navigator] for a [LocationStack].

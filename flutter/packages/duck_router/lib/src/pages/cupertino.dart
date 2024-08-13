@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:duck_router/src/navigator.dart';
+import 'package:duck_router/duck_router.dart';
 import 'package:flutter/cupertino.dart';
 
 bool isCupertinoApp(BuildContext context) =>

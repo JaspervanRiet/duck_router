@@ -286,28 +286,50 @@ void main() {
       expect(find.byType(HomeScreen), findsOneWidget);
     });
 
-    testWidgets('can specify custom page', (tester) async {
-      final config = DuckRouterConfiguration(
-        initialLocation: CustomPageLocation(),
-      );
+    group('Custom page', () {
+      testWidgets('can specify custom page', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: CustomPageLocation(),
+        );
 
-      final router = await createRouterOnIos(config, tester);
-      final locations = router.routerDelegate.currentConfiguration;
-      expect(locations.locations.length, 1);
-      expect(locations.uri.path, '/custom-page');
-      expect(find.byType(CustomScreen), findsOneWidget);
-    });
+        final router = await createRouterOnIos(config, tester);
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.locations.length, 1);
+        expect(locations.uri.path, '/custom-page');
+        expect(find.byType(CustomScreen), findsOneWidget);
+      });
 
-    testWidgets('can specify custom page transition', (tester) async {
-      final config = DuckRouterConfiguration(
-        initialLocation: CustomPageTransitionLocation(),
-      );
+      testWidgets('can specify custom page transition', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: CustomPageTransitionLocation(),
+        );
 
-      final router = await createRouterOnIos(config, tester);
-      final locations = router.routerDelegate.currentConfiguration;
-      expect(locations.locations.length, 1);
-      expect(locations.uri.path, '/custom-page-transition');
-      expect(find.byType(HomeScreen), findsOneWidget);
+        final router = await createRouterOnIos(config, tester);
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.locations.length, 1);
+        expect(locations.uri.path, '/custom-page-transition');
+        expect(find.byType(HomeScreen), findsOneWidget);
+      });
+
+      testWidgets('Can pop from custom page', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: HomeLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        router.navigate(to: CustomPageLocation());
+        await tester.pumpAndSettle();
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.locations.length, 2);
+        expect(locations.uri.path, '/home/custom-page');
+        expect(find.byType(CustomScreen), findsOneWidget);
+
+        router.pop();
+        await tester.pumpAndSettle();
+        final locations2 = router.routerDelegate.currentConfiguration;
+        expect(locations2.locations.length, 1);
+        expect(locations2.uri.path, '/home');
+      });
     });
   });
 

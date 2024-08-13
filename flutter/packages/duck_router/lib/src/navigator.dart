@@ -1,3 +1,4 @@
+import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:duck_router/src/location.dart';
 import 'pages/cupertino.dart';
@@ -108,7 +109,11 @@ class _DuckNavigatorState extends State<DuckNavigator> {
       assert(l.pageBuilder != null || l.builder != null,
           'Location must have a builder or a pageBuilder');
       if (l.pageBuilder != null) {
-        pages.add(l.pageBuilder!(context));
+        final customPage = l.pageBuilder!(context);
+        if (customPage.name == null) {
+          throw DuckRouterException('Custom pages must have a name set.');
+        }
+        pages.add(customPage);
       } else {
         pages.add(_buildPage(l));
       }

@@ -330,6 +330,19 @@ void main() {
         expect(locations2.locations.length, 1);
         expect(locations2.uri.path, '/home');
       });
+
+      testWidgets('Throws error when custom page has no name set',
+          (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: CustomPageLocationWithoutName(),
+        );
+
+        await createRouter(config, tester);
+        final exception = tester.takeException();
+        expect(exception, isInstanceOf<DuckRouterException>());
+        expect(exception.toString(),
+            contains('Custom pages must have a name set.'));
+      });
     });
   });
 
@@ -740,6 +753,38 @@ void main() {
       // Now we should start seeing an error because we're trying to pop
       // the root.
       expect(router.pop, throwsException);
+    });
+
+    group('Custom', () {
+      testWidgets('can host', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: RootLocationWithCustomPage(),
+        );
+
+        final router = await createRouter(config, tester);
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.locations.length, 1);
+        expect(locations.uri.path, '/root');
+        expect(find.byType(Scaffold), findsOneWidget);
+        expect(find.byType(CustomScreen), findsOneWidget);
+        expect(find.byType(Page2Screen), findsNothing);
+      });
+
+      testWidgets('Can pop from custom page', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: RootLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        await tester.pumpAndSettle();
+        router.navigate(to: CustomPageLocation());
+        await tester.pumpAndSettle();
+        expect(find.byType(CustomScreen), findsOneWidget);
+
+        router.pop();
+        await tester.pumpAndSettle();
+        expect(find.byType(Page1Screen), findsOneWidget);
+      });
     });
   });
 

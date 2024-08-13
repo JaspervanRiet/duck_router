@@ -258,6 +258,7 @@ class CustomPageTransitionLocation extends Location {
 
   @override
   LocationPageBuilder get pageBuilder => (context) => DuckPage(
+        name: path,
         child: HomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),

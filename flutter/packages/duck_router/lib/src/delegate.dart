@@ -32,18 +32,31 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       DuckNavigator(
         navigatorKey: navigatorKey,
         stack: currentConfiguration,
-        onPopPage: onPopPage,
+        onPopPage: _onPopPage,
+        onDidRemovePage: _onDidRemovePage,
       ),
     );
   }
 
+  /// See RouterDelegate.onDidRemovePage.
+  void _onDidRemovePage(Page<Object?> page) {
+    /// There's two cases where this function is used:
+    /// 1. When a page is popped from the stack
+    /// 2. When a page is replaced
+    ///
+    /// In scenario 2, `setNewRoutePath` is called with the new configuration
+    /// before this function, so the page will already have been removed.
+    final doesStackContainPage =
+        currentConfiguration.locations.any((l) => l.path == page.name);
+    if (doesStackContainPage) {
+      currentConfiguration.locations.removeWhere((l) => l.path == page.name);
+    }
+  }
+
   /// See RouterDelegate.onPopPage.
-  bool onPopPage(Route<Object?> route, Object? result) {
+  void _onPopPage(bool didPop, Object? result) {
     final currentLocation = currentConfiguration.locations.last;
     _configuration.removeLocation(currentLocation, result);
-
-    currentConfiguration.locations.removeLast();
-    return route.didPop(result);
   }
 
   @override

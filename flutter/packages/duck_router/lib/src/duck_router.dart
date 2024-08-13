@@ -55,7 +55,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
     routerDelegate = DuckRouterDelegate(
       configuration: configuration,
       shellBuilder: (context, child) => InheritedDuckRouter(
-        goRouter: this,
+        router: this,
         child: child,
       ),
     );
@@ -83,7 +83,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
     final inherited = context
         .getElementForInheritedWidgetOfExactType<InheritedDuckRouter>()
         ?.widget as InheritedDuckRouter?;
-    return inherited?.goRouter;
+    return inherited?.router;
   }
 
   /// The route configuration used by [DuckRouter].
@@ -206,18 +206,18 @@ class DuckRouter implements RouterConfig<LocationStack> {
 
 /// DuckRouter implementation of InheritedWidget.
 ///
-/// Used for to find the current DuckRouter in the widget tree. This is useful
+/// Used to find the current DuckRouter in the widget tree. This is useful
 /// when routing from anywhere in your app.
 class InheritedDuckRouter extends InheritedWidget {
   /// Default constructor for the inherited duck router.
   const InheritedDuckRouter({
     required super.child,
-    required this.goRouter,
+    required this.router,
     super.key,
   });
 
   /// The [DuckRouter] that is made available to the widget tree.
-  final DuckRouter goRouter;
+  final DuckRouter router;
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;

@@ -108,7 +108,7 @@ class _DuckNavigatorState extends State<DuckNavigator> {
       assert(l.pageBuilder != null || l.builder != null,
           'Location must have a builder or a pageBuilder');
       if (l.pageBuilder != null) {
-        final customPage = l.pageBuilder!(context);
+        final customPage = l.pageBuilder!(context, widget.onPopPage);
         if (customPage.name == null) {
           throw DuckRouterException('Custom pages must have a name set.');
         }

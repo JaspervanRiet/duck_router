@@ -276,7 +276,9 @@ class CustomPageLocation extends Location {
   String get path => 'custom-page';
 
   @override
-  LocationPageBuilder get pageBuilder => (context) => CustomPage();
+  LocationPageBuilder get pageBuilder => (context, onPopInvoked) => CustomPage(
+        onPopInvoked: onPopInvoked,
+      );
 }
 
 class CustomPageTransitionLocation extends Location {
@@ -286,7 +288,7 @@ class CustomPageTransitionLocation extends Location {
   String get path => 'custom-page-transition';
 
   @override
-  LocationPageBuilder get pageBuilder => (context) => DuckPage(
+  LocationPageBuilder get pageBuilder => (context, onPopInvoked) => DuckPage(
         name: path,
         child: HomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
@@ -297,6 +299,7 @@ class CustomPageTransitionLocation extends Location {
 class CustomPage<T> extends Page<T> {
   const CustomPage({
     super.name = 'custom-page',
+    super.onPopInvoked,
   });
 
   @override
@@ -324,10 +327,15 @@ class CustomPageLocationWithoutName extends Location {
   String get path => 'custom-page-without-name';
 
   @override
-  LocationPageBuilder get pageBuilder => (context) => CustomPageWithoutName();
+  LocationPageBuilder get pageBuilder =>
+      (context, onPopInvoked) => CustomPageWithoutName(
+            onPopInvoked: onPopInvoked,
+          );
 }
 
 class CustomPageWithoutName<T> extends Page<T> {
+  const CustomPageWithoutName({super.onPopInvoked});
+
   @override
   Route<T> createRoute(BuildContext context) {
     return MaterialPageRoute<T>(

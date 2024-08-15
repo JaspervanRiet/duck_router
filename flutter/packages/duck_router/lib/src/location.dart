@@ -68,6 +68,7 @@ typedef LocationBuilder = Widget Function(BuildContext context);
 /// - [DuckPage] for a page that allows defining a custom transition.
 typedef LocationPageBuilder = Page<dynamic> Function(
   BuildContext context,
+  OnPopInvokedCallback onPopInvoked,
 );
 
 /// {@template location}

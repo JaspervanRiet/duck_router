@@ -24,10 +24,12 @@ typedef TransitionBuilder = Widget Function(
 /// )
 /// ```
 /// {@endtemplate}
+///
+/// [DuckPage] handles popping the page from the stack when the page is popped.
 class DuckPage<T> extends Page<T> {
   /// {@macro duck_page}
   const DuckPage({
-    required super.name,
+    required String name,
     required this.child,
     required this.transitionsBuilder,
     this.isModal = false,
@@ -40,7 +42,7 @@ class DuckPage<T> extends Page<T> {
     super.arguments,
     super.restorationId,
     super.key,
-  });
+  }) : super(name: name);
 
   /// Content of this page.
   final Widget child;

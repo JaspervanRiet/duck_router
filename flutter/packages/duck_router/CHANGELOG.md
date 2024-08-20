@@ -1,3 +1,10 @@
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**: typo. ([28c3812b](https://github.com/collectiveuk/packages/commit/28c3812b6e0b71619e1f1f5ae5ecb3952eca080a))
+ - **BREAKING** **FEAT**: migrate to onDidRemovePage ([#28](https://github.com/collectiveuk/packages/issues/28)). ([0f2cf6ac](https://github.com/collectiveuk/packages/commit/0f2cf6ac6a19214445feed2e5881f815219662df))
+
 ## 3.0.0
 
 > Note: This release has breaking changes.

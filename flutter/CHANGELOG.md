@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-08-20
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`duck_router` - `v4.0.0`](#duck_router---v400)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `duck_router` - `v4.0.0`
+
+ - **FIX**: typo. ([28c3812b](https://github.com/collectiveuk/packages/commit/28c3812b6e0b71619e1f1f5ae5ecb3952eca080a))
+ - **BREAKING** **FEAT**: migrate to onDidRemovePage ([#28](https://github.com/collectiveuk/packages/issues/28)). ([0f2cf6ac](https://github.com/collectiveuk/packages/commit/0f2cf6ac6a19214445feed2e5881f815219662df))
+
+
 ## 2024-08-06
 
 ### Changes

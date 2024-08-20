@@ -1,3 +1,5 @@
+import 'package:duck_router/src/duck_router.dart';
+import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:duck_router/src/location.dart';
 import 'pages/cupertino.dart';
@@ -12,6 +14,7 @@ class DuckNavigator extends StatefulWidget {
     required this.stack,
     required this.navigatorKey,
     required this.onPopPage,
+    required this.onDidRemovePage,
     super.key,
   });
 
@@ -21,7 +24,9 @@ class DuckNavigator extends StatefulWidget {
   /// The navigator key for this navigator.
   final GlobalKey<NavigatorState> navigatorKey;
 
-  final PopPageCallback onPopPage;
+  final OnPopInvokedCallback onPopPage;
+
+  final DidRemovePageCallback onDidRemovePage;
 
   @override
   State<StatefulWidget> createState() {
@@ -35,6 +40,7 @@ class _DuckNavigatorState extends State<DuckNavigator> {
     required LocalKey key,
     required String? name,
     required Widget child,
+    required OnPopInvokedCallback onPopInvoked,
   })? _pageBuilderForAppType;
 
   /// Rebuilds are common, so we want to cache pages to rebuild only
@@ -76,7 +82,7 @@ class _DuckNavigatorState extends State<DuckNavigator> {
       child: Navigator(
         key: widget.navigatorKey,
         pages: _pages!,
-        onPopPage: widget.onPopPage,
+        onDidRemovePage: widget.onDidRemovePage,
       ),
     );
   }
@@ -102,7 +108,11 @@ class _DuckNavigatorState extends State<DuckNavigator> {
       assert(l.pageBuilder != null || l.builder != null,
           'Location must have a builder or a pageBuilder');
       if (l.pageBuilder != null) {
-        pages.add(l.pageBuilder!(context));
+        final customPage = l.pageBuilder!(context, widget.onPopPage);
+        if (customPage.name == null) {
+          throw const DuckRouterException('Custom pages must have a name set.');
+        }
+        pages.add(customPage);
       } else {
         pages.add(_buildPage(l));
       }
@@ -115,6 +125,7 @@ class _DuckNavigatorState extends State<DuckNavigator> {
       key: ValueKey(location.path),
       name: location.path,
       child: location.builder!(context),
+      onPopInvoked: widget.onPopPage,
     );
   }
 

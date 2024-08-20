@@ -192,6 +192,35 @@ class NestedChildRootLocation extends StatefulLocation {
   StatefulLocationBuilder get childBuilder => (c, shell) => shell;
 }
 
+class RootLocationWithCustomPage extends StatefulLocation {
+  @override
+  String get path => 'root';
+
+  @override
+  List<Location> get children => [
+        const CustomPageLocation(),
+        const Child1Location(),
+      ];
+
+  @override
+  StatefulLocationBuilder get childBuilder => (c, shell) => Scaffold(
+        body: shell,
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Page 1',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Page 2',
+            ),
+          ],
+          onTap: (value) => shell.switchChild(value),
+        ),
+      );
+}
+
 class Child1Location extends Location {
   const Child1Location();
 
@@ -247,7 +276,9 @@ class CustomPageLocation extends Location {
   String get path => 'custom-page';
 
   @override
-  LocationPageBuilder get pageBuilder => (context) => CustomPage();
+  LocationPageBuilder get pageBuilder => (context, onPopInvoked) => CustomPage(
+        onPopInvoked: onPopInvoked,
+      );
 }
 
 class CustomPageTransitionLocation extends Location {
@@ -257,7 +288,8 @@ class CustomPageTransitionLocation extends Location {
   String get path => 'custom-page-transition';
 
   @override
-  LocationPageBuilder get pageBuilder => (context) => DuckPage(
+  LocationPageBuilder get pageBuilder => (context, onPopInvoked) => DuckPage(
+        name: path,
         child: HomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -265,6 +297,11 @@ class CustomPageTransitionLocation extends Location {
 }
 
 class CustomPage<T> extends Page<T> {
+  const CustomPage({
+    super.name = 'custom-page',
+    super.onPopInvoked,
+  });
+
   @override
   Route<T> createRoute(BuildContext context) {
     return MaterialPageRoute<T>(
@@ -281,4 +318,29 @@ class CustomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const Placeholder();
+}
+
+class CustomPageLocationWithoutName extends Location {
+  const CustomPageLocationWithoutName();
+
+  @override
+  String get path => 'custom-page-without-name';
+
+  @override
+  LocationPageBuilder get pageBuilder =>
+      (context, onPopInvoked) => CustomPageWithoutName(
+            onPopInvoked: onPopInvoked,
+          );
+}
+
+class CustomPageWithoutName<T> extends Page<T> {
+  const CustomPageWithoutName({super.onPopInvoked});
+
+  @override
+  Route<T> createRoute(BuildContext context) {
+    return MaterialPageRoute<T>(
+      settings: this,
+      builder: (context) => const CustomScreen(),
+    );
+  }
 }

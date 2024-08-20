@@ -218,14 +218,24 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
       navigatorKey: navigatorKey,
       stack: currentConfiguration,
       onPopPage: onPopPage,
+      onDidRemovePage: _onDidRemovePage,
     );
   }
 
-  bool onPopPage(Route<Object?> route, Object? result) {
+  /// See RouterDelegate.onDidRemovePage.
+  void _onDidRemovePage(Page<Object?> page) {
+    /// Please refer to DuckRouterDelegate._onDidRemovePage
+    final doesStackContainPage =
+        currentConfiguration.locations.any((l) => l.path == page.name);
+    if (doesStackContainPage) {
+      currentConfiguration.locations.removeWhere((l) => l.path == page.name);
+    }
+  }
+
+  /// See RouterDelegate.onPopPage.
+  void onPopPage(bool didPop, Object? result) {
     final currentLocation = currentConfiguration.locations.last;
     _routerConfiguration.removeLocation(currentLocation, result);
-    currentConfiguration.locations.removeLast();
-    return route.didPop(result);
   }
 
   @override

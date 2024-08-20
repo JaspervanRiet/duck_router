@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:duck_router/duck_router.dart';
 import 'package:flutter/cupertino.dart';
 
 bool isCupertinoApp(BuildContext context) =>
@@ -14,9 +15,11 @@ CupertinoPage<void> pageBuilderForCupertinoApp({
   required LocalKey key,
   required String? name,
   required Widget child,
+  required OnPopInvokedCallback onPopInvoked,
 }) =>
     CupertinoPage<void>(
       name: name,
       key: key,
       child: child,
+      onPopInvoked: onPopInvoked,
     );

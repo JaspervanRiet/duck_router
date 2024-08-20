@@ -63,15 +63,36 @@ typedef LocationBuilder = Widget Function(BuildContext context);
 /// For example, you might use this to build a custom transition for a page,
 /// or to use it from within a modal.
 ///
+/// To enable popping: custom pages MUST implement the [OnPopInvokedCallback]
+/// as well as set a [name] (we use the [path]) to allow the [DuckRouter] to
+/// pop the page.
+///
+/// For example:
+/// ```dart
+///   @override
+///   LocationPageBuilder get pageBuilder => (c, onPopInvoked) => CustomPage(
+///     onPopInvoked: onPopInvoked,
+///   );
+/// ```
+///
+///
 /// See also:
 /// - [LocationBuilder] for a simpler builder that returns a [Widget].
-/// - [DuckPage] for a page that allows defining a custom transition.
+/// - [DuckPage] for a page that allows defining a custom transition and handles
+/// popping for you.
 typedef LocationPageBuilder = Page<dynamic> Function(
   BuildContext context,
+  OnPopInvokedCallback onPopInvoked,
 );
 
 /// {@template location}
 /// A location in the app.
+///
+/// See also:
+/// - [StatefulLocation] for a location that maintains its own state, such as
+/// for a bottom navigation bar.
+/// - [LocationPageBuilder] for a builder that allows you to build a custom
+/// [Page], e.g. for custom transitions.
 /// {@endtemplate}
 abstract class Location extends Equatable {
   /// {@macro location}

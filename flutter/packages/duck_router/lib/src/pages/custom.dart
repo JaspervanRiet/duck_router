@@ -9,7 +9,8 @@ typedef TransitionBuilder = Widget Function(
 );
 
 /// {@template duck_page}
-/// DuckPage is a page that allows defining a custom transition.
+/// DuckPage is a [Page] that integrates with DuckRouter, and can provide more
+/// control over the transition and behavior of a page.
 ///
 /// For example:
 ///
@@ -24,9 +25,14 @@ typedef TransitionBuilder = Widget Function(
 ///   },
 /// )
 /// ```
-/// {@endtemplate}
 ///
-/// [DuckPage] handles popping the page from the stack when the page is popped.
+/// You can use the [DuckPage.custom] constructor to build a fully custom route,
+/// such as a dialog.
+///
+/// See also:
+/// - [LocationPageBuilder]: a builder that allows returning a custom [Page]
+/// for a location.
+/// {@endtemplate}
 class DuckPage<T> extends Page<T> {
   /// {@macro duck_page}
   const DuckPage({

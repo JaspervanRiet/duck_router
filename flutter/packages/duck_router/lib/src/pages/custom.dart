@@ -1,3 +1,4 @@
+import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 
 typedef TransitionBuilder = Widget Function(
@@ -42,10 +43,28 @@ class DuckPage<T> extends Page<T> {
     super.arguments,
     super.restorationId,
     super.key,
-  }) : super(name: name);
+  })  : assert(child != null),
+        assert(transitionsBuilder != null),
+        super(name: name);
+
+  const DuckPage.custom({
+    required String name,
+    this.isModal = false,
+    this.transitionDuration = const Duration(milliseconds: 300),
+    this.reverseTransitionDuration = const Duration(milliseconds: 300),
+    this.maintainState = false,
+    this.canTapToDismiss = false,
+    this.backgroundColor,
+    this.semanticLabel,
+    super.arguments,
+    super.restorationId,
+    super.key,
+  })  : child = null,
+        transitionsBuilder = null,
+        super(name: name);
 
   /// Content of this page.
-  final Widget child;
+  final Widget? child;
 
   /// Duration of the transition.
   ///
@@ -94,10 +113,16 @@ class DuckPage<T> extends Page<T> {
   ///
   /// See also:
   /// - [ModalRoute.buildTransitions] for more information on how to use this.
-  final TransitionBuilder transitionsBuilder;
+  final TransitionBuilder? transitionsBuilder;
 
   @override
-  Route<T> createRoute(BuildContext context) => _DuckPageRoute<T>(this);
+  Route<T> createRoute(BuildContext context) {
+    if (child == null || transitionsBuilder == null) {
+      throw DuckRouterException(
+          'When using a custom DuckPage, you must override createRoute');
+    }
+    return _DuckPageRoute<T>(this);
+  }
 }
 
 class _DuckPageRoute<T> extends PageRoute<T> {
@@ -145,7 +170,7 @@ class _DuckPageRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) =>
-      _page.transitionsBuilder(
+      _page.transitionsBuilder!(
         context,
         animation,
         secondaryAnimation,

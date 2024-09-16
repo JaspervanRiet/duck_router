@@ -131,3 +131,49 @@ final router = DuckRouter(
 ```
 
 This gives you the current location and the URI for the deeplink, and asks you to return a stack of locations, with the last entry being the page shown. In cases where it's considered likely for the route to be intercepted (e.g. by a login screen), consider keeping the deeplink location in memory and acting upon it later.
+
+## Custom pages
+
+DuckRouter uses the [Pages](https://api.flutter.dev/flutter/widgets/Page-class.html) API from Flutter to handle the conversions to [Routes](https://api.flutter.dev/flutter/widgets/Route-class.html). This means that to specify a non-default route, such as a dialog, we need to override [Page]. DuckRouter provides [DuckPage] for this purpose.
+
+Let's take the case of a dialog:
+
+```dart
+class DialogPage<T> extends DuckPage<T> {
+  const DialogPage({
+    required String name,
+    required this.builder,
+    super.key,
+    super.arguments,
+    super.restorationId,
+  }) : super.custom(name: name);
+
+  final WidgetBuilder builder;
+
+   @override
+   Route<T> createRoute(BuildContext context) => DialogRoute<T>(
+         context: context,
+         settings: this,
+         builder: (context) => Dialog(
+           child: builder(context),
+         ),
+       );
+ }
+```
+
+We can then use this page like so:
+
+```dart
+class DialogPageLocation extends Location {
+  const DialogPageLocation();
+
+  @override
+  String get path => 'dialog-page';
+
+  @override
+  LocationPageBuilder get pageBuilder=> (context) => DialogPage(
+    name: path,
+    builder: ...
+  );
+}
+```

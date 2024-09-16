@@ -222,6 +222,3 @@ class InheritedDuckRouter extends InheritedWidget {
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
 }
-
-/// Callback signature for when a pop is invoked.
-typedef OnPopInvokedCallback = void Function(bool didPop, Object? result);

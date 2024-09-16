@@ -317,8 +317,10 @@ class CustomScreen extends StatelessWidget {
   Widget build(BuildContext context) => const Placeholder();
 }
 
+/// This is a fauly custom implementation because it uses the custom constructor
+/// without overriding `createRoute`.
 class FaultyCustomPage<T> extends DuckPage<T> {
   const FaultyCustomPage({
-    super.name = 'custom-page-without-name',
+    super.name = 'faulty-custom-page',
   }) : super.custom();
 }

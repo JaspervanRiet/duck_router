@@ -177,3 +177,9 @@ class DialogPageLocation extends Location {
   );
 }
 ```
+
+And to open it, all we do is:
+
+```dart
+DuckRouter.of(context).navigate(to: DialogPageLocation);
+```

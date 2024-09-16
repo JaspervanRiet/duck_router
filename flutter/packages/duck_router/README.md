@@ -132,11 +132,32 @@ final router = DuckRouter(
 
 This gives you the current location and the URI for the deeplink, and asks you to return a stack of locations, with the last entry being the page shown. In cases where it's considered likely for the route to be intercepted (e.g. by a login screen), consider keeping the deeplink location in memory and acting upon it later.
 
-## Custom pages
+## Custom transitions and custom pages
 
-DuckRouter uses the [Pages](https://api.flutter.dev/flutter/widgets/Page-class.html) API from Flutter to handle the conversions to [Routes](https://api.flutter.dev/flutter/widgets/Route-class.html). This means that to specify a non-default route, such as a dialog, we need to override `Page`. DuckRouter provides `DuckPage` for this purpose.
+DuckRouter uses the [Pages](https://api.flutter.dev/flutter/widgets/Page-class.html) API from Flutter to handle the conversions to [Routes](https://api.flutter.dev/flutter/widgets/Route-class.html).
 
-Let's take the case of a dialog:
+To have a page animate with a custom transition, we can use `DuckPage`:
+
+```dart
+class CustomPageTransitionLocation extends Location {
+  const CustomPageTransitionLocation();
+
+  @override
+  String get path => 'custom-page-transition';
+
+  @override
+  LocationPageBuilder get pageBuilder => (context) => DuckPage(
+        name: path,
+        child: HomeScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+      );
+}
+```
+
+In this case `DuckPage` will create a custom route for you. This means that to specify a non-default route, such as a dialog, we need to override `DuckPage`.
+
+Let's take the case of a dialog (but you can implement any type of Route in this way):
 
 ```dart
 class DialogPage<T> extends DuckPage<T> {

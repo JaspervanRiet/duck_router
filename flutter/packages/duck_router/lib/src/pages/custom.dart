@@ -121,6 +121,13 @@ class DuckPage<T> extends Page<T> {
   /// - [ModalRoute.buildTransitions] for more information on how to use this.
   final TransitionBuilder? transitionsBuilder;
 
+  /// Creates a [Route] for this page.
+  ///
+  /// You should override this if you are using the [DuckPage.custom]
+  /// constructor.
+  ///
+  /// That will enable you to create a fully custom route, such as a dialog via
+  /// DialogRoute, or a CupertinoPageRoute, or any other custom route.
   @override
   Route<T> createRoute(BuildContext context) {
     if (child == null || transitionsBuilder == null) {

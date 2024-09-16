@@ -296,8 +296,8 @@ class CustomPageTransitionLocation extends Location {
 
 class CustomPage<T> extends DuckPage<T> {
   const CustomPage({
-    String name = 'custom-page',
-  }) : super.custom(name: name);
+    super.name = 'custom-page',
+  }) : super.custom();
 
   @override
   Route<T> createRoute(BuildContext context) {
@@ -319,6 +319,6 @@ class CustomScreen extends StatelessWidget {
 
 class FaultyCustomPage<T> extends DuckPage<T> {
   const FaultyCustomPage({
-    String name = 'custom-page-without-name',
-  }) : super.custom(name: name);
+    super.name = 'custom-page-without-name',
+  }) : super.custom();
 }

@@ -124,8 +124,9 @@ class DuckPage<T> extends Page<T> {
   @override
   Route<T> createRoute(BuildContext context) {
     if (child == null || transitionsBuilder == null) {
-      throw DuckRouterException(
-          'When using a custom DuckPage, you must override createRoute');
+      throw const DuckRouterException(
+        'When using a custom DuckPage, you must override createRoute',
+      );
     }
     return _DuckPageRoute<T>(this);
   }

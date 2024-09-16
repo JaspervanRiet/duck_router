@@ -344,7 +344,7 @@ void main() {
 
         final page = FaultyCustomPage();
         try {
-          await page.createRoute(context);
+          page.createRoute(context);
           fail('Should have thrown an error');
         } catch (e) {
           expect(e, isInstanceOf<DuckRouterException>());

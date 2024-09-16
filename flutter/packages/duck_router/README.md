@@ -134,7 +134,7 @@ This gives you the current location and the URI for the deeplink, and asks you t
 
 ## Custom pages
 
-DuckRouter uses the [Pages](https://api.flutter.dev/flutter/widgets/Page-class.html) API from Flutter to handle the conversions to [Routes](https://api.flutter.dev/flutter/widgets/Route-class.html). This means that to specify a non-default route, such as a dialog, we need to override [Page]. DuckRouter provides [DuckPage] for this purpose.
+DuckRouter uses the [Pages](https://api.flutter.dev/flutter/widgets/Page-class.html) API from Flutter to handle the conversions to [Routes](https://api.flutter.dev/flutter/widgets/Route-class.html). This means that to specify a non-default route, such as a dialog, we need to override `Page`. DuckRouter provides `DuckPage` for this purpose.
 
 Let's take the case of a dialog:
 

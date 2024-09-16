@@ -53,6 +53,10 @@ class DuckPage<T> extends Page<T> {
         assert(transitionsBuilder != null),
         super(name: name);
 
+  /// Creates a custom [DuckPage].
+  ///
+  /// When using this constructor, you must override [createRoute] to return a
+  /// custom [Route].
   const DuckPage.custom({
     required String name,
     this.isModal = false,

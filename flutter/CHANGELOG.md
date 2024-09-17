@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-09-17
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`duck_router` - `v5.0.0`](#duck_router---v500)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `duck_router` - `v5.0.0`
+
+ - **BREAKING** **FEAT**: remove need to specify onPopInvoked ([#31](https://github.com/collectiveuk/packages/issues/31)). ([dffbfc86](https://github.com/collectiveuk/packages/commit/dffbfc8645078acb16dfa4534227342b28fbbb3b))
+
+
 ## 2024-08-20
 
 ### Changes

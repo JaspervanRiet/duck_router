@@ -1,3 +1,9 @@
+## 5.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: remove need to specify onPopInvoked ([#31](https://github.com/collectiveuk/packages/issues/31)). ([dffbfc86](https://github.com/collectiveuk/packages/commit/dffbfc8645078acb16dfa4534227342b28fbbb3b))
+
 ## 4.0.0
 
 > Note: This release has breaking changes.

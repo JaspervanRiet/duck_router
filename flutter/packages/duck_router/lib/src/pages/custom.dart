@@ -1,3 +1,4 @@
+import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 
 typedef TransitionBuilder = Widget Function(
@@ -8,7 +9,8 @@ typedef TransitionBuilder = Widget Function(
 );
 
 /// {@template duck_page}
-/// DuckPage is a page that allows defining a custom transition.
+/// DuckPage is a [Page] that integrates with DuckRouter, and can provide more
+/// control over the transition and behavior of a page.
 ///
 /// For example:
 ///
@@ -23,9 +25,14 @@ typedef TransitionBuilder = Widget Function(
 ///   },
 /// )
 /// ```
-/// {@endtemplate}
 ///
-/// [DuckPage] handles popping the page from the stack when the page is popped.
+/// You can use the [DuckPage.custom] constructor to build a fully custom route,
+/// such as a dialog.
+///
+/// See also:
+/// - [LocationPageBuilder]: a builder that allows returning a custom [Page]
+/// for a location.
+/// {@endtemplate}
 class DuckPage<T> extends Page<T> {
   /// {@macro duck_page}
   const DuckPage({
@@ -42,10 +49,32 @@ class DuckPage<T> extends Page<T> {
     super.arguments,
     super.restorationId,
     super.key,
-  }) : super(name: name);
+  })  : assert(child != null),
+        assert(transitionsBuilder != null),
+        super(name: name);
+
+  /// Creates a custom [DuckPage].
+  ///
+  /// When using this constructor, you must override [createRoute] to return a
+  /// custom [Route].
+  const DuckPage.custom({
+    required String name,
+    this.isModal = false,
+    this.transitionDuration = const Duration(milliseconds: 300),
+    this.reverseTransitionDuration = const Duration(milliseconds: 300),
+    this.maintainState = false,
+    this.canTapToDismiss = false,
+    this.backgroundColor,
+    this.semanticLabel,
+    super.arguments,
+    super.restorationId,
+    super.key,
+  })  : child = null,
+        transitionsBuilder = null,
+        super(name: name);
 
   /// Content of this page.
-  final Widget child;
+  final Widget? child;
 
   /// Duration of the transition.
   ///
@@ -94,10 +123,24 @@ class DuckPage<T> extends Page<T> {
   ///
   /// See also:
   /// - [ModalRoute.buildTransitions] for more information on how to use this.
-  final TransitionBuilder transitionsBuilder;
+  final TransitionBuilder? transitionsBuilder;
 
+  /// Creates a [Route] for this page.
+  ///
+  /// You should override this if you are using the [DuckPage.custom]
+  /// constructor.
+  ///
+  /// That will enable you to create a fully custom route, such as a dialog via
+  /// DialogRoute, or a CupertinoPageRoute, or any other custom route.
   @override
-  Route<T> createRoute(BuildContext context) => _DuckPageRoute<T>(this);
+  Route<T> createRoute(BuildContext context) {
+    if (child == null || transitionsBuilder == null) {
+      throw const DuckRouterException(
+        'When using a custom DuckPage, you must override createRoute',
+      );
+    }
+    return _DuckPageRoute<T>(this);
+  }
 }
 
 class _DuckPageRoute<T> extends PageRoute<T> {
@@ -145,7 +188,7 @@ class _DuckPageRoute<T> extends PageRoute<T> {
     Animation<double> secondaryAnimation,
     Widget child,
   ) =>
-      _page.transitionsBuilder(
+      _page.transitionsBuilder!(
         context,
         animation,
         secondaryAnimation,

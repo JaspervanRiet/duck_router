@@ -276,9 +276,7 @@ class CustomPageLocation extends Location {
   String get path => 'custom-page';
 
   @override
-  LocationPageBuilder get pageBuilder => (context, onPopInvoked) => CustomPage(
-        onPopInvoked: onPopInvoked,
-      );
+  LocationPageBuilder get pageBuilder => (context) => CustomPage();
 }
 
 class CustomPageTransitionLocation extends Location {
@@ -288,7 +286,7 @@ class CustomPageTransitionLocation extends Location {
   String get path => 'custom-page-transition';
 
   @override
-  LocationPageBuilder get pageBuilder => (context, onPopInvoked) => DuckPage(
+  LocationPageBuilder get pageBuilder => (context) => DuckPage(
         name: path,
         child: HomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
@@ -296,11 +294,10 @@ class CustomPageTransitionLocation extends Location {
       );
 }
 
-class CustomPage<T> extends Page<T> {
+class CustomPage<T> extends DuckPage<T> {
   const CustomPage({
     super.name = 'custom-page',
-    super.onPopInvoked,
-  });
+  }) : super.custom();
 
   @override
   Route<T> createRoute(BuildContext context) {
@@ -320,27 +317,10 @@ class CustomScreen extends StatelessWidget {
   Widget build(BuildContext context) => const Placeholder();
 }
 
-class CustomPageLocationWithoutName extends Location {
-  const CustomPageLocationWithoutName();
-
-  @override
-  String get path => 'custom-page-without-name';
-
-  @override
-  LocationPageBuilder get pageBuilder =>
-      (context, onPopInvoked) => CustomPageWithoutName(
-            onPopInvoked: onPopInvoked,
-          );
-}
-
-class CustomPageWithoutName<T> extends Page<T> {
-  const CustomPageWithoutName({super.onPopInvoked});
-
-  @override
-  Route<T> createRoute(BuildContext context) {
-    return MaterialPageRoute<T>(
-      settings: this,
-      builder: (context) => const CustomScreen(),
-    );
-  }
+/// This is a fauly custom implementation because it uses the custom constructor
+/// without overriding `createRoute`.
+class FaultyCustomPage<T> extends DuckPage<T> {
+  const FaultyCustomPage({
+    super.name = 'faulty-custom-page',
+  }) : super.custom();
 }

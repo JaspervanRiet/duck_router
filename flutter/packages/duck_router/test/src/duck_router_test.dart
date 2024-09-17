@@ -331,17 +331,28 @@ void main() {
         expect(locations2.uri.path, '/home');
       });
 
-      testWidgets('Throws error when custom page has no name set',
+      testWidgets('Throws error when custom page does not override createRoute',
           (tester) async {
-        final config = DuckRouterConfiguration(
-          initialLocation: CustomPageLocationWithoutName(),
+        late BuildContext context;
+
+        await tester.pumpWidget(
+          Builder(builder: (c) {
+            context = c;
+            return Container();
+          }),
         );
 
-        await createRouter(config, tester);
-        final exception = tester.takeException();
-        expect(exception, isInstanceOf<DuckRouterException>());
-        expect(exception.toString(),
-            contains('Custom pages must have a name set.'));
+        final page = FaultyCustomPage();
+        try {
+          page.createRoute(context);
+          fail('Should have thrown an error');
+        } catch (e) {
+          expect(e, isInstanceOf<DuckRouterException>());
+          expect(
+              e.toString(),
+              contains(
+                  'When using a custom DuckPage, you must override createRoute'));
+        }
       });
     });
   });

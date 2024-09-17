@@ -58,31 +58,59 @@ class LocationStack {
 /// a [Page].
 typedef LocationBuilder = Widget Function(BuildContext context);
 
-/// A builder that allows a fully custom [Page] to be built.
+/// A builder that allows a fully custom [Page] to be built. We call these
+/// custom pages [DuckPage].
 ///
 /// For example, you might use this to build a custom transition for a page,
-/// or to use it from within a modal.
+/// or to use it from within a modal. Here's how you would use it to build a
+/// dialog page:
 ///
-/// To enable popping: custom pages MUST implement the [OnPopInvokedCallback]
-/// as well as set a [name] (we use the [path]) to allow the [DuckRouter] to
-/// pop the page.
-///
-/// For example:
 /// ```dart
+/// class DialogPage<T> extends DuckPage<T> {
+///   final Offset? anchorPoint;
+///   final Color? barrierColor;
+///   final bool barrierDismissible;
+///   final String? barrierLabel;
+///   final bool useSafeArea;
+///   final CapturedThemes? themes;
+///   final WidgetBuilder builder;
+///
+///   const DialogPage.custom({
+///     required String name,
+///     required this.builder,
+///     this.anchorPoint,
+///     this.barrierColor = Colors.black87,
+///     this.barrierDismissible = true,
+///     this.barrierLabel,
+///     this.useSafeArea = true,
+///     this.themes,
+///     super.key,
+///     super.arguments,
+///     super.restorationId,
+///   }) : super.custom(name: name);
+///
 ///   @override
-///   LocationPageBuilder get pageBuilder => (c, onPopInvoked) => CustomPage(
-///     onPopInvoked: onPopInvoked,
-///   );
+///   Route<T> createRoute(BuildContext context) => DialogRoute<T>(
+///         context: context,
+///         settings: this,
+///         builder: (context) => Dialog(
+///           child: builder(context),
+///         ),
+///         anchorPoint: anchorPoint,
+///         barrierColor: barrierColor,
+///         barrierDismissible: barrierDismissible,
+///         barrierLabel: barrierLabel,
+///         useSafeArea: useSafeArea,
+///         themes: themes,
+///       );
+/// }
 /// ```
 ///
-///
 /// See also:
-/// - [LocationBuilder] for a simpler builder that returns a [Widget].
-/// - [DuckPage] for a page that allows defining a custom transition and handles
-/// popping for you.
-typedef LocationPageBuilder = Page<dynamic> Function(
+/// * [LocationBuilder] for a simpler builder that returns a [Widget].
+/// * [DuckPage] for the page you must override.
+typedef LocationPageBuilder = DuckPage<dynamic> Function(
   BuildContext context,
-  OnPopInvokedCallback onPopInvoked,
 );
 
 /// {@template location}

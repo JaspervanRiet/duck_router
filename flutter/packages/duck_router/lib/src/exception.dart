@@ -1,3 +1,5 @@
+import 'package:duck_router/duck_router.dart';
+
 /// {@template duck_router_exception}
 /// Exception thrown by the [DuckRouter].
 /// {@endtemplate}

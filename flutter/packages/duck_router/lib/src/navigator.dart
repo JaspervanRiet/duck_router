@@ -1,4 +1,3 @@
-import 'package:duck_router/src/duck_router.dart';
 import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:duck_router/src/location.dart';
@@ -108,7 +107,7 @@ class _DuckNavigatorState extends State<DuckNavigator> {
       assert(l.pageBuilder != null || l.builder != null,
           'Location must have a builder or a pageBuilder');
       if (l.pageBuilder != null) {
-        final customPage = l.pageBuilder!(context, widget.onPopPage);
+        final customPage = l.pageBuilder!(context);
         if (customPage.name == null) {
           throw const DuckRouterException('Custom pages must have a name set.');
         }
@@ -143,3 +142,6 @@ class _DuckNavigatorState extends State<DuckNavigator> {
     assert(_pageBuilderForAppType != null, 'App type not found!');
   }
 }
+
+/// Callback signature for when a pop is invoked.
+typedef OnPopInvokedCallback = void Function(bool didPop, Object? result);

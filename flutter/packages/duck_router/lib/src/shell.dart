@@ -7,6 +7,7 @@ import 'package:duck_router/src/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
 import 'navigator.dart';
 
 /// {@template duck_shell}
@@ -191,20 +192,29 @@ class DuckShellState extends State<DuckShell> {
     });
   }
 
-  RouterDelegate get currentRouterDelegate => _routerDelegates[_currentIndex];
+  DuckShellRouterDelegate get currentRouterDelegate =>
+      _routerDelegates[_currentIndex];
 }
 
 typedef _NewPathCallback = void Function(LocationStack configuration);
 
-class _NestedRouterDelegate extends RouterDelegate<LocationStack>
+abstract class DuckShellRouterDelegate extends RouterDelegate<LocationStack> {
+  DuckShellRouterDelegate({
+    required LocationStack stack,
+  }) : currentConfiguration = stack;
+
+  @override
+  LocationStack currentConfiguration;
+}
+
+class _NestedRouterDelegate extends DuckShellRouterDelegate
     with ChangeNotifier, PopNavigatorRouterDelegateMixin<LocationStack> {
   _NestedRouterDelegate({
     required GlobalKey<NavigatorState> navigatorKey,
-    required LocationStack stack,
+    required super.stack,
     required _NewPathCallback onNewPath,
     required DuckRouterConfiguration configuration,
   })  : _navigatorKey = navigatorKey,
-        currentConfiguration = stack,
         _onNewPath = onNewPath,
         _routerConfiguration = configuration;
 
@@ -237,9 +247,6 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
     final currentLocation = currentConfiguration.locations.last;
     _routerConfiguration.removeLocation(currentLocation, result);
   }
-
-  @override
-  LocationStack currentConfiguration;
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;

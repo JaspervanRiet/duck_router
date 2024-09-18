@@ -5,7 +5,7 @@ import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
 
 /// Handler for when the app gets a deeplink.
-typedef DuckRouterDeepLinkHandler = List<Location> Function(
+typedef DuckRouterDeepLinkHandler = List<Location>? Function(
   Uri uri,
   Location currentLocation,
 );

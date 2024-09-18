@@ -79,6 +79,10 @@ class DuckInformationProvider extends RouteInformationProvider
         currentState.location,
       );
 
+      if (stackToGoTo == null || stackToGoTo.isEmpty) {
+        return;
+      }
+
       final toLocation = stackToGoTo.last;
 
       /// Note: you might observe that directly calling `navigate` here means

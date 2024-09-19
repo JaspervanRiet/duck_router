@@ -80,6 +80,7 @@ class DuckInformationProvider extends RouteInformationProvider
       );
 
       if (stackToGoTo == null || stackToGoTo.isEmpty) {
+        // If the stack is empty, the user does not want to navigate based on the deeplink.
         return;
       }
 

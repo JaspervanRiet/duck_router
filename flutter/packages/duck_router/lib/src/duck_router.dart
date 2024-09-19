@@ -192,10 +192,13 @@ class DuckRouter implements RouterConfig<LocationStack> {
     }
 
     if (configuration.onDeepLink != null) {
-      return LocationStack(
-        locations: configuration.onDeepLink!(
-            platformInitialLocation, userSpecifiedInitialLocation),
+      final locationStack = configuration.onDeepLink!(
+        platformInitialLocation,
+        userSpecifiedInitialLocation,
       );
+      if (locationStack != null) {
+        return LocationStack(locations: locationStack);
+      }
     }
 
     return LocationStack(

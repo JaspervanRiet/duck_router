@@ -79,6 +79,11 @@ class DuckInformationProvider extends RouteInformationProvider
         currentState.location,
       );
 
+      if (stackToGoTo == null || stackToGoTo.isEmpty) {
+        // If the stack is empty, the user does not want to navigate based on the deeplink.
+        return;
+      }
+
       final toLocation = stackToGoTo.last;
 
       /// Note: you might observe that directly calling `navigate` here means

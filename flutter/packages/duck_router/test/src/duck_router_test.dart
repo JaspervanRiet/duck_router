@@ -868,6 +868,29 @@ void main() {
       expect(find.byType(Page1Screen), findsNothing);
     });
 
+    testWidgets(
+        'ignores deep links if location stack returned (supports the fire-and-forget scenario)',
+        (tester) async {
+      final binding = _retrieveTestBinding(tester);
+      binding.platformDispatcher.defaultRouteNameTestValue = '/page1';
+
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+        onDeepLink: (_, __) => null,
+      );
+
+      final router = await createRouter(
+        config,
+        tester,
+      );
+      final locations = router.routerDelegate.currentConfiguration;
+      await tester.pumpAndSettle();
+
+      expect(locations.uri.path, '/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+      expect(find.byType(Page1Screen), findsNothing);
+    });
+
     testWidgets('sends empty deep link to initial location', (tester) async {
       final binding = _retrieveTestBinding(tester);
       binding.platformDispatcher.defaultRouteNameTestValue = '';
@@ -947,6 +970,46 @@ void main() {
       final locations2 = router.routerDelegate.currentConfiguration;
 
       expect(locations2.uri.path, '/page1');
+    });
+
+    testWidgets(
+        'handles deep link while router is active but returns null as location stack',
+        (tester) async {
+      final binding = _retrieveTestBinding(tester);
+      binding.platformDispatcher.defaultRouteNameTestValue = '';
+
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+        onDeepLink: (deeplink, initialLocation) {
+          return null;
+        },
+      );
+
+      final router = await createRouter(
+        config,
+        tester,
+      );
+      final locations = router.routerDelegate.currentConfiguration;
+      await tester.pumpAndSettle();
+
+      expect(locations.uri.path, '/home');
+
+      const Map<String, dynamic> testRouteInformation = <String, dynamic>{
+        'location': '/page1',
+        'state': 'state',
+        'restorationData': <dynamic, dynamic>{'test': 'config'},
+      };
+      final ByteData message = const JSONMethodCodec().encodeMethodCall(
+        const MethodCall('pushRouteInformation', testRouteInformation),
+      );
+
+      await tester.binding.defaultBinaryMessenger
+          .handlePlatformMessage('flutter/navigation', message, (_) {});
+
+      await tester.pumpAndSettle();
+      final locations2 = router.routerDelegate.currentConfiguration;
+
+      expect(locations2.uri.path, '/home');
     });
 
     // We intentionally do not support this feature, see

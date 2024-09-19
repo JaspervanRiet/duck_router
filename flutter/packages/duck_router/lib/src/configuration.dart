@@ -5,7 +5,11 @@ import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
 
 /// Handler for when the app gets a deeplink.
-typedef DuckRouterDeepLinkHandler = List<Location> Function(
+///
+/// When a list of locations is returned, the router will update the current location stack with the new stack.
+/// If `null` is returned, the router will either not update the stack (in case of a deeplink while the app is running)
+/// or navigate to the initial location (in case of a deeplink while the app is not running).
+typedef DuckRouterDeepLinkHandler = List<Location>? Function(
   Uri uri,
   Location currentLocation,
 );

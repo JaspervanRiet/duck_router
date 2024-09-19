@@ -868,7 +868,9 @@ void main() {
       expect(find.byType(Page1Screen), findsNothing);
     });
 
-    testWidgets('ignores deep links if location stack returned (supports the fire-and-forget scenario)', (tester) async {
+    testWidgets(
+        'ignores deep links if location stack returned (supports the fire-and-forget scenario)',
+        (tester) async {
       final binding = _retrieveTestBinding(tester);
       binding.platformDispatcher.defaultRouteNameTestValue = '/page1';
 
@@ -970,7 +972,9 @@ void main() {
       expect(locations2.uri.path, '/page1');
     });
 
-    testWidgets('handles deep link while router is active but returns null as location stack', (tester) async {
+    testWidgets(
+        'handles deep link while router is active but returns null as location stack',
+        (tester) async {
       final binding = _retrieveTestBinding(tester);
       binding.platformDispatcher.defaultRouteNameTestValue = '';
 

@@ -219,6 +219,9 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
       stack: currentConfiguration,
       onPopPage: onPopPage,
       onDidRemovePage: _onDidRemovePage,
+      observers: _routerConfiguration.navigatorObserverBuilder != null
+          ? _routerConfiguration.navigatorObserverBuilder!(navigatorKey)
+          : null,
     );
   }
 

@@ -34,6 +34,9 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
         stack: currentConfiguration,
         onPopPage: _onPopPage,
         onDidRemovePage: _onDidRemovePage,
+        observers: _configuration.navigatorObserverBuilder != null
+            ? _configuration.navigatorObserverBuilder!(navigatorKey)
+            : null,
       ),
     );
   }

@@ -43,6 +43,21 @@ Now you can navigate:
 DuckRouter.of(context).navigate(to: const Page1Location());
 ```
 
+Adding parameters to these routes is easy:
+
+```dart
+class Page1Location extends Location {
+  const Page1Location(this.icon) : super(path: 'page1');
+
+  // Contrived example to show that you can provide any type here.
+  // Remember: it's just a class!
+  final Icon icon;
+
+  @override
+  LocationBuilder get builder => (context) => const Page1Screen(icon);
+}
+```
+
 See also the example.
 
 # Key features

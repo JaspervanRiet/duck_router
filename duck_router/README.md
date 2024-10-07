@@ -1,4 +1,8 @@
+[![Badge](https://img.shields.io/pub/v/duck_router.svg)](https://pub.dev/packages/duck_router)
+
 The DuckRouter is a Flutter router using intents. It has been tested at scale at [Onsi](https://onsi.com/). DuckRouter has been designed using a philosophy of no "magic", while focusing on reliability.
+
+See also: https://onsi.com/blog/app-navigation-at-scale-introducing-duckrouter
 
 # Features
 

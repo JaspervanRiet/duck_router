@@ -6,6 +6,10 @@ See also: https://onsi.com/blog/app-navigation-at-scale-introducing-duckrouter
 
 # Features
 
+DuckRouter aims to be a router that _just works_. It is not interested in managing state,
+in tracking analytics, it is just a good router. It has many inspirations, but one to
+highlight is the [The Evolution of Routing at Airbnb](https://speakerdeck.com/amiekweon/the-evolution-of-routing-at-airbnb).
+
 - Intent-based navigation using types
 - Dynamic route registry
 - Interceptors for routes

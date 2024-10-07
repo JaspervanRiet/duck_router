@@ -11,6 +11,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 Packages with breaking changes:
 
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v5.1.2`](#duck_router---v512)
+
+---
+
+#### `duck_router` - `v5.1.2`
+
+ - **DOCS**: improve README to highlight philosophy. ([6b871e00](https://github.com/jaspervanriet/duck_router/commit/6b871e0079eaa60f6baf0585e0800a1963993a31))
+
+
+## 2024-10-07
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
 - There are no breaking changes in this release.
 
 Packages with other changes:

@@ -1,3 +1,7 @@
+## 5.1.2
+
+ - **DOCS**: improve README to highlight philosophy. ([6b871e00](https://github.com/jaspervanriet/duck_router/commit/6b871e0079eaa60f6baf0585e0800a1963993a31))
+
 ## 5.1.1
 
 - **DOCS**: update package README ([#39](https://github.com/jaspervanriet/duck_router/issues/39)). ([f0c40c3b](https://github.com/jaspervanriet/duck_router/commit/f0c40c3b8d4a48a70928d4033fb1a0e91606c2ac))

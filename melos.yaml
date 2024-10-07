@@ -1,5 +1,5 @@
-name: onsi_packages
-repository: https://github.com/collectiveuk/packages
+name: duck_router
+repository: https://github.com/jaspervanriet/duck_router
 
 packages:
   - duck_router

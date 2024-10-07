@@ -4,7 +4,7 @@ _Replace this paragraph with a summary of what this PR is doing. If you're modif
 
 ## Related Issues
 
-\_Replace this placeholder text with a list of issues related to this PR from the [issue tracker](https://github.com/collectiveuk/packages).
+\_Replace this placeholder text with a list of issues related to this PR from the [issue tracker](https://github.com/jaspervanriet/duck_router).
 
 ## Breaking Change
 

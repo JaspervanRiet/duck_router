@@ -2,7 +2,7 @@ name: onsi_packages
 repository: https://github.com/collectiveuk/packages
 
 packages:
-  - packages/**
+  - duck_router
 
 command:
   version:

@@ -7,19 +7,25 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "flutter/packages/duck_router/**"
+      - "duck_router/**"
       - ".github/workflows/duck_router.yaml"
 
 jobs:
   build:
-    runs-on: [mobile, self-hosted]
+    runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: flutter/packages/duck_router
+        working-directory: duck_router
 
     steps:
       - name: 📚 Git Checkout
         uses: actions/checkout@v4
+
+      - name: Set Up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ vars.FLUTTER_VERSION }}
+          channel: "stable"
 
       - name: Install Dependencies
         run: |

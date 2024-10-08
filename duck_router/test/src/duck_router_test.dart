@@ -366,6 +366,10 @@ void main() {
       StreamController<int> streamController =
           StreamController<int>.broadcast();
 
+      addTearDown(() {
+        streamController.close();
+      });
+
       await tester.pumpWidget(
         RefreshableApp(stream: streamController.stream),
       );
@@ -381,8 +385,6 @@ void main() {
       // a restoration of the router.
       streamController.add(2);
       await tester.pumpAndSettle();
-
-      streamController.close();
     });
   });
 

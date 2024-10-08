@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unawaited_futures
 
+import 'dart:async';
+
 import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/exception.dart';
 import 'package:duck_router/src/location.dart';
@@ -354,6 +356,20 @@ void main() {
                   'When using a custom DuckPage, you must override createRoute'));
         }
       });
+    });
+
+    testWidgets('Does not error when refreshing app', (tester) async {
+      StreamController<int> streamController =
+          StreamController<int>.broadcast();
+
+      await tester.pumpWidget(
+        RefreshableApp(stream: streamController.stream),
+      );
+
+      streamController.add(1);
+      await tester.pumpAndSettle();
+
+      streamController.close();
     });
   });
 

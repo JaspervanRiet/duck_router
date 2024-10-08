@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unawaited_futures
 
+import 'dart:async';
+
 import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/exception.dart';
 import 'package:duck_router/src/location.dart';
@@ -354,6 +356,33 @@ void main() {
                   'When using a custom DuckPage, you must override createRoute'));
         }
       });
+    });
+
+    /// See https://github.com/JaspervanRiet/duck_router/issues/40
+    ///
+    /// This test is to ensure that the router does not error when
+    /// it has to restore itself.
+    testWidgets('Does not error when refreshing app', (tester) async {
+      StreamController<int> streamController =
+          StreamController<int>.broadcast();
+
+      await tester.pumpWidget(
+        RefreshableApp(stream: streamController.stream),
+      );
+
+      // This will navigate to a new page. We do this
+      // to ensure that we're not just fixing a duplication issue
+      // for the initial location, but in general instead.
+      streamController.add(1);
+      await tester.pumpAndSettle();
+
+      // This will trigger a rebuild of the app,
+      // including the router. That will trigger
+      // a restoration of the router.
+      streamController.add(2);
+      await tester.pumpAndSettle();
+
+      streamController.close();
     });
   });
 

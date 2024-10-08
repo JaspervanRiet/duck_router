@@ -324,3 +324,43 @@ class FaultyCustomPage<T> extends DuckPage<T> {
     super.name = 'faulty-custom-page',
   }) : super.custom();
 }
+
+class RefreshableApp extends StatelessWidget {
+  RefreshableApp({
+    required this.stream,
+    super.key,
+  });
+
+  final Stream<int> stream;
+
+  final DuckRouter router = DuckRouter(
+    initialLocation: HomeLocation(),
+    interceptors: [],
+  );
+
+  final appKey = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    Widget child = KeyedSubtree(
+      key: appKey,
+      child: MaterialApp.router(
+        routerConfig: router,
+      ),
+    );
+
+    return StreamBuilder(
+        stream: stream,
+        builder: (context, s) {
+          if (s.data == 1) {
+            router.navigate(to: Page1Location());
+          }
+          if (s.data == 2) {
+            child = Container(
+              child: child,
+            );
+          }
+          return child;
+        });
+  }
+}

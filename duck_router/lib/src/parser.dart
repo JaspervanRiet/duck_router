@@ -38,7 +38,13 @@ class DuckInformationParser extends RouteInformationParser<LocationStack> {
       final stack =
           _codec.decode(routeInformation.state! as Map<Object?, Object?>);
 
-      return _maybeIntercept(stack.locations.last, stack.locations);
+      return _maybeIntercept(
+          stack.locations.last,
+          // Before rebuild:
+          // - /home/page1
+          // Then we rebuild, so we need to remove page1, otherwise
+          // we will have /home/page1/page1
+          stack.locations.sublist(0, stack.locations.length - 1));
     }
 
     final currentStack = state.baseLocationStack.locations;

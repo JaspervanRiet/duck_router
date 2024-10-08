@@ -353,6 +353,9 @@ class RefreshableApp extends StatelessWidget {
         stream: stream,
         builder: (context, s) {
           if (s.data == 1) {
+            router.navigate(to: Page1Location());
+          }
+          if (s.data == 2) {
             child = Container(
               child: child,
             );

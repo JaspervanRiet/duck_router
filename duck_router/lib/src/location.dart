@@ -9,14 +9,14 @@ import 'package:duck_router/src/exception.dart';
 /// {@template location_stack}
 /// A stack of locations.
 /// {@endtemplate}
-class LocationStack {
+class LocationStack extends Equatable {
   /// {@macro location_stack}
-  LocationStack({
+  const LocationStack({
     required this.locations,
   });
 
   /// Creates a const empty list
-  static LocationStack empty = LocationStack(
+  static LocationStack empty = const LocationStack(
     locations: [],
   );
 
@@ -49,6 +49,9 @@ class LocationStack {
       locations: locations ?? this.locations,
     );
   }
+
+  @override
+  List<Object?> get props => [locations];
 }
 
 /// A builder that creates a widget for a location.

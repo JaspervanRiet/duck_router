@@ -1,3 +1,8 @@
+## 5.1.3
+
+ - **FIX**: allow comparison of LocationStack. ([a0f83e2f](https://github.com/jaspervanriet/duck_router/commit/a0f83e2f39eda4597bb658c239037c991c70ea33))
+ - **FIX**: router errors when restoring state ([#41](https://github.com/jaspervanriet/duck_router/issues/41)). ([879a8863](https://github.com/jaspervanriet/duck_router/commit/879a8863cdc07b3c1dd934e0e822e291f9198d24))
+
 ## 5.1.2
 
  - **DOCS**: improve README to highlight philosophy. ([6b871e00](https://github.com/jaspervanriet/duck_router/commit/6b871e0079eaa60f6baf0585e0800a1963993a31))

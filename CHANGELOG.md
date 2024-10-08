@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-10-08
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v5.1.3`](#duck_router---v513)
+
+---
+
+#### `duck_router` - `v5.1.3`
+
+ - **FIX**: allow comparison of LocationStack. ([a0f83e2f](https://github.com/jaspervanriet/duck_router/commit/a0f83e2f39eda4597bb658c239037c991c70ea33))
+ - **FIX**: router errors when restoring state ([#41](https://github.com/jaspervanriet/duck_router/issues/41)). ([879a8863](https://github.com/jaspervanriet/duck_router/commit/879a8863cdc07b3c1dd934e0e822e291f9198d24))
+
+
 ## 2024-10-07
 
 ### Changes

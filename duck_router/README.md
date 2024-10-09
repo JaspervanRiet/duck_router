@@ -232,7 +232,7 @@ DuckRouter.of(context).navigate(to: DialogPageLocation);
 
 ## Navigator observers
 
-Adding a solid support for [NavigatorObservers](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) is not trivial, due to the many limitations it has, and the fact we want to hide the implementation details of this package as much as possible.
+Adding support for [NavigatorObservers](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) to the standard we would like is not trivial, due to the many limitations it has, and the fact we want to hide the implementation details of this package as much as possible.
 
 Because of this, the support for this feature is kept basic, and users of this feature should be aware of the limitations!
 - Observers should always be **stateless**

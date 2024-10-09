@@ -229,3 +229,30 @@ And to open it, all we do is:
 ```dart
 DuckRouter.of(context).navigate(to: DialogPageLocation);
 ```
+
+## Navigator observers
+
+Adding support for [NavigatorObservers](https://api.flutter.dev/flutter/widgets/NavigatorObserver-class.html) to the standard we would like is not trivial, due to the many limitations it has, and the fact we want to hide the implementation details of this package as much as possible.
+
+Because of this, the support for this feature is kept basic, and users of this feature should be aware of the limitations!
+- Observers should always be **stateless**
+- Observers **can not be shared** between Navigators
+
+When creating the DuckRouter instance, it is possible to pass a builder function for adding NavigatorObservers to each (nested) navigator, like the example below:
+
+```dart
+final router = DuckRouter(
+  initialLocation: RootLocation(),
+  onDeepLink: (uri, currentLocation) {
+    return [const DetailLocation()];
+  },
+  interceptors: [AuthInterceptor()],
+  navigatorObserverBuilder: (navigatorKey) {
+    return [
+      LoggerNavigatorObserver(),
+    ];
+  },
+);
+```
+
+This builder will be called for every Navigator that is created. Because of the limitations above, it is important that each time this callback is triggered, new instances of the observers are returned!

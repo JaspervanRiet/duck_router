@@ -14,6 +14,7 @@ class DuckNavigator extends StatefulWidget {
     required this.navigatorKey,
     required this.onPopPage,
     required this.onDidRemovePage,
+    this.observers,
     super.key,
   });
 
@@ -26,6 +27,8 @@ class DuckNavigator extends StatefulWidget {
   final OnPopInvokedCallback onPopPage;
 
   final DidRemovePageCallback onDidRemovePage;
+
+  final List<NavigatorObserver>? observers;
 
   @override
   State<StatefulWidget> createState() {
@@ -82,6 +85,7 @@ class _DuckNavigatorState extends State<DuckNavigator> {
         key: widget.navigatorKey,
         pages: _pages!,
         onDidRemovePage: widget.onDidRemovePage,
+        observers: widget.observers ?? [],
       ),
     );
   }

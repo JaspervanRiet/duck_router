@@ -17,6 +17,13 @@ typedef DuckRouterDeepLinkHandler = List<Location>? Function(
 /// A listener for when the router navigates.
 typedef DuckRouterNavigatorListener = void Function(Location destination);
 
+/// A builder that creates a list of [NavigatorObserver]s.
+/// A builder has to be provided, as a [NavigatorObserver] can not be shared between navigators.
+/// The builder is called with the navigator key of the navigator that the observers are for.
+/// Note that the observers returned by the builder should not be shared between navigators!
+typedef DuckRouterNavigatorObserverBuilder = List<NavigatorObserver> Function(
+    GlobalKey<NavigatorState> navigatorKey);
+
 /// {@template duck_router_configuration}
 /// A configuration object for the [DuckRouter].
 /// {@endtemplate}
@@ -28,6 +35,7 @@ class DuckRouterConfiguration {
     this.interceptors,
     this.onDeepLink,
     this.onNavigate,
+    this.navigatorObserverBuilder,
   }) : rootNavigatorKey = rootNavigatorKey ?? GlobalKey<NavigatorState>();
 
   /// The list of locations that the user can route to
@@ -48,6 +56,12 @@ class DuckRouterConfiguration {
 
   /// A listener for when the router navigates.
   final DuckRouterNavigatorListener? onNavigate;
+
+  /// A builder that creates a list of [NavigatorObserver]s.
+  /// A builder has to be provided, as a [NavigatorObserver] can not be shared between navigators.
+  /// The builder is called with the navigator key of the navigator that the observers are for.
+  /// Note that the observers returned by the builder should not be shared between navigators!
+  final DuckRouterNavigatorObserverBuilder? navigatorObserverBuilder;
 
   final Map<String, LocationMatch> _routeMapping = {};
 

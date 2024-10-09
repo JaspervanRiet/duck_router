@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, cascade_invocations
+// ignore_for_file: prefer_const_constructors, cascade_invocations, prefer_const_literals_to_create_immutables
 
 import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/exception.dart';

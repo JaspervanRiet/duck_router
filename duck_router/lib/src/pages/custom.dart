@@ -32,6 +32,9 @@ typedef TransitionBuilder = Widget Function(
 /// See also:
 /// - [LocationPageBuilder]: a builder that allows returning a custom [Page]
 /// for a location.
+///
+/// {@category Custom pages and transitions}
+///
 /// {@endtemplate}
 class DuckPage<T> extends Page<T> {
   /// {@macro duck_page}

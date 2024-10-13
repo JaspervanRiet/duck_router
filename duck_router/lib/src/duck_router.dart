@@ -26,6 +26,9 @@ typedef LocationPredicate = bool Function(Location location);
 ///
 /// Specify a [DuckRouterDeepLinkHandler] to handle deep links. Be aware that
 /// deep links still go through interceptors.
+///
+/// {@category Configuration}
+/// {@category Deep linking}
 /// {@endtemplate}
 class DuckRouter implements RouterConfig<LocationStack> {
   /// {@macro duck_router}

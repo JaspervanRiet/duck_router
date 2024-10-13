@@ -13,6 +13,9 @@ import 'navigator.dart';
 /// The [DuckShell] is a Widget that manages state for a
 /// [StatefulLocation]. It allows switching between the children of that
 /// location.
+///
+/// {@category Stateful navigation}
+///
 /// {@endtemplate}
 class DuckShell extends StatefulWidget {
   /// {@macro duck_shell}

@@ -14,9 +14,9 @@ import 'navigator.dart';
 /// [StatefulLocation]. It allows switching between the children of that
 /// location.
 ///
-/// {@category Stateful navigation}
-///
 /// {@endtemplate}
+///
+/// {@category Stateful navigation}
 class DuckShell extends StatefulWidget {
   /// {@macro duck_shell}
   const DuckShell({

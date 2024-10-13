@@ -18,6 +18,3 @@ dartdoc:
     - "Deep linking"
     - "Custom pages and transitions"
   showUndocumentedCategories: true
-  ignore:
-    - broken-link
-    - missing-from-search-index

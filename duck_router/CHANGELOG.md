@@ -1,3 +1,7 @@
+## 5.2.0
+
+ - **FEAT**: add support for NavigatorObservers ([#35](https://github.com/jaspervanriet/duck_router/issues/35)). ([616aefbb](https://github.com/jaspervanriet/duck_router/commit/616aefbbef9d40c86d99173399bad64c80661ccd))
+
 ## 5.1.3
 
  - **FIX**: allow comparison of LocationStack. ([a0f83e2f](https://github.com/jaspervanriet/duck_router/commit/a0f83e2f39eda4597bb658c239037c991c70ea33))

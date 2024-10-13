@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-10-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v5.2.0`](#duck_router---v520)
+
+---
+
+#### `duck_router` - `v5.2.0`
+
+ - **FEAT**: add support for NavigatorObservers ([#35](https://github.com/jaspervanriet/duck_router/issues/35)). ([616aefbb](https://github.com/jaspervanriet/duck_router/commit/616aefbbef9d40c86d99173399bad64c80661ccd))
+
+
 ## 2024-10-08
 
 ### Changes

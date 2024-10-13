@@ -1,3 +1,8 @@
+## 5.4.0
+
+ - **FIX**: generate documentation categories correctly. ([174b9b27](https://github.com/jaspervanriet/duck_router/commit/174b9b2701d0e269396d4b83ab4c2526b37902e0))
+ - **FEAT**: add library level comment. ([8a6baa0c](https://github.com/jaspervanriet/duck_router/commit/8a6baa0c618dedd94f66624b23ff214e78d32076))
+
 ## 5.3.0
 
  - **FEAT**: add support for extra documentation. ([0b5befe1](https://github.com/jaspervanriet/duck_router/commit/0b5befe165f47bdf2245e04e98ca86fe63674278))

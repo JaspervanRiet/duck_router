@@ -15,6 +15,28 @@ Packages with breaking changes:
 
 Packages with other changes:
 
+ - [`duck_router` - `v5.4.0`](#duck_router---v540)
+
+---
+
+#### `duck_router` - `v5.4.0`
+
+ - **FIX**: generate documentation categories correctly. ([174b9b27](https://github.com/jaspervanriet/duck_router/commit/174b9b2701d0e269396d4b83ab4c2526b37902e0))
+ - **FEAT**: add library level comment. ([8a6baa0c](https://github.com/jaspervanriet/duck_router/commit/8a6baa0c618dedd94f66624b23ff214e78d32076))
+
+
+## 2024-10-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
  - [`duck_router` - `v5.3.0`](#duck_router---v530)
 
 ---

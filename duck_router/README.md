@@ -21,7 +21,7 @@ DuckRouter aims to be a router that _just works_.
 
 ### 1. Define Your Locations
 
-Create location (route classes) for each destination in your app. Add as many properties to the class as needed, with any type needed:
+Create locations (route classes) for each destination in your app. Add as many properties to the class as needed, with any type needed:
 
 ```dart
 class HomeLocation extends Location {

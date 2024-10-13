@@ -15,6 +15,27 @@ Packages with breaking changes:
 
 Packages with other changes:
 
+ - [`duck_router` - `v5.3.0`](#duck_router---v530)
+
+---
+
+#### `duck_router` - `v5.3.0`
+
+ - **FEAT**: add support for extra documentation. ([0b5befe1](https://github.com/jaspervanriet/duck_router/commit/0b5befe165f47bdf2245e04e98ca86fe63674278))
+
+
+## 2024-10-13
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
  - [`duck_router` - `v5.2.0`](#duck_router---v520)
 
 ---

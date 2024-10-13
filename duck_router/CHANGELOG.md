@@ -1,3 +1,7 @@
+## 5.3.0
+
+ - **FEAT**: add support for extra documentation. ([0b5befe1](https://github.com/jaspervanriet/duck_router/commit/0b5befe165f47bdf2245e04e98ca86fe63674278))
+
 ## 5.2.0
 
  - **FEAT**: add support for NavigatorObservers ([#35](https://github.com/jaspervanriet/duck_router/issues/35)). ([616aefbb](https://github.com/jaspervanriet/duck_router/commit/616aefbbef9d40c86d99173399bad64c80661ccd))

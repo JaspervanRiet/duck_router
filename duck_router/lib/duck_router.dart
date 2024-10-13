@@ -1,3 +1,4 @@
+/// Intent-based router for Flutter, supporting deep linking, nesting and more.
 library duck_router;
 
 export 'src/configuration.dart';

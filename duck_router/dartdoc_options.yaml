@@ -1,0 +1,23 @@
+dartdoc:
+  categories:
+    "Configuration":
+      markdown: doc/configuration.md
+      name: Configuration
+    "Stateful navigation":
+      markdown: doc/stateful-navigation.md
+      name: Stateful navigation
+    "Deep linking":
+      markdown: doc/deep-linking.md
+      name: Deep linking
+    "Custom pages and transitions":
+      markdown: doc/custom-pages.md
+      name: Custom pages and transitions
+  categoryOrder:
+    - "Configuration"
+    - "Stateful navigation"
+    - "Deep linking"
+    - "Custom pages and transitions"
+  showUndocumentedCategories: true
+  ignore:
+    - broken-link
+    - missing-from-search-index

@@ -1,5 +1,5 @@
 name: duck_router
-description: "Intent-based router for Flutter mobile app, supporting deep linking, nesting and more."
+description: "Intent-based router for Flutter, supporting deep linking, nesting and more."
 version: 5.1.3
 repository: https://github.com/JaspervanRiet/duck_router
 issue_tracker: https://github.com/JaspervanRiet/duck_router/issues

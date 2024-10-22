@@ -300,7 +300,7 @@ class CustomPage<T> extends DuckPage<T> {
   }) : super.custom();
 
   @override
-  Route<T> createRoute(BuildContext context, {RouteSettings? settings}) {
+  Route<T> createRoute(BuildContext context, RouteSettings? settings) {
     return MaterialPageRoute<T>(
       settings: settings,
       builder: (context) => const CustomScreen(),
@@ -317,7 +317,7 @@ class CustomScreen extends StatelessWidget {
   Widget build(BuildContext context) => const Placeholder();
 }
 
-/// This is a fauly custom implementation because it uses the custom constructor
+/// This is a faulty custom implementation because it uses the custom constructor
 /// without overriding `createRoute`.
 class FaultyCustomPage<T> extends DuckPage<T> {
   const FaultyCustomPage({

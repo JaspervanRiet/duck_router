@@ -14,7 +14,7 @@ Page<T> pageBuilderForCustomPage<T>({
 class _DuckPage<T> extends Page<T> {
   _DuckPage(
     duck_page.DuckPage<T> page, {
-    required OnPopInvokedCallback onPopInvoked,
+    super.onPopInvoked,
   })  : child = page.child,
         transitionDuration = page.transitionDuration,
         reverseTransitionDuration = page.reverseTransitionDuration,
@@ -27,7 +27,8 @@ class _DuckPage<T> extends Page<T> {
         _page = page,
         super(
           name: page.name,
-          onPopInvoked: onPopInvoked,
+          canPop: page.canPop ?? true,
+          restorationId: page.restorationId,
         );
 
   final duck_page.DuckPage<T> _page;
@@ -86,11 +87,7 @@ class _DuckPage<T> extends Page<T> {
 
   @override
   Route<T> createRoute(BuildContext context) {
-    return _page.createRoute(
-          context,
-          settings: this,
-        ) ??
-        _DuckPageRoute<T>(this);
+    return _page.createRoute(context, this) ?? _DuckPageRoute<T>(this);
   }
 }
 

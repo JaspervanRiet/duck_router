@@ -9,7 +9,7 @@ typedef TransitionBuilder = Widget Function(
 );
 
 /// {@template duck_page}
-/// DuckPage is a [Page] that integrates with DuckRouter, and can provide more
+/// DuckPage allows you to create a custom page, such as a modal, with DuckRouter, and can provide more
 /// control over the transition and behavior of a page.
 ///
 /// For example:
@@ -49,6 +49,8 @@ class DuckPage<T> {
     this.canTapToDismiss = false,
     this.backgroundColor,
     this.semanticLabel,
+    this.restorationId,
+    this.canPop,
   })  : assert(child != null),
         assert(transitionsBuilder != null);
 
@@ -65,6 +67,8 @@ class DuckPage<T> {
     this.canTapToDismiss = false,
     this.backgroundColor,
     this.semanticLabel,
+    this.restorationId,
+    this.canPop,
   })  : child = null,
         transitionsBuilder = null;
 
@@ -122,6 +126,12 @@ class DuckPage<T> {
   /// - [ModalRoute.buildTransitions] for more information on how to use this.
   final TransitionBuilder? transitionsBuilder;
 
+  /// See [RouteSettings.arguments]
+  final String? restorationId;
+
+  /// If set to false, the route will not be able to pop.
+  final bool? canPop;
+
   /// Creates a [Route] for this page.
   ///
   /// You should override this if you are using the [DuckPage.custom]
@@ -130,9 +140,9 @@ class DuckPage<T> {
   /// That will enable you to create a fully custom route, such as a dialog via
   /// DialogRoute, or a CupertinoPageRoute, or any other custom route.
   Route<T>? createRoute(
-    BuildContext context, {
+    BuildContext context,
     RouteSettings? settings,
-  }) {
+  ) {
     if (child == null || transitionsBuilder == null) {
       throw const DuckRouterException(
         'When using a custom DuckPage, you must override createRoute',

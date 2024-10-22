@@ -368,7 +368,7 @@ void main() {
 
         final page = FaultyCustomPage();
         try {
-          page.createRoute(context);
+          page.createRoute(context, null);
           fail('Should have thrown an error');
         } catch (e) {
           expect(e, isInstanceOf<DuckRouterException>());

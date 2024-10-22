@@ -1,7 +1,6 @@
 import 'package:duck_router/duck_router.dart';
+import 'package:duck_router/src/pages/pages.dart';
 import 'package:flutter/material.dart';
-import 'pages/cupertino.dart';
-import 'pages/material.dart';
 
 /// {@template duck_navigator}
 /// A [Navigator] for a [LocationStack].

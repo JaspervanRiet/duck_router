@@ -300,9 +300,9 @@ class CustomPage<T> extends DuckPage<T> {
   }) : super.custom();
 
   @override
-  Route<T> createRoute(BuildContext context) {
+  Route<T> createRoute(BuildContext context, {RouteSettings? settings}) {
     return MaterialPageRoute<T>(
-      settings: this,
+      settings: settings,
       builder: (context) => const CustomScreen(),
     );
   }

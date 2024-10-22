@@ -1,4 +1,5 @@
 import 'package:duck_router/src/exception.dart';
+import 'package:duck_router/src/navigator.dart';
 import 'package:flutter/material.dart';
 
 typedef TransitionBuilder = Widget Function(
@@ -36,10 +37,10 @@ typedef TransitionBuilder = Widget Function(
 /// {@endtemplate}
 ///
 /// {@category Custom pages and transitions}
-class DuckPage<T> extends Page<T> {
+class DuckPage<T> {
   /// {@macro duck_page}
   const DuckPage({
-    required String name,
+    required this.name,
     required this.child,
     required this.transitionsBuilder,
     this.isModal = false,
@@ -49,19 +50,15 @@ class DuckPage<T> extends Page<T> {
     this.canTapToDismiss = false,
     this.backgroundColor,
     this.semanticLabel,
-    super.arguments,
-    super.restorationId,
-    super.key,
   })  : assert(child != null),
-        assert(transitionsBuilder != null),
-        super(name: name);
+        assert(transitionsBuilder != null);
 
   /// Creates a custom [DuckPage].
   ///
   /// When using this constructor, you must override [createRoute] to return a
   /// custom [Route].
   const DuckPage.custom({
-    required String name,
+    required this.name,
     this.isModal = false,
     this.transitionDuration = const Duration(milliseconds: 300),
     this.reverseTransitionDuration = const Duration(milliseconds: 300),
@@ -69,12 +66,10 @@ class DuckPage<T> extends Page<T> {
     this.canTapToDismiss = false,
     this.backgroundColor,
     this.semanticLabel,
-    super.arguments,
-    super.restorationId,
-    super.key,
   })  : child = null,
-        transitionsBuilder = null,
-        super(name: name);
+        transitionsBuilder = null;
+
+  final String name;
 
   /// Content of this page.
   final Widget? child;
@@ -135,21 +130,115 @@ class DuckPage<T> extends Page<T> {
   ///
   /// That will enable you to create a fully custom route, such as a dialog via
   /// DialogRoute, or a CupertinoPageRoute, or any other custom route.
-  @override
-  Route<T> createRoute(BuildContext context) {
+  Route<T>? createRoute(
+    BuildContext context, {
+    RouteSettings? settings,
+  }) {
     if (child == null || transitionsBuilder == null) {
       throw const DuckRouterException(
         'When using a custom DuckPage, you must override createRoute',
       );
     }
-    return _DuckPageRoute<T>(this);
+    return null;
+  }
+}
+
+Page<T> pageBuilderForCustomPage<T>({
+  required DuckPage<T> page,
+  required OnPopInvokedCallback onPopInvoked,
+}) =>
+    _DuckPage<T>(
+      page,
+      onPopInvoked: onPopInvoked,
+    );
+
+class _DuckPage<T> extends Page<T> {
+  _DuckPage(
+    DuckPage<T> page, {
+    required OnPopInvokedCallback onPopInvoked,
+  })  : child = page.child,
+        transitionDuration = page.transitionDuration,
+        reverseTransitionDuration = page.reverseTransitionDuration,
+        maintainState = page.maintainState,
+        isModal = page.isModal,
+        canTapToDismiss = page.canTapToDismiss,
+        backgroundColor = page.backgroundColor,
+        semanticLabel = page.semanticLabel,
+        transitionsBuilder = page.transitionsBuilder,
+        _page = page,
+        super(
+          name: page.name,
+          onPopInvoked: onPopInvoked,
+        );
+
+  final DuckPage<T> _page;
+
+  /// Content of this page.
+  final Widget? child;
+
+  /// Duration of the transition.
+  ///
+  /// Defaults to 300ms.
+  final Duration transitionDuration;
+
+  /// Duration of the reverse transition.
+  ///
+  /// Defaults to 300ms.
+  final Duration reverseTransitionDuration;
+
+  /// If true, route will stay in memory.
+  ///
+  /// See also:
+  /// - [ModalRoute.maintainState]
+  final bool maintainState;
+
+  /// Set to true to make this page route a modal page, which is a fullscreen
+  /// page that covers the entire screen and shows an X instead of a back
+  /// button.
+  final bool isModal;
+
+  /// Set to true to allow dismissing the route by tapping.
+  ///
+  /// Defaults to false.
+  final bool canTapToDismiss;
+
+  /// The color to use as background color for the route.
+  ///
+  /// If this is null, the barrier will be transparent.
+  ///
+  /// See also:
+  /// - [ModalRoute.barrierColor]
+  final Color? backgroundColor;
+
+  /// The semantic label used if this route can be dismissed by tapping.
+  ///
+  /// See also:
+  /// - [ModalRoute.barrierLabel]
+  /// - [canTapToDismiss]
+  final String? semanticLabel;
+
+  /// Use the [transitionsBuilder] to define custom transitions for this page.
+  ///
+  /// This transition will wrap the [child] widget.
+  ///
+  /// See also:
+  /// - [ModalRoute.buildTransitions] for more information on how to use this.
+  final TransitionBuilder? transitionsBuilder;
+
+  @override
+  Route<T> createRoute(BuildContext context) {
+    return _page.createRoute(
+          context,
+          settings: this,
+        ) ??
+        _DuckPageRoute<T>(this);
   }
 }
 
 class _DuckPageRoute<T> extends PageRoute<T> {
-  _DuckPageRoute(DuckPage<T> page) : super(settings: page);
+  _DuckPageRoute(_DuckPage<T> page) : super(settings: page);
 
-  DuckPage<T> get _page => settings as DuckPage<T>;
+  _DuckPage<T> get _page => settings as _DuckPage<T>;
 
   @override
   bool get barrierDismissible => _page.canTapToDismiss;

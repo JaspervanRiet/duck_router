@@ -5,16 +5,18 @@ import 'package:flutter/widgets.dart';
 Page<T> pageBuilderForCustomPage<T>({
   required duck_page.DuckPage<T> page,
   required OnPopInvokedCallback onPopInvoked,
+  required LocalKey key,
+  required String path,
 }) =>
-    _DuckPage<T>(
-      page,
-      onPopInvoked: onPopInvoked,
-    );
+    _DuckPage<T>(page, onPopInvoked: onPopInvoked, key: key, name: path);
 
 class _DuckPage<T> extends Page<T> {
   _DuckPage(
     duck_page.DuckPage<T> page, {
+    required super.key,
+    required super.name,
     super.onPopInvoked,
+    super.canPop,
   })  : child = page.child,
         transitionDuration = page.transitionDuration,
         reverseTransitionDuration = page.reverseTransitionDuration,
@@ -26,8 +28,6 @@ class _DuckPage<T> extends Page<T> {
         transitionsBuilder = page.transitionsBuilder,
         _page = page,
         super(
-          name: page.name,
-          canPop: page.canPop ?? true,
           restorationId: page.restorationId,
         );
 

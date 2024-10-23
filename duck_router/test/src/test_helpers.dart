@@ -287,7 +287,6 @@ class CustomPageTransitionLocation extends Location {
 
   @override
   LocationPageBuilder get pageBuilder => (context) => DuckPage(
-        name: path,
         child: HomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -295,9 +294,7 @@ class CustomPageTransitionLocation extends Location {
 }
 
 class CustomPage<T> extends DuckPage<T> {
-  const CustomPage({
-    super.name = 'custom-page',
-  }) : super.custom();
+  const CustomPage() : super.custom();
 
   @override
   Route<T> createRoute(BuildContext context, RouteSettings? settings) {
@@ -320,9 +317,7 @@ class CustomScreen extends StatelessWidget {
 /// This is a faulty custom implementation because it uses the custom constructor
 /// without overriding `createRoute`.
 class FaultyCustomPage<T> extends DuckPage<T> {
-  const FaultyCustomPage({
-    super.name = 'faulty-custom-page',
-  }) : super.custom();
+  const FaultyCustomPage() : super.custom();
 }
 
 class RefreshableApp extends StatelessWidget {

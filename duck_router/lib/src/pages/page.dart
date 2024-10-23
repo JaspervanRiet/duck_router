@@ -39,7 +39,6 @@ typedef TransitionBuilder = Widget Function(
 class DuckPage<T> {
   /// {@macro duck_page}
   const DuckPage({
-    required this.name,
     required this.child,
     required this.transitionsBuilder,
     this.isModal = false,
@@ -59,7 +58,6 @@ class DuckPage<T> {
   /// When using this constructor, you must override [createRoute] to return a
   /// custom [Route].
   const DuckPage.custom({
-    required this.name,
     this.isModal = false,
     this.transitionDuration = const Duration(milliseconds: 300),
     this.reverseTransitionDuration = const Duration(milliseconds: 300),
@@ -71,8 +69,6 @@ class DuckPage<T> {
     this.canPop,
   })  : child = null,
         transitionsBuilder = null;
-
-  final String name;
 
   /// Content of this page.
   final Widget? child;

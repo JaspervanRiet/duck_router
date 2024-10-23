@@ -79,7 +79,6 @@ typedef LocationBuilder = Widget Function(BuildContext context);
 ///   final WidgetBuilder builder;
 ///
 ///   const DialogPage.custom({
-///     required super.name,
 ///     required this.builder,
 ///     this.anchorPoint,
 ///     this.barrierColor = Colors.black87,
@@ -88,7 +87,7 @@ typedef LocationBuilder = Widget Function(BuildContext context);
 ///     this.useSafeArea = true,
 ///     this.themes,
 ///     super.restorationId,
-///   }) : super.custom(name: name);
+///   }) : super.custom();
 ///
 ///   @override
 ///   Route<T> createRoute(BuildContext context, RouteSettings? settings) => DialogRoute<T>(

@@ -114,6 +114,8 @@ class _DuckNavigatorState extends State<DuckNavigator> {
           pageBuilderForCustomPage(
             page: customPage,
             onPopInvoked: widget.onPopPage,
+            key: ValueKey(l.path),
+            path: l.path,
           ),
         );
       } else {

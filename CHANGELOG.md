@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-10-23
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`duck_router` - `v6.0.0`](#duck_router---v600)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `duck_router` - `v6.0.0`
+
+ - **FIX**: link to custom pages. ([ae2a8715](https://github.com/jaspervanriet/duck_router/commit/ae2a87151276be7f783c3c690c4d0c52e4523e16))
+ - **FIX**: typo. ([5390c2bb](https://github.com/jaspervanriet/duck_router/commit/5390c2bbb9cdb27bcd5bbd1531ed2d874706e797))
+ - **BREAKING** **FIX**: allow awaiting custom page navigation ([#44](https://github.com/jaspervanriet/duck_router/issues/44)). ([96d9c459](https://github.com/jaspervanriet/duck_router/commit/96d9c4591d1660ded3328fbec4372c1b73adfb6e))
+
+
 ## 2024-10-13
 
 ### Changes

@@ -1,24 +1,37 @@
+## 6.0.0
+
+> Note: This release has breaking changes.
+
+**Breaking changes**:
+
+- There has been a breaking change in the syntax for `DuckPage`. There is no functionality difference.
+- `DuckPage` no longer needs a `name` parameter and the interface for `DuckPage.createRoute` has changed, see [#44](https://github.com/JaspervanRiet/duck_router/pull/44) for a migration guide and reasoning.
+
+- **FIX**: link to custom pages. ([ae2a8715](https://github.com/jaspervanriet/duck_router/commit/ae2a87151276be7f783c3c690c4d0c52e4523e16))
+- **FIX**: typo. ([5390c2bb](https://github.com/jaspervanriet/duck_router/commit/5390c2bbb9cdb27bcd5bbd1531ed2d874706e797))
+- **BREAKING** **FIX**: allow awaiting custom page navigation ([#44](https://github.com/JaspervanRiet/duck_router/pull/44)). ([96d9c459](https://github.com/jaspervanriet/duck_router/commit/96d9c4591d1660ded3328fbec4372c1b73adfb6e))
+
 ## 5.4.0
 
- - **FIX**: generate documentation categories correctly. ([174b9b27](https://github.com/jaspervanriet/duck_router/commit/174b9b2701d0e269396d4b83ab4c2526b37902e0))
- - **FEAT**: add library level comment. ([8a6baa0c](https://github.com/jaspervanriet/duck_router/commit/8a6baa0c618dedd94f66624b23ff214e78d32076))
+- **FIX**: generate documentation categories correctly. ([174b9b27](https://github.com/jaspervanriet/duck_router/commit/174b9b2701d0e269396d4b83ab4c2526b37902e0))
+- **FEAT**: add library level comment. ([8a6baa0c](https://github.com/jaspervanriet/duck_router/commit/8a6baa0c618dedd94f66624b23ff214e78d32076))
 
 ## 5.3.0
 
- - **FEAT**: add support for extra documentation. ([0b5befe1](https://github.com/jaspervanriet/duck_router/commit/0b5befe165f47bdf2245e04e98ca86fe63674278))
+- **FEAT**: add support for extra documentation. ([0b5befe1](https://github.com/jaspervanriet/duck_router/commit/0b5befe165f47bdf2245e04e98ca86fe63674278))
 
 ## 5.2.0
 
- - **FEAT**: add support for NavigatorObservers ([#35](https://github.com/jaspervanriet/duck_router/issues/35)). ([616aefbb](https://github.com/jaspervanriet/duck_router/commit/616aefbbef9d40c86d99173399bad64c80661ccd))
+- **FEAT**: add support for NavigatorObservers ([#35](https://github.com/jaspervanriet/duck_router/issues/35)). ([616aefbb](https://github.com/jaspervanriet/duck_router/commit/616aefbbef9d40c86d99173399bad64c80661ccd))
 
 ## 5.1.3
 
- - **FIX**: allow comparison of LocationStack. ([a0f83e2f](https://github.com/jaspervanriet/duck_router/commit/a0f83e2f39eda4597bb658c239037c991c70ea33))
- - **FIX**: router errors when restoring state ([#41](https://github.com/jaspervanriet/duck_router/issues/41)). ([879a8863](https://github.com/jaspervanriet/duck_router/commit/879a8863cdc07b3c1dd934e0e822e291f9198d24))
+- **FIX**: allow comparison of LocationStack. ([a0f83e2f](https://github.com/jaspervanriet/duck_router/commit/a0f83e2f39eda4597bb658c239037c991c70ea33))
+- **FIX**: router errors when restoring state ([#41](https://github.com/jaspervanriet/duck_router/issues/41)). ([879a8863](https://github.com/jaspervanriet/duck_router/commit/879a8863cdc07b3c1dd934e0e822e291f9198d24))
 
 ## 5.1.2
 
- - **DOCS**: improve README to highlight philosophy. ([6b871e00](https://github.com/jaspervanriet/duck_router/commit/6b871e0079eaa60f6baf0585e0800a1963993a31))
+- **DOCS**: improve README to highlight philosophy. ([6b871e00](https://github.com/jaspervanriet/duck_router/commit/6b871e0079eaa60f6baf0585e0800a1963993a31))
 
 ## 5.1.1
 

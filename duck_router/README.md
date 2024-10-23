@@ -82,4 +82,4 @@ DuckRouter.of(context).navigate(to: const Page1Location(money));
 - [Configuration](https://pub.dev/documentation/duck_router/latest/topics/Configuration-topic.html)
 - [Stateful navigation](https://pub.dev/documentation/duck_router/latest/topics/Stateful%20navigation-topic.html)
 - [Deep linking](https://pub.dev/documentation/duck_router/latest/topics/Deep%20linking-topic.html)
-- [Custom pages and transitions](https://pub.dev/documentation/duck_router/latest/topics/Custom%20pages%20and%transitions-topic.html)
+- [Custom pages and transitions](https://pub.dev/documentation/duck_router/latest/topics/Custom%20pages%20and%20transitions-topic.html)

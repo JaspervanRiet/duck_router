@@ -1,80 +1,37 @@
-import 'package:duck_router/src/exception.dart';
-import 'package:flutter/material.dart';
+import 'package:duck_router/src/navigator.dart';
+import 'package:duck_router/src/pages/page.dart' as duck_page;
+import 'package:flutter/widgets.dart';
 
-typedef TransitionBuilder = Widget Function(
-  BuildContext context,
-  Animation<double> animation,
-  Animation<double> secondaryAnimation,
-  Widget child,
-);
+Page<T> pageBuilderForCustomPage<T>({
+  required duck_page.DuckPage<T> page,
+  required OnPopInvokedCallback onPopInvoked,
+  required LocalKey key,
+  required String path,
+}) =>
+    _DuckPage<T>(page, onPopInvoked: onPopInvoked, key: key, name: path);
 
-/// {@template duck_page}
-/// DuckPage is a [Page] that integrates with DuckRouter, and can provide more
-/// control over the transition and behavior of a page.
-///
-/// For example:
-///
-/// ```dart
-/// DuckPage(
-///   child: MyPage(),
-///   transitionsBuilder: (c, a, s, child) {
-///     return FadeTransition(
-///       opacity: a,
-///       child: child,
-///     );
-///   },
-/// )
-/// ```
-///
-/// You can use the [DuckPage.custom] constructor to build a fully custom route,
-/// such as a dialog.
-///
-/// See also:
-/// - [LocationPageBuilder]: a builder that allows returning a custom [Page]
-/// for a location.
-///
-/// {@endtemplate}
-///
-/// {@category Custom pages and transitions}
-class DuckPage<T> extends Page<T> {
-  /// {@macro duck_page}
-  const DuckPage({
-    required String name,
-    required this.child,
-    required this.transitionsBuilder,
-    this.isModal = false,
-    this.transitionDuration = const Duration(milliseconds: 300),
-    this.reverseTransitionDuration = const Duration(milliseconds: 300),
-    this.maintainState = false,
-    this.canTapToDismiss = false,
-    this.backgroundColor,
-    this.semanticLabel,
-    super.arguments,
-    super.restorationId,
-    super.key,
-  })  : assert(child != null),
-        assert(transitionsBuilder != null),
-        super(name: name);
+class _DuckPage<T> extends Page<T> {
+  _DuckPage(
+    duck_page.DuckPage<T> page, {
+    required super.key,
+    required super.name,
+    super.onPopInvoked,
+    super.canPop,
+  })  : child = page.child,
+        transitionDuration = page.transitionDuration,
+        reverseTransitionDuration = page.reverseTransitionDuration,
+        maintainState = page.maintainState,
+        isModal = page.isModal,
+        canTapToDismiss = page.canTapToDismiss,
+        backgroundColor = page.backgroundColor,
+        semanticLabel = page.semanticLabel,
+        transitionsBuilder = page.transitionsBuilder,
+        _page = page,
+        super(
+          restorationId: page.restorationId,
+        );
 
-  /// Creates a custom [DuckPage].
-  ///
-  /// When using this constructor, you must override [createRoute] to return a
-  /// custom [Route].
-  const DuckPage.custom({
-    required String name,
-    this.isModal = false,
-    this.transitionDuration = const Duration(milliseconds: 300),
-    this.reverseTransitionDuration = const Duration(milliseconds: 300),
-    this.maintainState = false,
-    this.canTapToDismiss = false,
-    this.backgroundColor,
-    this.semanticLabel,
-    super.arguments,
-    super.restorationId,
-    super.key,
-  })  : child = null,
-        transitionsBuilder = null,
-        super(name: name);
+  final duck_page.DuckPage<T> _page;
 
   /// Content of this page.
   final Widget? child;
@@ -126,30 +83,18 @@ class DuckPage<T> extends Page<T> {
   ///
   /// See also:
   /// - [ModalRoute.buildTransitions] for more information on how to use this.
-  final TransitionBuilder? transitionsBuilder;
+  final duck_page.TransitionBuilder? transitionsBuilder;
 
-  /// Creates a [Route] for this page.
-  ///
-  /// You should override this if you are using the [DuckPage.custom]
-  /// constructor.
-  ///
-  /// That will enable you to create a fully custom route, such as a dialog via
-  /// DialogRoute, or a CupertinoPageRoute, or any other custom route.
   @override
   Route<T> createRoute(BuildContext context) {
-    if (child == null || transitionsBuilder == null) {
-      throw const DuckRouterException(
-        'When using a custom DuckPage, you must override createRoute',
-      );
-    }
-    return _DuckPageRoute<T>(this);
+    return _page.createRoute(context, this) ?? _DuckPageRoute<T>(this);
   }
 }
 
 class _DuckPageRoute<T> extends PageRoute<T> {
-  _DuckPageRoute(DuckPage<T> page) : super(settings: page);
+  _DuckPageRoute(_DuckPage<T> page) : super(settings: page);
 
-  DuckPage<T> get _page => settings as DuckPage<T>;
+  _DuckPage<T> get _page => settings as _DuckPage<T>;
 
   @override
   bool get barrierDismissible => _page.canTapToDismiss;

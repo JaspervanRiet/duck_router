@@ -11,7 +11,6 @@ class CustomPageTransitionLocation extends Location {
 
   @override
   LocationPageBuilder get pageBuilder => (context) => DuckPage(
-        name: path,
         child: HomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(opacity: animation, child: child),
@@ -26,19 +25,15 @@ Let's take the case of a dialog (but you can implement any type of Route in this
 ```dart
 class DialogPage<T> extends DuckPage<T> {
   const DialogPage({
-    required String name,
     required this.builder,
-    super.key,
-    super.arguments,
-    super.restorationId,
-  }) : super.custom(name: name);
+  }) : super.custom();
 
   final WidgetBuilder builder;
 
    @override
-   Route<T> createRoute(BuildContext context) => DialogRoute<T>(
+   Route<T> createRoute(context, settings) => DialogRoute<T>(
          context: context,
-         settings: this,
+         settings: settings,
          builder: (context) => Dialog(
            child: builder(context),
          ),

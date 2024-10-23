@@ -1,10 +1,8 @@
 import 'package:collection/collection.dart';
-import 'package:duck_router/src/duck_router.dart';
+import 'package:duck_router/duck_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/exception.dart';
-import 'package:duck_router/src/location.dart';
 
 import 'navigator.dart';
 

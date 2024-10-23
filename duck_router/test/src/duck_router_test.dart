@@ -301,6 +301,28 @@ void main() {
         expect(find.byType(CustomScreen), findsOneWidget);
       });
 
+      testWidgets('can await navigate to custom page', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: HomeLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.uri.path, '/home');
+
+        int result = 0;
+        router.navigate<int>(to: CustomPageLocation()).then((value) {
+          return result = value!;
+        });
+        await tester.pumpAndSettle();
+        expect(find.byType(CustomScreen), findsOneWidget);
+
+        router.pop(1);
+        await tester.pumpAndSettle();
+
+        expect(result, equals(1));
+      });
+
       testWidgets('can specify custom page transition', (tester) async {
         final config = DuckRouterConfiguration(
           initialLocation: CustomPageTransitionLocation(),
@@ -346,7 +368,7 @@ void main() {
 
         final page = FaultyCustomPage();
         try {
-          page.createRoute(context);
+          page.createRoute(context, null);
           fail('Should have thrown an error');
         } catch (e) {
           expect(e, isInstanceOf<DuckRouterException>());

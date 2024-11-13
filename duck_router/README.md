@@ -25,16 +25,22 @@ Create locations (route classes) for each destination in your app. Add as many p
 
 ```dart
 class HomeLocation extends Location {
-  const HomeLocation() : super(path: 'home');
+  const HomeLocation();
+
+  @override
+  String get path => '/home';
 
   @override
   LocationBuilder get builder => (context) => const HomeScreen();
 }
 
 class Page1Location extends Location {
-  const Page1Location(this.money) : super(path: 'page1');
+  const Page1Location(this.money);
 
   final Money money; // Or any other type
+
+  @override
+  String get path => '/page1';
 
   @override
   LocationBuilder get builder => (context) => const Page1Screen(money);

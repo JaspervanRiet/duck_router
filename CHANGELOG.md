@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-12-01
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v6.0.1`](#duck_router---v601)
+
+---
+
+#### `duck_router` - `v6.0.1`
+
+ - **FIX**: updates `README.md` to use `path` override ([#46](https://github.com/jaspervanriet/duck_router/issues/46)). ([04128719](https://github.com/jaspervanriet/duck_router/commit/041287198cebe3a242fc1633f9d14b63cafaf9cf))
+
+
 ## 2024-10-23
 
 ### Changes

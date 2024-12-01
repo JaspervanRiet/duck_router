@@ -1,3 +1,7 @@
+## 6.0.1
+
+ - **FIX**: updates `README.md` to use `path` override ([#46](https://github.com/jaspervanriet/duck_router/issues/46)). ([04128719](https://github.com/jaspervanriet/duck_router/commit/041287198cebe3a242fc1633f9d14b63cafaf9cf))
+
 ## 6.0.0
 
 > Note: This release has breaking changes.

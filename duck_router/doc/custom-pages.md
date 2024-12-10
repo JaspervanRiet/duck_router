@@ -52,7 +52,6 @@ class DialogPageLocation extends Location {
 
   @override
   LocationPageBuilder get pageBuilder=> (context) => DialogPage(
-    name: path,
     builder: ...
   );
 }

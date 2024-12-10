@@ -128,6 +128,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
   }) {
     final currentStack = routerDelegate.currentConfiguration;
     final currentRootLocation = currentStack.locations.last;
+    Location? replaced;
 
     if (clearStack ?? false) {
       if (currentRootLocation is StatefulLocation && !root) {
@@ -154,13 +155,14 @@ class DuckRouter implements RouterConfig<LocationStack> {
       return currentRootLocation.state.navigate(to, replace: replace);
     }
 
-    if ((replace ?? false)) {
-      currentStack.locations.removeLast();
+    if (replace ?? false) {
+      replaced = currentStack.locations.removeLast();
     }
 
     return routeInformationProvider.navigate<T>(
       to,
       baseLocationStack: currentStack,
+      replaced: replaced,
     );
   }
 

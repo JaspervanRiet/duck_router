@@ -67,10 +67,27 @@ class DuckRouterConfiguration {
 
   /// Adds a [Location] to the current dynamic directory of locations, so
   /// that we can find it back later, e.g. upon state restoration.
-  void addLocation<T>(Location location, {Completer<T>? completer}) {
+  void addLocation<T>(
+    Location location, {
+    Completer<T>? completer,
+
+    /// If this location replaced another, the location needs to be
+    /// provided here so that we can redirect the completer.
+    Location? replaced,
+  }) {
     if (_routeMapping.containsKey(location.path)) {
       return;
     }
+
+    if (replaced != null) {
+      _routeMapping[location.path] = LocationMatch(
+        location: location,
+        completer: _routeMapping[replaced.path]?.completer,
+      );
+      _routeMapping.remove(replaced.path);
+      return;
+    }
+
     _routeMapping[location.path] = LocationMatch(
       location: location,
       completer: completer,

@@ -255,6 +255,39 @@ void main() {
       expect(result, equals(1));
     });
 
+    /// Screen A --- navigates to and waits for result of ---> Screen B
+    /// Screen B --- navigates to with replace:true ---> Screen C
+    /// Screen C --- pops to ---> Screen A
+    testWidgets('can await navigate that gets replaced', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      int result = 0;
+      router
+          .navigate<int>(
+        to: Page1Location(),
+      )
+          .then((value) {
+        return result = value!;
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      router.navigate(to: Page2Location(), replace: true);
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      router.pop(1);
+      await tester.pumpAndSettle();
+
+      expect(result, equals(1));
+    });
+
     testWidgets('can navigate to and from locations with arguments',
         (tester) async {
       final config = DuckRouterConfiguration(

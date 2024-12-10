@@ -138,6 +138,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
         );
       }
 
+      currentStack.locations.forEach(configuration.removeLocation);
       currentStack.locations.clear();
       return routeInformationProvider.navigate<T>(
         to,
@@ -155,6 +156,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
     }
 
     if ((replace ?? false)) {
+      configuration.removeLocation(currentStack.locations.last);
       currentStack.locations.removeLast();
     }
 

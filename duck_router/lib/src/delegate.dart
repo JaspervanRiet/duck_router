@@ -100,7 +100,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (currentLocation is StatefulLocation) {
       /// Pop inside the stateful child location as long as that's possible.
       /// Else we will pop the whole route.
-      if (currentLocation.state.currentRouterDelegate.currentConfiguration
+      if (currentLocation.state.currentRouterDelegate.currentConfiguration!
               .locations.length >
           1) {
         return currentLocation.state.pop(result);
@@ -123,7 +123,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (currentLocation is StatefulLocation) {
       /// Pop inside the stateful child location as long as that's possible.
       /// Else we will pop the whole route.
-      if (currentLocation.state.currentRouterDelegate.currentConfiguration
+      if (currentLocation.state.currentRouterDelegate.currentConfiguration!
               .locations.length >
           1) {
         final result = currentLocation.state.popUntil(predicate);
@@ -156,7 +156,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (currentLocation is StatefulLocation) {
       /// Pop inside the stateful child location as long as that's possible.
       /// Else we will pop the whole route.
-      if (currentLocation.state.currentRouterDelegate.currentConfiguration
+      if (currentLocation.state.currentRouterDelegate.currentConfiguration!
               .locations.length >
           1) {
         return currentLocation.state.reset();

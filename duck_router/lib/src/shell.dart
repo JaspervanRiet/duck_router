@@ -140,15 +140,19 @@ class DuckShellState extends State<DuckShell> {
     bool? replace,
     bool? clearStack,
   }) async {
+    final currentStack = _currentRouterDelegate.currentConfiguration;
+
     if (clearStack ?? false) {
-      currentRouterDelegate.currentConfiguration.locations.clear();
+      currentStack.locations.forEach(widget.configuration.removeLocation);
+      currentStack.locations.clear();
     } else if (replace ?? false) {
-      currentRouterDelegate.currentConfiguration.locations.removeLast();
+      widget.configuration.removeLocation(currentStack.locations.last);
+      currentStack.locations.removeLast();
     }
 
     return _informationProviders[_currentIndex].navigate<T>(
       to,
-      baseLocationStack: currentRouterDelegate.currentConfiguration,
+      baseLocationStack: currentStack,
     );
   }
 
@@ -194,7 +198,11 @@ class DuckShellState extends State<DuckShell> {
     });
   }
 
-  RouterDelegate get currentRouterDelegate => _routerDelegates[_currentIndex];
+  RouterDelegate<LocationStack> get currentRouterDelegate =>
+      _routerDelegates[_currentIndex];
+
+  _NestedRouterDelegate get _currentRouterDelegate =>
+      currentRouterDelegate as _NestedRouterDelegate;
 }
 
 typedef _NewPathCallback = void Function(LocationStack configuration);

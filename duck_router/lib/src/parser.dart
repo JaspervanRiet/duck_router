@@ -52,6 +52,7 @@ class DuckInformationParser extends RouteInformationParser<LocationStack> {
       state.location,
       currentStack,
       completer: state.completer,
+      replaced: state.replaced,
     );
   }
 
@@ -70,6 +71,7 @@ class DuckInformationParser extends RouteInformationParser<LocationStack> {
     Location to,
     List<Location> currentStack, {
     Completer? completer,
+    Location? replaced,
   }) {
     for (final i in _configuration.interceptors ?? <LocationInterceptor>[]) {
       final result = i.execute(
@@ -77,7 +79,11 @@ class DuckInformationParser extends RouteInformationParser<LocationStack> {
         currentStack.lastOrNull,
       );
       if (result != null) {
-        _configuration.addLocation(result, completer: completer);
+        _configuration.addLocation(
+          result,
+          completer: completer,
+          replaced: replaced,
+        );
         _configuration.onNavigate?.call(result);
         if (i.pushesOnTop) {
           return LocationStack(locations: [...currentStack, to, result]);
@@ -89,7 +95,7 @@ class DuckInformationParser extends RouteInformationParser<LocationStack> {
       }
     }
 
-    _configuration.addLocation(to, completer: completer);
+    _configuration.addLocation(to, completer: completer, replaced: replaced);
     _configuration.onNavigate?.call(to);
     return LocationStack(locations: [...currentStack, to]);
   }

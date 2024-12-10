@@ -41,6 +41,7 @@ class DuckInformationProvider extends RouteInformationProvider
   Future<T?> navigate<T>(
     Location location, {
     required LocationStack baseLocationStack,
+    Location? replaced,
   }) async {
     // This [Completer] is used for later on, when the page is popped,
     // returning a result.
@@ -61,6 +62,7 @@ class DuckInformationProvider extends RouteInformationProvider
         location: location,
         baseLocationStack: baseLocationStack,
         completer: completer,
+        replaced: replaced,
       ),
     );
     notifyListeners();

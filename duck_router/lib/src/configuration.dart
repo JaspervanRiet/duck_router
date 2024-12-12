@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
@@ -101,7 +102,17 @@ class DuckRouterConfiguration {
 
   /// Removes a location from the current dynamic directory of locations.
   void removeLocation<T>(Location location, [FutureOr<T>? value]) {
-    _routeMapping[location.path]?.completer?.complete(value);
+    final completer = _routeMapping[location.path]?.completer;
+    try {
+      completer?.complete(value);
+    } on TypeError catch (_) {
+      completer?.completeError(const DuckRouterException(
+          'Trying to return result with pop that does not match the '
+          'awaited type. \n'
+          'Check the type of the result you are returning. This can also happen '
+          'if you have replaced a location with another location, and the new '
+          'location returns a different type.'));
+    }
     _routeMapping.remove(location.path);
   }
 }

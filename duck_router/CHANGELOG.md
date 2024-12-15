@@ -1,3 +1,8 @@
+## 6.1.0
+
+ - **FIX**: outdated documentation ([#49](https://github.com/jaspervanriet/duck_router/issues/49)). ([3179792c](https://github.com/jaspervanriet/duck_router/commit/3179792c2a9a1d6e0bad132afddf185984936cdb))
+ - **FEAT**: allow awaiting a page that gets replaced ([#50](https://github.com/jaspervanriet/duck_router/issues/50)). ([256e2820](https://github.com/jaspervanriet/duck_router/commit/256e28203009b4efc1cba568e3b141d04c26085f))
+
 ## 6.0.1
 
  - **FIX**: updates `README.md` to use `path` override ([#46](https://github.com/jaspervanriet/duck_router/issues/46)). ([04128719](https://github.com/jaspervanriet/duck_router/commit/041287198cebe3a242fc1633f9d14b63cafaf9cf))

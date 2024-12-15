@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2024-12-15
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v6.1.0`](#duck_router---v610)
+
+---
+
+#### `duck_router` - `v6.1.0`
+
+ - **FIX**: outdated documentation ([#49](https://github.com/jaspervanriet/duck_router/issues/49)). ([3179792c](https://github.com/jaspervanriet/duck_router/commit/3179792c2a9a1d6e0bad132afddf185984936cdb))
+ - **FEAT**: allow awaiting a page that gets replaced ([#50](https://github.com/jaspervanriet/duck_router/issues/50)). ([256e2820](https://github.com/jaspervanriet/duck_router/commit/256e28203009b4efc1cba568e3b141d04c26085f))
+
+
 ## 2024-12-01
 
 ### Changes

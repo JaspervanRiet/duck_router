@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:duck_router/src/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
@@ -67,10 +68,27 @@ class DuckRouterConfiguration {
 
   /// Adds a [Location] to the current dynamic directory of locations, so
   /// that we can find it back later, e.g. upon state restoration.
-  void addLocation<T>(Location location, {Completer<T>? completer}) {
+  void addLocation<T>(
+    Location location, {
+    Completer<T>? completer,
+
+    /// If this location replaced another, the location needs to be
+    /// provided here so that we can redirect the completer.
+    Location? replaced,
+  }) {
     if (_routeMapping.containsKey(location.path)) {
       return;
     }
+
+    if (replaced != null) {
+      _routeMapping[location.path] = LocationMatch(
+        location: location,
+        completer: _routeMapping[replaced.path]?.completer,
+      );
+      _routeMapping.remove(replaced.path);
+      return;
+    }
+
     _routeMapping[location.path] = LocationMatch(
       location: location,
       completer: completer,
@@ -84,7 +102,17 @@ class DuckRouterConfiguration {
 
   /// Removes a location from the current dynamic directory of locations.
   void removeLocation<T>(Location location, [FutureOr<T>? value]) {
-    _routeMapping[location.path]?.completer?.complete(value);
+    final completer = _routeMapping[location.path]?.completer;
+    try {
+      completer?.complete(value);
+    } on TypeError catch (_) {
+      completer?.completeError(const DuckRouterException(
+          'Trying to return result with pop that does not match the '
+          'awaited type. \n'
+          'Check the type of the result you are returning. This can also happen '
+          'if you have replaced a location with another location, and the new '
+          'location returns a different type.'));
+    }
     _routeMapping.remove(location.path);
   }
 }

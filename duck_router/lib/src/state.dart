@@ -11,6 +11,7 @@ class LocationState<T> {
     required this.location,
     required this.baseLocationStack,
     this.completer,
+    this.replaced,
   });
 
   /// The current location.
@@ -22,4 +23,7 @@ class LocationState<T> {
   /// The completer for the current location. When the location is popped,
   /// this completer should be completed.
   final Completer<T?>? completer;
+
+  /// The [Location] that this location is replacing.
+  final Location? replaced;
 }

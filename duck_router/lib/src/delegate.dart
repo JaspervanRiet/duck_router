@@ -94,10 +94,10 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
   }
 
   /// Pops the top location on the routing stack
-  void pop<T extends Object?>([T? result]) {
+  void pop<T extends Object?>([T? result, bool root = false]) {
     final currentLocation = currentConfiguration.locations.last;
 
-    if (currentLocation is StatefulLocation) {
+    if (currentLocation is StatefulLocation && !root) {
       /// Pop inside the stateful child location as long as that's possible.
       /// Else we will pop the whole route.
       if (currentLocation.state.currentRouterDelegate.currentConfiguration

@@ -150,7 +150,11 @@ class DuckRouter implements RouterConfig<LocationStack> {
         );
       }
 
+      for (final l in currentStack.locations) {
+        configuration.clearLocation(l);
+      }
       currentStack.locations.clear();
+
       return routeInformationProvider.navigate<T>(
         to,
         baseLocationStack: currentStack,

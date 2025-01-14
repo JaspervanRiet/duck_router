@@ -353,6 +353,39 @@ void main() {
       expect(result, equals(1));
     });
 
+    testWidgets('can await navigate that gets cleared via clearStack',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      int result = 0;
+      Exception? error;
+      router
+          .navigate<int>(
+        to: Page1Location(),
+      )
+          .then((value) {
+        return result = 1;
+      }).catchError((e) {
+        error = e;
+        return 2;
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      router.navigate(to: Page2Location(), clearStack: true);
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      expect(result, equals(0));
+      expect(error, TypeMatcher<DuckRouterException>());
+    });
+
     testWidgets('can navigate to and from locations with arguments',
         (tester) async {
       final config = DuckRouterConfiguration(
@@ -945,6 +978,39 @@ void main() {
       // Now we should start seeing an error because we're trying to pop
       // the root.
       expect(router.pop, throwsException);
+    });
+
+    testWidgets('can await navigate that gets cleared via clearStack',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/root');
+
+      int result = 0;
+      Exception? error;
+      router
+          .navigate<int>(
+        to: Page1Location(),
+      )
+          .then((value) {
+        return result = 1;
+      }).catchError((e) {
+        error = e;
+        return 2;
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      router.navigate(to: Page2Location(), clearStack: true);
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      expect(result, equals(0));
+      expect(error, TypeMatcher<DuckRouterException>());
     });
 
     group('Custom', () {

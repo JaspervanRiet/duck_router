@@ -185,6 +185,10 @@ class DuckRouter implements RouterConfig<LocationStack> {
     routerDelegate.pop<T>(result);
   }
 
+  void popRoot<T extends Object?>([T? result]) {
+    routerDelegate.pop<T>(result, true);
+  }
+
   void popUntil(LocationPredicate predicate) {
     routerDelegate.popUntil(predicate);
   }

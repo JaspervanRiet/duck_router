@@ -652,6 +652,36 @@ void main() {
       expect(router.pop, throwsException);
     });
 
+    testWidgets('can pop the root', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      var locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      router.navigate(to: RootLocation());
+      await tester.pumpAndSettle();
+
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/root');
+
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      final statefulLocation = locations2.locations.last as StatefulLocation;
+      final child =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(child.uri.path, '/child1/page1');
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      router.popRoot();
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+    });
+
     testWidgets('can clear stack in nested locations', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: RootLocation(),

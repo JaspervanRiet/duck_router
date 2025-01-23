@@ -1,3 +1,7 @@
+## 6.2.0
+
+ - **FEAT**: allow popping root via popRoot ([#53](https://github.com/jaspervanriet/duck_router/issues/53)). ([4d15f301](https://github.com/jaspervanriet/duck_router/commit/4d15f30115ac684dd7a45ccb56368e0602ded909))
+
 ## 6.1.0
 
  - **FIX**: outdated documentation ([#49](https://github.com/jaspervanriet/duck_router/issues/49)). ([3179792c](https://github.com/jaspervanriet/duck_router/commit/3179792c2a9a1d6e0bad132afddf185984936cdb))

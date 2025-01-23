@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-01-23
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v6.2.0`](#duck_router---v620)
+
+---
+
+#### `duck_router` - `v6.2.0`
+
+ - **FEAT**: allow popping root via popRoot ([#53](https://github.com/jaspervanriet/duck_router/issues/53)). ([4d15f301](https://github.com/jaspervanriet/duck_router/commit/4d15f30115ac684dd7a45ccb56368e0602ded909))
+
+
 ## 2024-12-15
 
 ### Changes

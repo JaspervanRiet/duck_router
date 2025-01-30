@@ -1,3 +1,7 @@
+## 6.2.1
+
+ - **FIX**: throw exception to listeners if clearStack is used ([#54](https://github.com/jaspervanriet/duck_router/issues/54)). ([a8dd9090](https://github.com/jaspervanriet/duck_router/commit/a8dd9090398d7439ee06381ea4a4c2f165837ea8))
+
 ## 6.2.0
 
  - **FEAT**: allow popping root via popRoot ([#53](https://github.com/jaspervanriet/duck_router/issues/53)). ([4d15f301](https://github.com/jaspervanriet/duck_router/commit/4d15f30115ac684dd7a45ccb56368e0602ded909))

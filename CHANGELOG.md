@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-01-30
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v6.2.1`](#duck_router---v621)
+
+---
+
+#### `duck_router` - `v6.2.1`
+
+ - **FIX**: throw exception to listeners if clearStack is used ([#54](https://github.com/jaspervanriet/duck_router/issues/54)). ([a8dd9090](https://github.com/jaspervanriet/duck_router/commit/a8dd9090398d7439ee06381ea4a4c2f165837ea8))
+
+
 ## 2025-01-23
 
 ### Changes

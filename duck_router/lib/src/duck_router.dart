@@ -131,6 +131,9 @@ class DuckRouter implements RouterConfig<LocationStack> {
   ///
   /// This result will still be passed to Location A. Be mindful that this
   /// result should be of the same type as the result of Location B.
+  ///
+  /// If the awaited location is cleared using [clearStack], an error will be
+  /// thrown.
   Future<T?> navigate<T extends Object?>({
     required Location to,
     bool root = false,

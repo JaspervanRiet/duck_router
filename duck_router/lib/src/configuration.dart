@@ -95,6 +95,23 @@ class DuckRouterConfiguration {
     );
   }
 
+  /// Clears a location from the current dynamic directory of locations, so
+  /// that we close any potential awaiters.
+  void clearLocation(Location location) {
+    final completer = _routeMapping[location.path]?.completer;
+
+    // If future does not have a listener, it will be considered an uncaught
+    // error. Thus, we need to handle the error and ignore it. User
+    // will still receive the error via the completer if they are listening.
+    completer?.future.catchError((e, s) {
+      // Do nothing, user has received error.
+    });
+    completer?.completeError(const DuckRouterException(
+      'Could not return a result from this location, it was cleared from the stack.',
+    ));
+    _routeMapping.remove(location.path);
+  }
+
   /// Returns the [LocationMatch] for the given path.
   LocationMatch? findLocation(String path) {
     return _routeMapping[path];

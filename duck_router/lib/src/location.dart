@@ -168,6 +168,31 @@ abstract class StatefulLocation extends Location {
   );
 
   /// The builder for the wrapping page of this location.
+  ///
+  /// Consider the [childBuilder] to be the builder for WHAT
+  /// each child should look like. For example, if wanting to create
+  /// a bottom navigation bar setup, the [childBuilder] would look like:
+  ///
+  /// @override
+  /// StatefulLocationBuilder get childBuilder => (c, shell) => Scaffold(
+  ///     body: shell,
+  ///     bottomNavigationBar: BottomNavigationBar(
+  ///       items: const [
+  ///         BottomNavigationBarItem(
+  ///           icon: Icon(Icons.home),
+  ///           label: 'Page 1',
+  ///         ),
+  ///         BottomNavigationBarItem(
+  ///           icon: Icon(Icons.settings),
+  ///           label: 'Page 2',
+  ///         ),
+  ///       ],
+  ///       onTap: (value) => shell.switchChild(value),
+  ///     ),
+  ///   );
+  ///
+  /// See also:
+  /// - [pageBuilder], the HOW the page appears, e.g. inside a modal.
   StatefulLocationBuilder get childBuilder;
 
   /// The state of the [DuckShell] for this location.

@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-02-20
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v6.2.2`](#duck_router---v622)
+
+---
+
+#### `duck_router` - `v6.2.2`
+
+ - **DOCS**: describe more details on nested navigation ([#55](https://github.com/jaspervanriet/duck_router/issues/55)). ([de267992](https://github.com/jaspervanriet/duck_router/commit/de2679925be0335fcae327e2e9a41972e85de493))
+
+
 ## 2025-01-30
 
 ### Changes

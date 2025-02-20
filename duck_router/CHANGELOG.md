@@ -1,3 +1,7 @@
+## 6.2.2
+
+ - **DOCS**: describe more details on nested navigation ([#55](https://github.com/jaspervanriet/duck_router/issues/55)). ([de267992](https://github.com/jaspervanriet/duck_router/commit/de2679925be0335fcae327e2e9a41972e85de493))
+
 ## 6.2.1
 
  - **FIX**: throw exception to listeners if clearStack is used ([#54](https://github.com/jaspervanriet/duck_router/issues/54)). ([a8dd9090](https://github.com/jaspervanriet/duck_router/commit/a8dd9090398d7439ee06381ea4a4c2f165837ea8))

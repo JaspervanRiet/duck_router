@@ -314,6 +314,17 @@ class CustomScreen extends StatelessWidget {
   Widget build(BuildContext context) => const Placeholder();
 }
 
+class TestFlowLocation extends FlowLocation {
+  @override
+  String get path => 'flow';
+
+  @override
+  Location get start => Page1Location();
+
+  @override
+  LocationPageBuilder? get containerBuilder => null;
+}
+
 /// This is a faulty custom implementation because it uses the custom constructor
 /// without overriding `createRoute`.
 class FaultyCustomPage<T> extends DuckPage<T> {

@@ -73,7 +73,7 @@ DuckRouter.of(context).navigate(to: const DetailLocation(), root: true);
 
 ## Bottom sheet
 
-This example shows how one might implement a bottom sheet containing a login/registration flow. It uses the [modal_bottom_sheet](https://pub.dev/packages/modal_bottom_sheet) package to accomplish that. This example combines usage of a [StatefulLocation] with custom pages, see also [Custom Pages](https://pub.dev/documentation/duck_router/latest/topics/Custom-pages-topic.html).
+This example shows how one might implement a bottom sheet containing a login/registration flow. It uses the [modal_bottom_sheet](https://pub.dev/packages/modal_bottom_sheet) package to accomplish that. To achieve cases like these, [DuckRouter] provides the convenience class [FlowLocation], a wrapper around [StatefulLocation]. This example combines usage of a [FlowLocation] with custom pages, see also [Custom Pages](https://pub.dev/documentation/duck_router/latest/topics/Custom-pages-topic.html).
 
 ```dart
 class SheetPage<T> extends DuckPage<T> {
@@ -158,22 +158,17 @@ Your actual flow would then look like this:
 
 ```dart
 
-class LoginFlowLocation extends StatefulLocation {
-  @override
-  LocationPageBuilder? get pageBuilder => (context) => SheetPage(
-        builder: builder,
-      );
-
-  @override
-  StatefulLocationBuilder get childBuilder => (context, shell) => shell;
-
-  @override
-  List<Location> get children => [
-        EmailLocation(),
-      ];
-
+class LoginFlowLocation extends FlowLocation {
   @override
   String get path => 'login-flow';
+
+  @override
+  Location get start => EmailLocation();
+
+  @override
+  LocationPageBuilder? get containerBuilder => (context) => SheetPage(
+        builder: builder,
+      );
 }
 ```
 

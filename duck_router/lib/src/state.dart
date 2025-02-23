@@ -5,7 +5,7 @@ import 'package:duck_router/src/location.dart';
 /// {@template location_state}
 /// A state object that maintains state for the current location in the router.
 /// {@endtemplate}
-class LocationState<T> {
+final class LocationState<T> {
   /// {@macro location_state}
   LocationState({
     required this.location,

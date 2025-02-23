@@ -118,6 +118,16 @@ class DuckPage<T> {
   ///
   /// This transition will wrap the [child] widget.
   ///
+  /// Example:
+  /// ```dart
+  /// @override
+  /// LocationPageBuilder get pageBuilder => (context) => DuckPage(
+  ///      child: HomeScreen(),
+  ///      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+  ///          FadeTransition(opacity: animation, child: child),
+  ///    );
+  /// ```
+  ///
   /// See also:
   /// - [ModalRoute.buildTransitions] for more information on how to use this.
   final TransitionBuilder? transitionsBuilder;

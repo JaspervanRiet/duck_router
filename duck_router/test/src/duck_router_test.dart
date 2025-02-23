@@ -1080,6 +1080,18 @@ void main() {
             flowLocation.state.currentRouterDelegate.currentConfiguration;
         expect(innerLocations.uri.path, '/page1/page2');
       });
+
+      testWidgets('can render with container', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: HomeLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        await tester.pumpAndSettle();
+        router.navigate(to: TestFlowLocationWithContainer());
+        await tester.pumpAndSettle();
+        expect(find.byType(Page1Screen), findsOneWidget);
+      });
     });
   });
 

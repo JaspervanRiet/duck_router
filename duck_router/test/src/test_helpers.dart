@@ -322,7 +322,23 @@ class TestFlowLocation extends FlowLocation {
   Location get start => Page1Location();
 
   @override
-  LocationPageBuilder? get containerBuilder => null;
+  StatefulLocationPageBuilder? get containerBuilder => null;
+}
+
+class TestFlowLocationWithContainer extends FlowLocation {
+  @override
+  String get path => 'flow';
+
+  @override
+  Location get start => Page1Location();
+
+  @override
+  StatefulLocationPageBuilder? get containerBuilder => (c, b) {
+        return DuckPage(
+            child: Page1Screen(),
+            transitionsBuilder: (c, a1, a2, child) =>
+                FadeTransition(opacity: a1, child: child));
+      };
 }
 
 /// This is a faulty custom implementation because it uses the custom constructor

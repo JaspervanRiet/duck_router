@@ -108,10 +108,18 @@ typedef LocationBuilder = Widget Function(BuildContext context);
 /// ```
 ///
 /// See also:
-/// * [LocationBuilder] for a simpler builder that returns a [Widget].
-/// * [DuckPage] for the page you must override.
+/// - [LocationBuilder] for a simpler builder that returns a [Widget].
+/// - [DuckPage] for the page you must override.
+/// - [StatefulLocation] for a location that maintains its own state, such as
+/// for a bottom navigation bar.
+/// - [FlowLocation] for a simplified version of [StatefulLocation] for flows.
 typedef LocationPageBuilder = DuckPage<dynamic> Function(
   BuildContext context,
+);
+
+typedef StatefulLocationPageBuilder = DuckPage<dynamic> Function(
+  BuildContext context,
+  LocationBuilder builder,
 );
 
 /// {@template location}
@@ -120,6 +128,7 @@ typedef LocationPageBuilder = DuckPage<dynamic> Function(
 /// See also:
 /// - [StatefulLocation] for a location that maintains its own state, such as
 /// for a bottom navigation bar.
+/// - [FlowLocation] for a simplified version of [StatefulLocation] for flows.
 /// - [LocationPageBuilder] for a builder that allows you to build a custom
 /// [Page], e.g. for custom transitions.
 /// {@endtemplate}
@@ -209,14 +218,25 @@ abstract class StatefulLocation extends Location {
 
   @nonVirtual
   @override
-  LocationPageBuilder? get pageBuilder => containerBuilder;
+  LocationPageBuilder? get pageBuilder =>
+      containerBuilder != null ? (c) => containerBuilder!(c, builder) : null;
 
   /// The builder for the container around all children. For example,
   /// if you want to wrap each child in a modal via a [DuckPage].
   ///
+  /// Example:
+  /// ```dart
+  /// @override
+  /// StatefulLocationPageBuilder get containerBuilder => (context, builder) =>
+  ///   ModalPage( // this is a [DuckPage]
+  ///     builder: builder
+  ///   ),
+  /// );
+  /// ```
+  ///
   /// See also:
   /// - [childBuilder], the builder for the pages themselves.
-  LocationPageBuilder? get containerBuilder => null;
+  StatefulLocationPageBuilder? get containerBuilder => null;
 
   /// The state of the [DuckShell] for this location.
   @nonVirtual
@@ -252,7 +272,7 @@ abstract class StatefulLocation extends Location {
 abstract class FlowLocation extends StatefulLocation {
   @factory
   @override
-  LocationPageBuilder? get containerBuilder;
+  StatefulLocationPageBuilder? get containerBuilder;
 
   @override
   StatefulLocationBuilder get childBuilder => (_, shell) => shell;

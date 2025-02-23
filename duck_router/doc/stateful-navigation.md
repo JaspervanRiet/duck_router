@@ -4,7 +4,9 @@ Sometimes you want to have a separate navigation stack. For example:
 - A bottom sheet, or any other flow-like navigation, that allows users to go forward and backward.
 - Cases where you want to have a wrapper element around a set of routes
 
-See below for examples of such flows.
+`StatefulLocation` is an interface that tries to simplify the creation of these patterns, while still being flexible. For simple flows, we provide a convenience class `FlowLocation`.
+
+Below we provide examples of how to implement common use cases.
 
 ## Bottom bar
 
@@ -166,7 +168,7 @@ class LoginFlowLocation extends FlowLocation {
   Location get start => EmailLocation();
 
   @override
-  LocationPageBuilder? get containerBuilder => (context) => SheetPage(
+  StatefulLocationPageBuilder? get containerBuilder => (context) => SheetPage(
         builder: builder,
       );
 }

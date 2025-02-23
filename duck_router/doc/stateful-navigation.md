@@ -183,5 +183,5 @@ DuckRouter.of(context).navigate(to: const PasswordLocation());
 // Or go all the way back to the root:
 DuckRouter.of(context).root();
 // Or close the sheet entirely:
-DuckRouter.of(context).popRoot();
+DuckRouter.of(context).exit();
 ```

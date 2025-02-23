@@ -121,7 +121,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
   /// If [clearStack] is set, the current stack will be cleared before navigating.
   /// [clearStack] will take precedence over [replace].
   ///
-  /// You can await [navigate] to pass back results from thhe new location.
+  /// You can await [navigate] to pass back results from the new location.
   /// This can create complicated scenarios when used in combination with
   /// [replace]. The behavior defined as follows:
   ///

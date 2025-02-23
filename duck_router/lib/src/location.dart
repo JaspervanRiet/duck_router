@@ -242,6 +242,7 @@ abstract class StatefulLocation extends Location {
   @nonVirtual
   DuckShellState get state => _key.currentState!;
 
+  @visibleForOverriding
   @nonVirtual
   @override
   LocationBuilder get builder => (context) {

@@ -11,6 +11,27 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 Packages with breaking changes:
 
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.0.1`](#duck_router---v701)
+
+---
+
+#### `duck_router` - `v7.0.1`
+
+ - **FIX**: typo. ([269eed92](https://github.com/jaspervanriet/duck_router/commit/269eed921b33a272c97bcc1457721dd6835ad1ef))
+
+
+## 2025-02-23
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
  - [`duck_router` - `v7.0.0`](#duck_router---v700)
 
 Packages with other changes:

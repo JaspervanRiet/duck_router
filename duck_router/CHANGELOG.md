@@ -1,3 +1,7 @@
+## 7.0.1
+
+ - **FIX**: typo. ([269eed92](https://github.com/jaspervanriet/duck_router/commit/269eed921b33a272c97bcc1457721dd6835ad1ef))
+
 ## 7.0.0
 
 > Note: This release has breaking changes.

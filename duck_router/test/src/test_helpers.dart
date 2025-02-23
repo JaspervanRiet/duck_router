@@ -335,7 +335,7 @@ class TestFlowLocationWithContainer extends FlowLocation {
   @override
   StatefulLocationPageBuilder? get containerBuilder => (c, b) {
         return DuckPage(
-            child: Page1Screen(),
+            child: b(c),
             transitionsBuilder: (c, a1, a2, child) =>
                 FadeTransition(opacity: a1, child: child));
       };

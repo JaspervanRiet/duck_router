@@ -216,11 +216,6 @@ abstract class StatefulLocation extends Location {
   /// modal.
   StatefulLocationBuilder get childBuilder;
 
-  @nonVirtual
-  @override
-  LocationPageBuilder? get pageBuilder =>
-      containerBuilder != null ? (c) => containerBuilder!(c, builder) : null;
-
   /// The builder for the container around all children. For example,
   /// if you want to wrap each child in a modal via a [DuckPage].
   ///
@@ -241,6 +236,11 @@ abstract class StatefulLocation extends Location {
   /// The state of the [DuckShell] for this location.
   @nonVirtual
   DuckShellState get state => _key.currentState!;
+
+  @nonVirtual
+  @override
+  LocationPageBuilder? get pageBuilder =>
+      containerBuilder != null ? (c) => containerBuilder!(c, builder) : null;
 
   @visibleForOverriding
   @nonVirtual

@@ -198,7 +198,8 @@ class DuckRouter implements RouterConfig<LocationStack> {
     routerDelegate.pop<T>(result, true);
   }
 
-  /// Close the current stack of routes.
+  /// Close the current stack of routes if in a [StatefulLocation] or
+  /// [FlowLocation], otherwise, pop.
   ///
   /// This is equivalent to calling [pop] until the root location is reached,
   /// in other words, it will immediately pop the root location.

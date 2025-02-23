@@ -45,6 +45,25 @@ Future<DuckRouter> createRouterOnIos(
   return router;
 }
 
+Future<DuckRouter> createRouterOnWidgetsApp(
+  DuckRouterConfiguration routerConfiguration,
+  WidgetTester tester, {
+  String? restorationScopeId,
+}) async {
+  final router = DuckRouter.withConfig(
+    configuration: routerConfiguration,
+  );
+  await tester.pumpWidget(
+    WidgetsApp.router(
+      color: Colors.blue,
+      restorationScopeId:
+          restorationScopeId != null ? '$restorationScopeId-root' : null,
+      routerConfig: router,
+    ),
+  );
+  return router;
+}
+
 class DummyScreen extends StatelessWidget {
   const DummyScreen({
     this.queryParametersAll = const <String, dynamic>{},

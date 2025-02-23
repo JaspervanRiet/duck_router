@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:duck_router/src/exception.dart';
+import 'package:meta/meta.dart';
 
 /// {@template location_stack}
 /// A stack of locations.
@@ -107,10 +108,18 @@ typedef LocationBuilder = Widget Function(BuildContext context);
 /// ```
 ///
 /// See also:
-/// * [LocationBuilder] for a simpler builder that returns a [Widget].
-/// * [DuckPage] for the page you must override.
+/// - [LocationBuilder] for a simpler builder that returns a [Widget].
+/// - [DuckPage] for the page you must override.
+/// - [StatefulLocation] for a location that maintains its own state, such as
+/// for a bottom navigation bar.
+/// - [FlowLocation] for a simplified version of [StatefulLocation] for flows.
 typedef LocationPageBuilder = DuckPage<dynamic> Function(
   BuildContext context,
+);
+
+typedef StatefulLocationPageBuilder = DuckPage<dynamic> Function(
+  BuildContext context,
+  LocationBuilder builder,
 );
 
 /// {@template location}
@@ -119,6 +128,7 @@ typedef LocationPageBuilder = DuckPage<dynamic> Function(
 /// See also:
 /// - [StatefulLocation] for a location that maintains its own state, such as
 /// for a bottom navigation bar.
+/// - [FlowLocation] for a simplified version of [StatefulLocation] for flows.
 /// - [LocationPageBuilder] for a builder that allows you to build a custom
 /// [Page], e.g. for custom transitions.
 /// {@endtemplate}
@@ -131,7 +141,9 @@ abstract class Location extends Equatable {
   /// Must be unique
   String get path;
 
-  /// The URI representation of this location.
+  /// The URI representation of this location. Automatically corresponds to
+  /// the [path].
+  @nonVirtual
   Uri get uri {
     return Uri.parse(path);
   }
@@ -153,7 +165,14 @@ typedef StatefulLocationBuilder = Widget Function(
 );
 
 /// {@template stateful_location}
-/// A location that maintains its own state with the use of a [Navigator].
+/// A location that maintains its own state with the use of a [Navigator]. A
+/// [StatefulLocation] hosts its [children] in individually separate navigation
+/// stacks. Specify how the children are built using [childBuilder]. Customize
+/// the wrapping container all children live in via [containerBuilder].
+///
+/// See also:
+/// - [FlowLocation], a convenience class for creating a [StatefulLocation] in
+/// - [DuckShell], which manages state for a [StatefulLocation].
 /// {@endtemplate}
 abstract class StatefulLocation extends Location {
   /// {@macro stateful_location}
@@ -163,6 +182,7 @@ abstract class StatefulLocation extends Location {
   /// [Navigator] in the [DuckShell].
   List<Location> get children;
 
+  @nonVirtual
   final GlobalKey<DuckShellState> _key = GlobalKey<DuckShellState>(
     debugLabel: 'StatefulLocationShell',
   );
@@ -192,12 +212,38 @@ abstract class StatefulLocation extends Location {
   ///   );
   ///
   /// See also:
-  /// - [pageBuilder], the HOW the page appears, e.g. inside a modal.
+  /// - [containerBuilder], the HOW the set of pages appears, e.g. inside a
+  /// modal.
   StatefulLocationBuilder get childBuilder;
 
+  /// The builder for the container around all children. For example,
+  /// if you want to wrap each child in a modal via a [DuckPage].
+  ///
+  /// Example:
+  /// ```dart
+  /// @override
+  /// StatefulLocationPageBuilder get containerBuilder => (context, builder) =>
+  ///   ModalPage( // this is a [DuckPage]
+  ///     builder: builder
+  ///   ),
+  /// );
+  /// ```
+  ///
+  /// See also:
+  /// - [childBuilder], the builder for the pages themselves.
+  StatefulLocationPageBuilder? get containerBuilder => null;
+
   /// The state of the [DuckShell] for this location.
+  @nonVirtual
   DuckShellState get state => _key.currentState!;
 
+  @nonVirtual
+  @override
+  LocationPageBuilder? get pageBuilder =>
+      containerBuilder != null ? (c) => containerBuilder!(c, builder) : null;
+
+  @visibleForOverriding
+  @nonVirtual
   @override
   LocationBuilder get builder => (context) {
         return childBuilder(
@@ -212,6 +258,31 @@ abstract class StatefulLocation extends Location {
 
   @override
   List<Object?> get props => [children, path];
+}
+
+/// A [FlowLocation] allows creation of a flow of locations, wrapped inside
+/// an optional container.
+///
+/// This is mostly a class of convenience, a wrapper around [StatefulLocation],
+/// optimised for common use cases.
+///
+/// See also:
+/// - DuckRouter.popRoot, which allows you to pop the entire flow.
+/// - DuckRouter.root, which allows you to go back to the start of the flow.
+///
+abstract class FlowLocation extends StatefulLocation {
+  @factory
+  @override
+  StatefulLocationPageBuilder? get containerBuilder;
+
+  @override
+  StatefulLocationBuilder get childBuilder => (_, shell) => shell;
+
+  @nonVirtual
+  @override
+  List<Location> get children => [start];
+
+  Location get start;
 }
 
 /// {@template location_list_codec}

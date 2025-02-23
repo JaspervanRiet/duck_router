@@ -314,6 +314,33 @@ class CustomScreen extends StatelessWidget {
   Widget build(BuildContext context) => const Placeholder();
 }
 
+class TestFlowLocation extends FlowLocation {
+  @override
+  String get path => 'flow';
+
+  @override
+  Location get start => Page1Location();
+
+  @override
+  StatefulLocationPageBuilder? get containerBuilder => null;
+}
+
+class TestFlowLocationWithContainer extends FlowLocation {
+  @override
+  String get path => 'flow';
+
+  @override
+  Location get start => Page1Location();
+
+  @override
+  StatefulLocationPageBuilder? get containerBuilder => (c, b) {
+        return DuckPage(
+            child: b(c),
+            transitionsBuilder: (c, a1, a2, child) =>
+                FadeTransition(opacity: a1, child: child));
+      };
+}
+
 /// This is a faulty custom implementation because it uses the custom constructor
 /// without overriding `createRoute`.
 class FaultyCustomPage<T> extends DuckPage<T> {

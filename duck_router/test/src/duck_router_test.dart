@@ -1044,6 +1044,55 @@ void main() {
         expect(find.byType(Page1Screen), findsOneWidget);
       });
     });
+
+    group('FlowLocation', () {
+      testWidgets('can navigate to page', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: HomeLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        await tester.pumpAndSettle();
+        router.navigate(to: TestFlowLocation());
+        await tester.pumpAndSettle();
+        expect(find.byType(Page1Screen), findsOneWidget);
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.uri.path, '/home/flow');
+      });
+
+      testWidgets('can navigate to another page from start', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: HomeLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        await tester.pumpAndSettle();
+        router.navigate(to: TestFlowLocation());
+        await tester.pumpAndSettle();
+        expect(find.byType(Page1Screen), findsOneWidget);
+        router.navigate(to: Page2Location());
+        await tester.pumpAndSettle();
+        expect(find.byType(Page2Screen), findsOneWidget);
+        final locations = router.routerDelegate.currentConfiguration;
+        expect(locations.uri.path, '/home/flow');
+        final flowLocation = locations.locations.last as FlowLocation;
+        final innerLocations =
+            flowLocation.state.currentRouterDelegate.currentConfiguration;
+        expect(innerLocations.uri.path, '/page1/page2');
+      });
+
+      testWidgets('can render with container', (tester) async {
+        final config = DuckRouterConfiguration(
+          initialLocation: HomeLocation(),
+        );
+
+        final router = await createRouter(config, tester);
+        await tester.pumpAndSettle();
+        router.navigate(to: TestFlowLocationWithContainer());
+        await tester.pumpAndSettle();
+        expect(find.byType(Page1Screen), findsOneWidget);
+      });
+    });
   });
 
   group('Deeplinking', () {

@@ -168,7 +168,7 @@ typedef StatefulLocationBuilder = Widget Function(
 /// A location that maintains its own state with the use of a [Navigator]. A
 /// [StatefulLocation] hosts its [children] in individually separate navigation
 /// stacks. Specify how the children are built using [childBuilder]. Customize
-/// each child stack with [containerBuilder].
+/// the wrapping container all children live in via [containerBuilder].
 ///
 /// See also:
 /// - [FlowLocation], a convenience class for creating a [StatefulLocation] in

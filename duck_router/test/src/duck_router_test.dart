@@ -299,14 +299,15 @@ void main() {
       final locations = router.routerDelegate.currentConfiguration;
       expect(locations.uri.path, '/home');
 
-      int _ = 0;
+      // ignore: unused_local_variable
+      int a = 0;
       Exception? exception;
       router
           .navigate<int>(
         to: Page1Location(),
       )
           .then((value) {
-        return _ = value!;
+        return a = value!;
       }).catchError((e) {
         exception = e;
         return 0;

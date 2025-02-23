@@ -271,7 +271,6 @@ abstract class StatefulLocation extends Location {
 /// - [DuckRouter.root], which allows you to go back to the start of the flow.
 ///
 abstract class FlowLocation extends StatefulLocation {
-  @factory
   @override
   StatefulLocationPageBuilder? get containerBuilder;
 

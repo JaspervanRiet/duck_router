@@ -121,9 +121,6 @@ class DuckShellState extends State<DuckShell> {
 
   @override
   void dispose() {
-    for (final key in _navigatorKeys) {
-      key.currentState?.dispose();
-    }
     super.dispose();
   }
 

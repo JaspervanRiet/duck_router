@@ -10,7 +10,7 @@ import 'package:meta/meta.dart';
 /// {@template location_stack}
 /// A stack of locations.
 /// {@endtemplate}
-class LocationStack extends Equatable {
+final class LocationStack extends Equatable {
   /// {@macro location_stack}
   const LocationStack({
     required this.locations,
@@ -288,7 +288,8 @@ abstract class FlowLocation extends StatefulLocation {
 /// {@template location_list_codec}
 /// A [Codec] for encoding and decoding a [LocationStack].
 /// {@endtemplate}
-class LocationStackCodec extends Codec<LocationStack, Map<Object?, Object?>> {
+final class LocationStackCodec
+    extends Codec<LocationStack, Map<Object?, Object?>> {
   /// {@macro location_list_codec}
   LocationStackCodec({
     required DuckRouterConfiguration configuration,

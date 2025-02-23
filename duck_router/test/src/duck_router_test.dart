@@ -710,7 +710,7 @@ void main() {
       expect(child.uri.path, '/child1/page1');
       expect(find.byType(Page1Screen), findsOneWidget);
 
-      router.popRoot();
+      router.exit();
       locations = router.routerDelegate.currentConfiguration;
       expect(locations.uri.path, '/home');
     });

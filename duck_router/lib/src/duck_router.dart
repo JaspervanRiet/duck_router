@@ -193,7 +193,19 @@ class DuckRouter implements RouterConfig<LocationStack> {
   }
 
   /// Pop the root route off the current screen.
+  @Deprecated('Use exit instead')
   void popRoot<T extends Object?>([T? result]) {
+    routerDelegate.pop<T>(result, true);
+  }
+
+  /// Close the current stack of routes.
+  ///
+  /// This is equivalent to calling [pop] until the root location is reached,
+  /// in other words, it will immediately pop the root location.
+  ///
+  /// See also:
+  /// - [StatefulLocation] for creating an inner navigation stack.
+  void exit<T extends Object?>([T? result]) {
     routerDelegate.pop<T>(result, true);
   }
 

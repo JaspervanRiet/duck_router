@@ -419,6 +419,18 @@ void main() {
       expect(find.byType(HomeScreen), findsOneWidget);
     });
 
+    testWidgets('works with WidgetsApp', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouterOnWidgetsApp(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 1);
+      expect(locations.uri.path, '/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+    });
+
     group('Custom page', () {
       testWidgets('can specify custom page', (tester) async {
         final config = DuckRouterConfiguration(

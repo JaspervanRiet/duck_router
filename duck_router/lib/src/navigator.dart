@@ -142,6 +142,8 @@ class _DuckNavigatorState extends State<DuckNavigator> {
         _pageBuilderForAppType = pageBuilderForMaterialApp;
       } else if (elem != null && isCupertinoApp(elem)) {
         _pageBuilderForAppType = pageBuilderForCupertinoApp;
+      } else if (elem != null && isWidgetsApp(elem)) {
+        _pageBuilderForAppType = pageBuilderForWidgetsApp;
       }
     }
 

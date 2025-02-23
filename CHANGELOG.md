@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-02-23
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - [`duck_router` - `v7.0.0`](#duck_router---v700)
+
+Packages with other changes:
+
+ - There are no other changes in this release.
+
+---
+
+#### `duck_router` - `v7.0.0`
+
+ - **REFACTOR**: deprecate `popRoot` for `exit` ([#60](https://github.com/jaspervanriet/duck_router/issues/60)). ([4153041e](https://github.com/jaspervanriet/duck_router/commit/4153041e4d917d921741a8c4bcae631ae16f8ba1))
+ - **FEAT**: support WidgetsApp ([#61](https://github.com/jaspervanriet/duck_router/issues/61)). ([b92335a5](https://github.com/jaspervanriet/duck_router/commit/b92335a5d45955f073b66a2085626eea35c214c8))
+ - **BREAKING** **REFACTOR**: tighten up classes ([#59](https://github.com/jaspervanriet/duck_router/issues/59)). ([b2642a04](https://github.com/jaspervanriet/duck_router/commit/b2642a04ec6f7ba995ae7b183fe5a5137afb7514))
+ - **BREAKING** **FEAT**: flow locations ([#57](https://github.com/jaspervanriet/duck_router/issues/57)). ([15c2396e](https://github.com/jaspervanriet/duck_router/commit/15c2396e1dfc012ad17af655c77146d79d728723))
+
+
 ## 2025-02-20
 
 ### Changes

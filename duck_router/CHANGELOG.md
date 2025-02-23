@@ -1,3 +1,12 @@
+## 7.0.0
+
+> Note: This release has breaking changes.
+
+ - **REFACTOR**: deprecate `popRoot` for `exit` ([#60](https://github.com/jaspervanriet/duck_router/issues/60)). ([4153041e](https://github.com/jaspervanriet/duck_router/commit/4153041e4d917d921741a8c4bcae631ae16f8ba1))
+ - **FEAT**: support WidgetsApp ([#61](https://github.com/jaspervanriet/duck_router/issues/61)). ([b92335a5](https://github.com/jaspervanriet/duck_router/commit/b92335a5d45955f073b66a2085626eea35c214c8))
+ - **REFACTOR**: tighten up internal classes ([#59](https://github.com/jaspervanriet/duck_router/issues/59)). ([b2642a04](https://github.com/jaspervanriet/duck_router/commit/b2642a04ec6f7ba995ae7b183fe5a5137afb7514))
+ - **BREAKING** **FEAT**: flow locations. Easily create modal flows (and other use cases) using `FlowLocation`, a convenience class on top of `StatefulLocation`. This PR also aims to make the interface for `StatefulLocation` more intutive. This can require changes for certain advanced usages of `StatefulLocation`, please see the migration guide in the PR. ([#57](https://github.com/jaspervanriet/duck_router/issues/57)). ([15c2396e](https://github.com/jaspervanriet/duck_router/commit/15c2396e1dfc012ad17af655c77146d79d728723))
+
 ## 6.2.2
 
  - **DOCS**: describe more details on nested navigation ([#55](https://github.com/jaspervanriet/duck_router/issues/55)). ([de267992](https://github.com/jaspervanriet/duck_router/commit/de2679925be0335fcae327e2e9a41972e85de493))

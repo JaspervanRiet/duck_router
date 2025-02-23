@@ -168,7 +168,7 @@ class LoginFlowLocation extends FlowLocation {
   Location get start => EmailLocation();
 
   @override
-  StatefulLocationPageBuilder? get containerBuilder => (context) => SheetPage(
+  StatefulLocationPageBuilder? get containerBuilder => (context, builder) => SheetPage(
         builder: builder,
       );
 }

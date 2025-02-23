@@ -267,8 +267,8 @@ abstract class StatefulLocation extends Location {
 /// optimised for common use cases.
 ///
 /// See also:
-/// - DuckRouter.exit, which allows you to pop the entire flow.
-/// - DuckRouter.root, which allows you to go back to the start of the flow.
+/// - [DuckRouter.exit], which allows you to pop the entire flow.
+/// - [DuckRouter.root], which allows you to go back to the start of the flow.
 ///
 abstract class FlowLocation extends StatefulLocation {
   @factory

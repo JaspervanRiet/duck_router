@@ -4,7 +4,6 @@ import 'package:duck_router/duck_router.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:duck_router/src/exception.dart';
 import 'package:meta/meta.dart';
 
 /// {@template location_stack}

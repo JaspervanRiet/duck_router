@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:duck_router/duck_router.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:duck_router/src/exception.dart';
 
 import 'navigator.dart';
 

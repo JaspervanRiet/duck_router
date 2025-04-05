@@ -1,3 +1,7 @@
+## 7.1.0
+
+ - **FEAT**: expose DuckRouterException ([#62](https://github.com/jaspervanriet/duck_router/issues/62)). ([44530747](https://github.com/jaspervanriet/duck_router/commit/4453074700f69ff51b963d6c82b7542a4cbfa044))
+
 ## 7.0.1
 
  - **FIX**: typo. ([269eed92](https://github.com/jaspervanriet/duck_router/commit/269eed921b33a272c97bcc1457721dd6835ad1ef))

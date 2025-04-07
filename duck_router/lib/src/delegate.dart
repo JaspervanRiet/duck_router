@@ -111,7 +111,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       state = navigatorKey.currentState;
     }
     if (currentConfiguration.locations.length == 1) {
-      throw const DuckRouterException('There is nothing to pop!');
+      throw const EmptyStackException();
     }
     state?.pop(result);
   }
@@ -135,8 +135,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     final destination = currentConfiguration.locations
         .firstWhereOrNull((location) => predicate(location));
     if (destination == null) {
-      throw const DuckRouterException(
-          'Provided Location predicate does not match any Locations in current stack!');
+      throw const NoLocationMatchFoundException();
     }
 
     NavigatorState? state;

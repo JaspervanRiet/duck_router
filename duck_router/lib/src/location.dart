@@ -360,12 +360,12 @@ class _LocationStackDecoder
   Location _convertLocation(Map<Object?, Object?> input) {
     final path = input[LocationStackCodec._keyLocationPath] as String?;
     if (path == null) {
-      throw const DuckRouterException('Invalid path');
+      throw const LocationStackDecoderException('Invalid path');
     }
 
     final route = _configuration.findLocation(path);
     if (route == null) {
-      throw const DuckRouterException('Route not found');
+      throw const LocationStackDecoderException('Route not found');
     }
 
     return route.location;

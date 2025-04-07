@@ -98,7 +98,8 @@ void main() {
       );
 
       final encoded = codec.encode(list);
-      expect(() => codec.decode(encoded), throwsA(isA<DuckRouterException>()));
+      expect(() => codec.decode(encoded),
+          throwsA(isA<LocationStackDecoderException>()));
     });
   });
 }

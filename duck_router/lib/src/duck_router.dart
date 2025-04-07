@@ -166,7 +166,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
 
     if (!(replace ?? false) &&
         currentStack.locations.any((loc) => loc.path == to.path)) {
-      throw DuckRouterException('Cannot push duplicate route: ${to.path}');
+      throw DuplicateRouteException(to);
     }
 
     if (currentRootLocation is StatefulLocation && !root) {

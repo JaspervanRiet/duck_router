@@ -321,7 +321,7 @@ void main() {
 
       router.pop('different type than int');
       await tester.pumpAndSettle();
-      expect(exception, isA<DuckRouterException>());
+      expect(exception, isA<InvalidPopTypeException>());
     });
 
     testWidgets('Can return null when a page replacing a page is being awaited',
@@ -384,7 +384,7 @@ void main() {
       expect(find.byType(Page2Screen), findsOneWidget);
 
       expect(result, equals(0));
-      expect(error, TypeMatcher<DuckRouterException>());
+      expect(error, TypeMatcher<ClearStackException>());
     });
 
     testWidgets('can navigate to and from locations with arguments',
@@ -515,11 +515,7 @@ void main() {
           page.createRoute(context, null);
           fail('Should have thrown an error');
         } catch (e) {
-          expect(e, isInstanceOf<DuckRouterException>());
-          expect(
-              e.toString(),
-              contains(
-                  'When using a custom DuckPage, you must override createRoute'));
+          expect(e, isInstanceOf<MissingCreateRouteException>());
         }
       });
     });
@@ -619,11 +615,7 @@ void main() {
       // Second navigation to the same path
       expect(
         () => router.navigate(to: HomeLocation()),
-        throwsA(isA<DuckRouterException>().having(
-          (e) => e.toString(),
-          'message',
-          contains('Cannot push duplicate route: home'),
-        )),
+        throwsA(isA<DuplicateRouteException>()),
       );
 
       await tester.pumpAndSettle();
@@ -1023,7 +1015,7 @@ void main() {
       expect(find.byType(Page2Screen), findsOneWidget);
 
       expect(result, equals(0));
-      expect(error, TypeMatcher<DuckRouterException>());
+      expect(error, TypeMatcher<ClearStackException>());
     });
 
     group('Custom', () {

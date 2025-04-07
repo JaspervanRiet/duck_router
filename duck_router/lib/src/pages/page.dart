@@ -150,9 +150,7 @@ class DuckPage<T> {
     RouteSettings? settings,
   ) {
     if (child == null || transitionsBuilder == null) {
-      throw const DuckRouterException(
-        'When using a custom DuckPage, you must override createRoute',
-      );
+      throw const MissingCreateRouteException();
     }
     return null;
   }

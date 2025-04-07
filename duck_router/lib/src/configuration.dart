@@ -106,9 +106,7 @@ class DuckRouterConfiguration {
     completer?.future.catchError((e, s) {
       // Do nothing, user has received error.
     });
-    completer?.completeError(const DuckRouterException(
-      'Could not return a result from this location, it was cleared from the stack.',
-    ));
+    completer?.completeError(ClearStackException(location));
     _routeMapping.remove(location.path);
   }
 
@@ -123,12 +121,7 @@ class DuckRouterConfiguration {
     try {
       completer?.complete(value);
     } on TypeError catch (_) {
-      completer?.completeError(const DuckRouterException(
-          'Trying to return result with pop that does not match the '
-          'awaited type. \n'
-          'Check the type of the result you are returning. This can also happen '
-          'if you have replaced a location with another location, and the new '
-          'location returns a different type.'));
+      completer?.completeError(InvalidPopTypeException(location, value));
     }
     _routeMapping.remove(location.path);
   }

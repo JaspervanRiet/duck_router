@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-04-15
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.1.1`](#duck_router---v711)
+
+---
+
+#### `duck_router` - `v7.1.1`
+
+ - **REFACTOR**: reorganise thrown exceptions ([#63](https://github.com/jaspervanriet/duck_router/issues/63)). ([85f0ac78](https://github.com/jaspervanriet/duck_router/commit/85f0ac78c2cca58240f9fe77220fa90eb24b8a91))
+
+
 ## 2025-04-05
 
 ### Changes

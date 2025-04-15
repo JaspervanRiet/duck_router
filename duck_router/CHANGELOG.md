@@ -1,3 +1,7 @@
+## 7.1.1
+
+ - **REFACTOR**: reorganise thrown exceptions ([#63](https://github.com/jaspervanriet/duck_router/issues/63)). ([85f0ac78](https://github.com/jaspervanriet/duck_router/commit/85f0ac78c2cca58240f9fe77220fa90eb24b8a91))
+
 ## 7.1.0
 
  - **FEAT**: expose DuckRouterException ([#62](https://github.com/jaspervanriet/duck_router/issues/62)). ([44530747](https://github.com/jaspervanriet/duck_router/commit/4453074700f69ff51b963d6c82b7542a4cbfa044))

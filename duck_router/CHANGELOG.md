@@ -1,3 +1,7 @@
+## 7.1.2
+
+ - **FIX**: complete completer when replacing in shell ([#64](https://github.com/jaspervanriet/duck_router/issues/64)). ([1dcd1710](https://github.com/jaspervanriet/duck_router/commit/1dcd1710a813f2685175e4fe1d01e06d8c244b90))
+
 ## 7.1.1
 
  - **REFACTOR**: reorganise thrown exceptions ([#63](https://github.com/jaspervanriet/duck_router/issues/63)). ([85f0ac78](https://github.com/jaspervanriet/duck_router/commit/85f0ac78c2cca58240f9fe77220fa90eb24b8a91))

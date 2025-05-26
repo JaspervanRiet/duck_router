@@ -118,6 +118,20 @@ class Page2Location extends Location {
   LocationBuilder get builder => (context) => const Page2Screen();
 }
 
+class Page3Screen extends DummyScreen {
+  const Page3Screen({super.key});
+}
+
+class Page3Location extends Location {
+  const Page3Location();
+
+  @override
+  String get path => 'page3';
+
+  @override
+  LocationBuilder get builder => (context) => const Page3Screen();
+}
+
 class LoginScreen extends DummyScreen {
   const LoginScreen({super.key});
 }

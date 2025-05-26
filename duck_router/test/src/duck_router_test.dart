@@ -1018,6 +1018,47 @@ void main() {
       expect(error, TypeMatcher<ClearStackException>());
     });
 
+    /// Screen A --- opens nested screen B
+    /// Screen B --- navigates to and waits for result of ---> Screen C
+    /// Screen C --- navigates to with replace:true ---> Screen D
+    /// Screen D --- pops to ---> Screen B
+    testWidgets('can await navigate that gets replaced', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      router.navigate(to: RootLocation());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      int result = 0;
+      router
+          .navigate<int>(
+        to: Page2Location(),
+      )
+          .then((value) {
+        return result = value!;
+      });
+      await tester.pumpAndSettle();
+
+      router.navigate(to: Page3Location(), replace: true);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page3Screen), findsOneWidget);
+
+      router.pop(1);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      expect(result, equals(1));
+    });
+
     group('Custom', () {
       testWidgets('can host', (tester) async {
         final config = DuckRouterConfiguration(

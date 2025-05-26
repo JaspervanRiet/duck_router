@@ -137,18 +137,22 @@ class DuckShellState extends State<DuckShell> {
     bool? replace,
     bool? clearStack,
   }) async {
+    Location? replaced;
+
     if (clearStack ?? false) {
       for (final l in currentRouterDelegate.currentConfiguration.locations) {
         widget.configuration.clearLocation(l);
       }
       currentRouterDelegate.currentConfiguration.locations.clear();
     } else if (replace ?? false) {
-      currentRouterDelegate.currentConfiguration.locations.removeLast();
+      replaced =
+          currentRouterDelegate.currentConfiguration.locations.removeLast();
     }
 
     return _informationProviders[_currentIndex].navigate<T>(
       to,
       baseLocationStack: currentRouterDelegate.currentConfiguration,
+      replaced: replaced,
     );
   }
 

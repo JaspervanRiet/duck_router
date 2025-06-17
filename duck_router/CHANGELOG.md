@@ -1,3 +1,7 @@
+## 7.1.3
+
+ - **FIX**: exit not clearing awaiting futures ([#65](https://github.com/jaspervanriet/duck_router/issues/65)). ([15950bc0](https://github.com/jaspervanriet/duck_router/commit/15950bc09d8b006046a8e98df6f3ecad3aac45ba))
+
 ## 7.1.2
 
  - **FIX**: complete completer when replacing in shell ([#64](https://github.com/jaspervanriet/duck_router/issues/64)). ([1dcd1710](https://github.com/jaspervanriet/duck_router/commit/1dcd1710a813f2685175e4fe1d01e06d8c244b90))

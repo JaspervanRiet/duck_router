@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-06-17
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.1.3`](#duck_router---v713)
+
+---
+
+#### `duck_router` - `v7.1.3`
+
+ - **FIX**: exit not clearing awaiting futures ([#65](https://github.com/jaspervanriet/duck_router/issues/65)). ([15950bc0](https://github.com/jaspervanriet/duck_router/commit/15950bc09d8b006046a8e98df6f3ecad3aac45ba))
+
+
 ## 2025-05-26
 
 ### Changes

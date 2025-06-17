@@ -106,6 +106,17 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       }
     }
 
+    if (currentLocation is StatefulLocation && root) {
+      // When popping a stateful location, we can consider the nested stack to be cleared from the stack.
+      // So we will follow the same cleanup logic as if navigating to a new page, with the clearStack flag set to true.
+      for (final l in currentLocation
+          .state.currentRouterDelegate.currentConfiguration.locations) {
+        _configuration.clearLocation(l);
+      }
+      currentLocation.state.currentRouterDelegate.currentConfiguration.locations
+          .clear();
+    }
+
     NavigatorState? state;
     if (navigatorKey.currentState?.canPop() ?? false) {
       state = navigatorKey.currentState;

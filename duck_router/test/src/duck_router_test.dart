@@ -1020,6 +1020,46 @@ void main() {
 
     /// Screen A --- opens nested screen B
     /// Screen B --- navigates to and waits for result of ---> Screen C
+    /// Screen C --- exits ---> Screen A
+    /// Screen B's navigate should throw a ClearStackException
+    testWidgets('can await navigate that gets cleared via exit',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      router.navigate(to: NestedChildRootLocation());
+      await tester.pumpAndSettle();
+
+      int result = 0;
+      Exception? error;
+      router
+          .navigate<int>(
+        to: Page2Location(),
+      )
+          .then((value) {
+        return result = 1;
+      }).catchError((e) {
+        error = e;
+        return 2;
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      router.exit();
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeScreen), findsOneWidget);
+
+      expect(result, equals(0));
+      expect(error, TypeMatcher<ClearStackException>());
+    });
+
+    /// Screen A --- opens nested screen B
+    /// Screen B --- navigates to and waits for result of ---> Screen C
     /// Screen C --- navigates to with replace:true ---> Screen D
     /// Screen D --- pops to ---> Screen B
     testWidgets('can await navigate that gets replaced', (tester) async {

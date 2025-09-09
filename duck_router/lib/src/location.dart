@@ -153,6 +153,19 @@ abstract class Location extends Equatable {
   /// Advanced builder for cases wherein you want to provide a custom [Page].
   LocationPageBuilder? get pageBuilder => null;
 
+  /// Override to provide custom serialization for state restoration.
+  /// Return a Map containing all necessary data to recreate this location.
+  /// The 'path' key will be automatically included.
+  Map<String, dynamic>? toJson() => null;
+
+  /// Override to provide custom deserialization for state restoration.
+  /// Called when restoring a location from serialized data.
+  /// The default implementation throws an exception - locations that need
+  /// restoration support must implement this method.
+  Location? fromJson(Map<String, dynamic> json, String path) {
+    return null;
+  }
+
   @override
   List<Object?> get props => [path];
 }
@@ -314,13 +327,26 @@ class _LocationStackEncoder
   final DuckRouterConfiguration _configuration;
 
   @override
+
+  /// Convert a [LocationStack] to a map so that we can later
+  /// restore this stack. Each location sets its `_type` to
+  /// be able to find back the factory for it later, see also
+  /// [DuckRouterConfiguration._locationFactories]
   Map<Object?, Object?> convert(LocationStack input) {
     final encodedInput = <Map<Object?, Object?>>[];
 
     for (final l in input.locations) {
-      encodedInput.add({
+      final locationMap = <Object?, Object?>{
         LocationStackCodec._keyLocationPath: l.path,
-      });
+      };
+
+      final customJson = l.toJson();
+      if (customJson != null) {
+        locationMap.addAll(customJson);
+        locationMap['_type'] = l.runtimeType.toString();
+      }
+
+      encodedInput.add(locationMap);
     }
 
     return <Object?, Object?>{
@@ -363,9 +389,30 @@ class _LocationStackDecoder
       throw const LocationStackDecoderException('Invalid path');
     }
 
+    final typeName = input['_type'] as String?;
+    if (typeName != null) {
+      final factory = _configuration.getLocationFactory(typeName);
+      if (factory != null) {
+        // Convert Map<Object?, Object?> to Map<String, dynamic> for the factory
+        final jsonData = <String, dynamic>{};
+        input.forEach((key, value) {
+          if (key is String &&
+              key != '_type' &&
+              key != LocationStackCodec._keyLocationPath) {
+            jsonData[key] = value;
+          }
+        });
+        final location = factory(jsonData, path);
+        if (location != null) {
+          return location;
+        }
+      }
+    }
+
+    // Fallback to existing behavior - look up pre-registered location
     final route = _configuration.findLocation(path);
     if (route == null) {
-      throw const LocationStackDecoderException('Route not found');
+      throw LocationStackDecoderException('Route not found: $path.');
     }
 
     return route.location;

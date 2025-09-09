@@ -66,6 +66,10 @@ class DuckRouterConfiguration {
 
   final Map<String, LocationMatch> _routeMapping = {};
 
+  /// Registry of [Location.fromJson] that persists
+  static final Map<String, Location? Function(Map<String, dynamic>, String)>
+      _locationFactories = {};
+
   /// Adds a [Location] to the current dynamic directory of locations, so
   /// that we can find it back later, e.g. upon state restoration.
   void addLocation<T>(
@@ -79,6 +83,8 @@ class DuckRouterConfiguration {
     if (_routeMapping.containsKey(location.path)) {
       return;
     }
+
+    _locationFactories[location.runtimeType.toString()] = location.fromJson;
 
     if (replaced != null) {
       _routeMapping[location.path] = LocationMatch(
@@ -108,6 +114,7 @@ class DuckRouterConfiguration {
     });
     completer?.completeError(ClearStackException(location));
     _routeMapping.remove(location.path);
+    _locationFactories.remove(location.runtimeType.toString());
   }
 
   /// Returns the [LocationMatch] for the given path.
@@ -124,6 +131,12 @@ class DuckRouterConfiguration {
       completer?.completeError(InvalidPopTypeException(location, value));
     }
     _routeMapping.remove(location.path);
+    _locationFactories.remove(location.runtimeType.toString());
+  }
+
+  /// Gets the factory function for the given type name, if registered.
+  LocationFactory? getLocationFactory(String typeName) {
+    return _locationFactories[typeName];
   }
 }
 
@@ -143,3 +156,7 @@ class LocationMatch<T> {
   final Location location;
   final Completer<T>? completer;
 }
+
+/// Location factory function signature for deserialization.
+typedef LocationFactory = Location? Function(
+    Map<String, dynamic> json, String path);

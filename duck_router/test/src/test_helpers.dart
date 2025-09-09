@@ -286,6 +286,17 @@ class DetailLocation extends Location {
 
   @override
   LocationBuilder get builder => (context) => DetailScreen(message: message);
+
+  @override
+  Map<String, dynamic>? toJson() => {'message': message};
+
+  @override
+  DetailLocation fromJson(Map<String, dynamic> json, String path) {
+    return DetailLocation(message: json['message'] as String);
+  }
+
+  @override
+  List<Object?> get props => [path, message];
 }
 
 class DetailScreen extends StatelessWidget {

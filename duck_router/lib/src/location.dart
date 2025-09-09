@@ -314,13 +314,23 @@ class _LocationStackEncoder
   final DuckRouterConfiguration _configuration;
 
   @override
+
+  /// Convert a [LocationStack] to a map so that we can later
+  /// restore this stack
   Map<Object?, Object?> convert(LocationStack input) {
     final encodedInput = <Map<Object?, Object?>>[];
 
     for (final l in input.locations) {
-      encodedInput.add({
+      final locationMap = <Object?, Object?>{
         LocationStackCodec._keyLocationPath: l.path,
-      });
+      };
+
+      final customJson = _configuration.duckRestorer?.toJson(l);
+      if (customJson != null) {
+        locationMap.addAll(customJson);
+      }
+
+      encodedInput.add(locationMap);
     }
 
     return <Object?, Object?>{
@@ -363,9 +373,22 @@ class _LocationStackDecoder
       throw const LocationStackDecoderException('Invalid path');
     }
 
+    if (_configuration.duckRestorer != null) {
+      final jsonData = <String, dynamic>{};
+      input.forEach((key, value) {
+        if (key is String && key != LocationStackCodec._keyLocationPath) {
+          jsonData[key] = value;
+        }
+      });
+      final location = _configuration.duckRestorer!.fromJson(path, jsonData);
+      if (location != null) {
+        return location;
+      }
+    }
+
     final route = _configuration.findLocation(path);
     if (route == null) {
-      throw const LocationStackDecoderException('Route not found');
+      throw LocationStackDecoderException('Route not found: $path.');
     }
 
     return route.location;

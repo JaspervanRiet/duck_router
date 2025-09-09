@@ -286,6 +286,9 @@ class DetailLocation extends Location {
 
   @override
   LocationBuilder get builder => (context) => DetailScreen(message: message);
+
+  @override
+  List<Object?> get props => [path, message];
 }
 
 class DetailScreen extends StatelessWidget {
@@ -417,5 +420,27 @@ class RefreshableApp extends StatelessWidget {
           }
           return child;
         });
+  }
+}
+
+class TestDuckRestorer implements DuckRestorer {
+  @override
+  Location? fromJson(String path, Map<String, dynamic> json) {
+    switch (path) {
+      case 'home':
+        return HomeLocation();
+      case 'detail':
+        return DetailLocation(message: json['message']);
+      default:
+        return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson(Location l) {
+    if (l is DetailLocation) {
+      return {'message': l.message};
+    }
+    return {};
   }
 }

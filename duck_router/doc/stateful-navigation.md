@@ -10,6 +10,8 @@ Below we provide examples of how to implement common use cases.
 
 ## Bottom bar
 
+This sample implements a bottom bar hosting child pages. For a full interactive example, see the example project.
+
 ```dart
 class RootLocation extends StatefulLocation {
   @override
@@ -23,6 +25,8 @@ class RootLocation extends StatefulLocation {
 
   /// Note: here, we have implemented the childBuilder in place. We of
   /// course recommend making this its own class.
+  ///
+  /// For a full implementation, please see the example.
   @override
   StatefulLocationBuilder get childBuilder => (c, shell) => Scaffold(
         body: shell,

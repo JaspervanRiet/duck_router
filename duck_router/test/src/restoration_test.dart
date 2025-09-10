@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:duck_router/src/configuration.dart';
-import 'package:duck_router/src/location.dart';
+import 'package:duck_router/duck_router.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'test_helpers.dart';
@@ -95,5 +94,52 @@ void main() {
           reason:
               'Different parameters should result in different serialized data');
     });
+
+    testWidgets('Intercepts routes when restoring', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final message = 'Quack quack';
+      final detailLocation = DetailLocation(message: message);
+
+      router.navigate(to: detailLocation);
+      await tester.pumpAndSettle();
+      expect(find.text(message), findsOneWidget);
+
+      final currentStack = router.routerDelegate.currentConfiguration;
+      final restorationRouteInfo =
+          router.routeInformationParser.restoreRouteInformation(currentStack);
+      expect(restorationRouteInfo, isNotNull);
+
+      final restorer = TestDuckRestorer();
+      final newConfig = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+        duckRestorer: restorer,
+        interceptors: [_TestInterceptor()],
+      );
+
+      final newRouter = await createRouter(newConfig, tester);
+      expect(newRouter.configuration.findLocation(detailLocation.path), isNull);
+
+      final restoredStack = await newRouter.routeInformationParser
+          .parseRouteInformation(restorationRouteInfo!);
+
+      newRouter.routerDelegate.setNewRoutePath(restoredStack);
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+    });
   });
+}
+
+class _TestInterceptor extends LocationInterceptor {
+  @override
+  Location? execute(Location to, Location? from) {
+    if (to is DetailLocation) {
+      return Page1Location();
+    }
+
+    return null;
+  }
 }

@@ -430,3 +430,17 @@ class RefreshableApp extends StatelessWidget {
         });
   }
 }
+
+class TestDuckRestorer implements DuckRestorer {
+  @override
+  Location? convert(String path, Map<String, dynamic> json) {
+    switch (path) {
+      case 'home':
+        return HomeLocation();
+      case 'detail':
+        return DetailLocation(message: json['message']);
+      default:
+        return null;
+    }
+  }
+}

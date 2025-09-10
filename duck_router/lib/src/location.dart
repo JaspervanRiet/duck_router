@@ -158,14 +158,6 @@ abstract class Location extends Equatable {
   /// The 'path' key will be automatically included.
   Map<String, dynamic>? toJson() => null;
 
-  /// Override to provide custom deserialization for state restoration.
-  /// Called when restoring a location from serialized data.
-  /// The default implementation throws an exception - locations that need
-  /// restoration support must implement this method.
-  Location? fromJson(Map<String, dynamic> json, String path) {
-    return null;
-  }
-
   @override
   List<Object?> get props => [path];
 }
@@ -389,23 +381,18 @@ class _LocationStackDecoder
       throw const LocationStackDecoderException('Invalid path');
     }
 
-    final typeName = input['_type'] as String?;
-    if (typeName != null) {
-      final factory = _configuration.getLocationFactory(typeName);
-      if (factory != null) {
-        // Convert Map<Object?, Object?> to Map<String, dynamic> for the factory
-        final jsonData = <String, dynamic>{};
-        input.forEach((key, value) {
-          if (key is String &&
-              key != '_type' &&
-              key != LocationStackCodec._keyLocationPath) {
-            jsonData[key] = value;
-          }
-        });
-        final location = factory(jsonData, path);
-        if (location != null) {
-          return location;
+    if (_configuration.duckRestorer != null) {
+      final jsonData = <String, dynamic>{};
+      input.forEach((key, value) {
+        if (key is String &&
+            key != '_type' &&
+            key != LocationStackCodec._keyLocationPath) {
+          jsonData[key] = value;
         }
+      });
+      final location = _configuration.duckRestorer!.convert(path, jsonData);
+      if (location != null) {
+        return location;
       }
     }
 

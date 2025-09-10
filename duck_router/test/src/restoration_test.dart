@@ -28,28 +28,24 @@ void main() {
           router.routeInformationParser.restoreRouteInformation(currentStack);
       expect(restorationRouteInfo, isNotNull);
 
-      // Simulate app restart by creating a completely fresh router
+      final restorer = TestDuckRestorer();
       final newConfig = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
+        duckRestorer: restorer,
       );
 
       final newRouter = await createRouter(newConfig, tester);
       expect(newRouter.configuration.findLocation(detailLocation.path), isNull,
-          reason: 'Fresh router should not have pre-registered locations');
+          reason: 'Fresh router should not have location without restoration');
 
-      // Try to restore using the serialized restoration data
-      // This should fail because the detail location is not pre-registered
       final restoredStack = await newRouter.routeInformationParser
           .parseRouteInformation(restorationRouteInfo!);
-
-      // The restored location should have the same message parameter
       final restoredDetailLocation =
           restoredStack.locations.whereType<DetailLocation>().first;
 
       expect(restoredDetailLocation.message, equals(originalMessage),
           reason: 'Location parameters should be preserved during restoration');
 
-      // Navigate to the restored stack
       newRouter.routerDelegate.setNewRoutePath(restoredStack);
       await tester.pumpAndSettle();
       expect(find.text(originalMessage), findsOneWidget,
@@ -63,7 +59,6 @@ void main() {
       );
       final router = await createRouter(config, tester);
 
-      // Create locations with different parameters
       final location1 = DetailLocation(message: 'First Message');
       final location2 = DetailLocation(message: 'Second Message');
 
@@ -74,12 +69,13 @@ void main() {
       final encoded1 = codec.encode(stack1);
       final encoded2 = codec.encode(stack2);
 
-      // Different location parameters should produce different encoded data
-      expect(encoded1, isNot(equals(encoded2)),
-          reason:
-              'Different location parameters should be serialized differently');
+      expect(
+        encoded1,
+        isNot(equals(encoded2)),
+        reason:
+            'Different location parameters should be serialized differently',
+      );
 
-      // Verify parameters are included in serialized form
       final locations1 = encoded1['locations'] as List;
       final locations2 = encoded2['locations'] as List;
 

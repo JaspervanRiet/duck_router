@@ -321,9 +321,7 @@ class _LocationStackEncoder
   @override
 
   /// Convert a [LocationStack] to a map so that we can later
-  /// restore this stack. Each location sets its `_type` to
-  /// be able to find back the factory for it later, see also
-  /// [DuckRouterConfiguration._locationFactories]
+  /// restore this stack
   Map<Object?, Object?> convert(LocationStack input) {
     final encodedInput = <Map<Object?, Object?>>[];
 
@@ -335,7 +333,6 @@ class _LocationStackEncoder
       final customJson = l.toJson();
       if (customJson != null) {
         locationMap.addAll(customJson);
-        locationMap['_type'] = l.runtimeType.toString();
       }
 
       encodedInput.add(locationMap);

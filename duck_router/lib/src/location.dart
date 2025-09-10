@@ -393,7 +393,6 @@ class _LocationStackDecoder
       }
     }
 
-    // Fallback to existing behavior - look up pre-registered location
     final route = _configuration.findLocation(path);
     if (route == null) {
       throw LocationStackDecoderException('Route not found: $path.');

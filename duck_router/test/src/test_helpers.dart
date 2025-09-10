@@ -291,11 +291,6 @@ class DetailLocation extends Location {
   Map<String, dynamic>? toJson() => {'message': message};
 
   @override
-  DetailLocation fromJson(Map<String, dynamic> json, String path) {
-    return DetailLocation(message: json['message'] as String);
-  }
-
-  @override
   List<Object?> get props => [path, message];
 }
 

@@ -37,6 +37,7 @@ class DuckRouterConfiguration {
     this.onDeepLink,
     this.onNavigate,
     this.navigatorObserverBuilder,
+    this.duckRestorer,
   }) : rootNavigatorKey = rootNavigatorKey ?? GlobalKey<NavigatorState>();
 
   /// The list of locations that the user can route to
@@ -65,6 +66,8 @@ class DuckRouterConfiguration {
   final DuckRouterNavigatorObserverBuilder? navigatorObserverBuilder;
 
   final Map<String, LocationMatch> _routeMapping = {};
+
+  final DuckRestorer? duckRestorer;
 
   /// Adds a [Location] to the current dynamic directory of locations, so
   /// that we can find it back later, e.g. upon state restoration.
@@ -142,4 +145,16 @@ class LocationMatch<T> {
 
   final Location location;
   final Completer<T>? completer;
+}
+
+/// A [DuckRestorer] allows restoration of [Location] objects upon e.g. an app
+/// restart.
+abstract class DuckRestorer {
+  /// [convert] is called when the router is being restored from e.g. an app
+  /// restart. In that case, the router will repeatedly call this method
+  /// to re-create the state.
+  ///
+  /// Note: `path` and `arguments` correspond to [Location.path] and
+  /// [Location.toJson] respectively.
+  Location? convert(String path, Map<String, dynamic> arguments);
 }

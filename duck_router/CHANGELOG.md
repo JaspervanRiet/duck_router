@@ -1,3 +1,8 @@
+## 7.2.0
+
+ - **FEAT**: restoration of location arguments ([#68](https://github.com/jaspervanriet/duck_router/issues/68)). ([2549088f](https://github.com/jaspervanriet/duck_router/commit/2549088fb40c0b152fb3e9325c242d602011f375))
+ - **DOCS**: add more explanation to bottom bar sample. ([d7e4aa8c](https://github.com/jaspervanriet/duck_router/commit/d7e4aa8c789f8df62c27a68b67fc6ff300e56159))
+
 ## 7.1.3
 
  - **FIX**: exit not clearing awaiting futures ([#65](https://github.com/jaspervanriet/duck_router/issues/65)). ([15950bc0](https://github.com/jaspervanriet/duck_router/commit/15950bc09d8b006046a8e98df6f3ecad3aac45ba))

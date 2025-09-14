@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-09-14
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.2.0`](#duck_router---v720)
+
+---
+
+#### `duck_router` - `v7.2.0`
+
+ - **FEAT**: restoration of location arguments ([#68](https://github.com/jaspervanriet/duck_router/issues/68)). ([2549088f](https://github.com/jaspervanriet/duck_router/commit/2549088fb40c0b152fb3e9325c242d602011f375))
+ - **DOCS**: add more explanation to bottom bar sample. ([d7e4aa8c](https://github.com/jaspervanriet/duck_router/commit/d7e4aa8c789f8df62c27a68b67fc6ff300e56159))
+
+
 ## 2025-06-17
 
 ### Changes

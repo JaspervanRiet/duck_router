@@ -67,6 +67,7 @@ class DuckRouterConfiguration {
 
   final Map<String, LocationMatch> _routeMapping = {};
 
+  /// {@macro duck_restorer}
   final DuckRestorer? duckRestorer;
 
   /// Adds a [Location] to the current dynamic directory of locations, so
@@ -147,8 +148,10 @@ class LocationMatch<T> {
   final Completer<T>? completer;
 }
 
+/// {@template duck_restorer}
 /// A [DuckRestorer] allows restoration of [Location] objects upon e.g. an app
 /// restart.
+/// {@endtemplate}
 abstract class DuckRestorer {
   /// [fromJson] is called when the router is being restored from e.g. an app
   /// restart. In that case, the router will repeatedly call this method

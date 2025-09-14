@@ -40,6 +40,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
     DuckRouterDeepLinkHandler? onDeepLink,
     DuckRouterNavigatorListener? onNavigate,
     DuckRouterNavigatorObserverBuilder? navigatorObserverBuilder,
+    DuckRestorer? duckRestorer,
   }) {
     return DuckRouter.withConfig(
       configuration: DuckRouterConfiguration(
@@ -48,6 +49,7 @@ class DuckRouter implements RouterConfig<LocationStack> {
         onDeepLink: onDeepLink,
         onNavigate: onNavigate,
         navigatorObserverBuilder: navigatorObserverBuilder,
+        duckRestorer: duckRestorer,
       ),
     );
   }

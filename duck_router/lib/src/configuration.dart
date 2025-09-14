@@ -37,6 +37,7 @@ class DuckRouterConfiguration {
     this.onDeepLink,
     this.onNavigate,
     this.navigatorObserverBuilder,
+    this.duckRestorer,
   }) : rootNavigatorKey = rootNavigatorKey ?? GlobalKey<NavigatorState>();
 
   /// The list of locations that the user can route to
@@ -65,6 +66,9 @@ class DuckRouterConfiguration {
   final DuckRouterNavigatorObserverBuilder? navigatorObserverBuilder;
 
   final Map<String, LocationMatch> _routeMapping = {};
+
+  /// {@macro duck_restorer}
+  final DuckRestorer? duckRestorer;
 
   /// Adds a [Location] to the current dynamic directory of locations, so
   /// that we can find it back later, e.g. upon state restoration.
@@ -142,4 +146,28 @@ class LocationMatch<T> {
 
   final Location location;
   final Completer<T>? completer;
+}
+
+/// {@template duck_restorer}
+/// A [DuckRestorer] allows restoration of [Location] objects upon e.g. an app
+/// restart.
+/// {@endtemplate}
+abstract class DuckRestorer {
+  /// [fromJson] is called when the router is being restored from e.g. an app
+  /// restart. In that case, the router will repeatedly call this method
+  /// to re-create the state.
+  ///
+  /// Note: `path` and `arguments` correspond to [Location.path] and
+  /// [Location.toJson] respectively.
+  ///
+  /// See also:
+  /// - [toJson]: the inverse
+  Location? fromJson(String path, Map<String, dynamic> arguments);
+
+  /// [toJson] will be called when the router is saving itself for a later
+  /// restoration, e.g. on app restart.
+  ///
+  /// See also:
+  /// - [fromJson]: the inverse
+  Map<String, dynamic> toJson(Location location);
 }

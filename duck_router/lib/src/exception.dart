@@ -24,10 +24,9 @@ class ClearStackException extends DuckRouterException {
 }
 
 class InvalidPopTypeException extends DuckRouterException {
-  final Location location;
   final Object? value;
 
-  const InvalidPopTypeException(this.location, this.value)
+  const InvalidPopTypeException(this.value)
       : super('Trying to return result with pop that does not match the '
             'awaited type. \n'
             'Check the type of the result you are returning. This can also happen '

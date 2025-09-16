@@ -258,7 +258,7 @@ void main() {
     /// Screen A --- navigates to and waits for result of ---> Screen B
     /// Screen B --- navigates to with replace:true ---> Screen C
     /// Screen C --- pops to ---> Screen A
-    testWidgets('can await navigate that gets replaced', (tester) async {
+    testWidgets('shows correct screen after replace and pop', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
       );
@@ -286,6 +286,49 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(result, equals(1));
+    });
+
+    /// Screen A --- navigates to and waits for result of ---> Screen B
+    /// Screen B --- navigates to with replace:true ---> Screen C
+    /// Screen C --- pops to ---> Screen A
+    testWidgets('can await navigate that gets replaced', (tester) async {
+      const timeout = Duration(seconds: 10);
+
+      // Initial screen A
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      /// A -> B: expect result 1 from B
+      final navigateFuture1 = expectLater(
+        router.navigate<int>(to: Page1Location()).timeout(timeout),
+        completion(equals(1)),
+      );
+      await tester.pumpAndSettle();
+
+      /// A -> B replaces to C: expect result 1 from C
+      /// This is expected to produce result on its own and propagate result
+      /// back to creator of B (to the screen A)
+      final navigateFuture2 = expectLater(
+        router.navigate(to: Page2Location(), replace: true).timeout(timeout),
+        completion(equals(1)),
+      );
+      await tester.pumpAndSettle();
+
+      /// C pops with result 1. This result should be delivered to function from
+      /// screen B (the original caller) and to screen A (since C took place of B).
+      router.pop(1);
+      await tester.pumpAndSettle();
+
+      await (
+        navigateFuture1,
+        navigateFuture2,
+        tester.pump(Duration(seconds: 25)),
+      ).wait;
     });
 
     testWidgets(
@@ -321,7 +364,7 @@ void main() {
 
       router.pop('different type than int');
       await tester.pumpAndSettle();
-      expect(exception, isA<InvalidPopTypeException>());
+      expect(exception, isA<InvalidCompletionTypeException>());
     });
 
     testWidgets('Can return null when a page replacing a page is being awaited',
@@ -1062,6 +1105,47 @@ void main() {
     /// Screen B --- navigates to and waits for result of ---> Screen C
     /// Screen C --- navigates to with replace:true ---> Screen D
     /// Screen D --- pops to ---> Screen B
+    testWidgets('shows correct screen after replace and pop', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      router.navigate(to: RootLocation());
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      int result = 0;
+      router
+          .navigate<int>(
+        to: Page2Location(),
+      )
+          .then((value) {
+        return result = value!;
+      });
+      await tester.pumpAndSettle();
+
+      router.navigate(to: Page3Location(), replace: true);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page3Screen), findsOneWidget);
+
+      router.pop(1);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      expect(result, equals(1));
+    });
+
+    /// Screen A --- opens nested screen B
+    /// Screen B --- navigates to and waits for result of ---> Screen C
+    /// Screen C --- navigates to with replace:true ---> Screen D
+    /// Screen D --- pops to ---> Screen B
     testWidgets('can await navigate that gets replaced', (tester) async {
       const timeout = Duration(seconds: 10);
 
@@ -1081,8 +1165,6 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(Page1Screen), findsOneWidget);
-
       /// A -> B -> C: expect result 1 from C
       final navigateFuture2 = expectLater(
         router.navigate<int>(to: Page2Location()).timeout(timeout),
@@ -1099,14 +1181,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.byType(Page3Screen), findsOneWidget);
-
       /// D pops with result 1. This result should be delivered to function from
       /// screen C (the original caller) and to screen B (since D took place of C).
       router.pop(1);
       await tester.pumpAndSettle();
-
-      expect(find.byType(Page1Screen), findsOneWidget);
 
       await (
         navigateFuture1,

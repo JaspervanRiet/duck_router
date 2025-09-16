@@ -138,7 +138,7 @@ class DuckRouterConfiguration {
     try {
       completer?.complete(value);
     } on TypeError catch (_) {
-      completer?.completeError(InvalidPopTypeException(value));
+      completer?.completeError(InvalidPopTypeException(location, value));
     }
     _routeMapping.remove(location.path);
   }
@@ -156,7 +156,8 @@ class DuckRouterConfiguration {
         try {
           newCompleter.complete(value);
         } on TypeError catch (_) {
-          replacedCompleter.completeError(InvalidPopTypeException(value));
+          replacedCompleter
+              .completeError(InvalidCompletionTypeException(value));
         } catch (e) {
           // If there's any other error, complete with the error instead
           newCompleter.completeError(e);
@@ -166,7 +167,8 @@ class DuckRouterConfiguration {
         try {
           replacedCompleter.complete(value);
         } on TypeError catch (_) {
-          replacedCompleter.completeError(InvalidPopTypeException(value));
+          replacedCompleter
+              .completeError(InvalidCompletionTypeException(value));
         } catch (e) {
           // If there's any other error, complete with the error instead
           replacedCompleter.completeError(e);

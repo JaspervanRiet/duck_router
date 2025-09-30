@@ -92,7 +92,8 @@ class DuckRouterConfiguration {
       Completer? finalCompleter;
       if (completer != null && replacedCompleter != null) {
         // Create a combined completer that will complete both when resolved
-        finalCompleter = _createCombinedCompleter(completer, replacedCompleter);
+        finalCompleter = _createCombinedCompleter(completer, replacedCompleter,
+            location: location);
       } else {
         // Use whichever completer is available
         finalCompleter = completer ?? replacedCompleter;
@@ -147,7 +148,8 @@ class DuckRouterConfiguration {
   /// This is used when replacing a location to ensure both the original awaiter and
   /// the new awaiter get the result when the location is popped.
   Completer<T> _createCombinedCompleter<T>(
-      Completer<T> newCompleter, Completer replacedCompleter) {
+      Completer<T> newCompleter, Completer replacedCompleter,
+      {required Location location}) {
     final combinedCompleter = Completer<T>();
 
     combinedCompleter.future.then((value) {
@@ -157,7 +159,7 @@ class DuckRouterConfiguration {
           newCompleter.complete(value);
         } on TypeError catch (_) {
           replacedCompleter
-              .completeError(InvalidCompletionTypeException(value));
+              .completeError(InvalidPopTypeException(location, value));
         } catch (e) {
           // If there's any other error, complete with the error instead
           newCompleter.completeError(e);
@@ -168,7 +170,7 @@ class DuckRouterConfiguration {
           replacedCompleter.complete(value);
         } on TypeError catch (_) {
           replacedCompleter
-              .completeError(InvalidCompletionTypeException(value));
+              .completeError(InvalidPopTypeException(location, value));
         } catch (e) {
           // If there's any other error, complete with the error instead
           replacedCompleter.completeError(e);

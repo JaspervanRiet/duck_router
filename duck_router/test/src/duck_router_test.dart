@@ -364,7 +364,7 @@ void main() {
 
       router.pop('different type than int');
       await tester.pumpAndSettle();
-      expect(exception, isA<InvalidCompletionTypeException>());
+      expect(exception, isA<InvalidPopTypeException>());
     });
 
     testWidgets('Can return null when a page replacing a page is being awaited',

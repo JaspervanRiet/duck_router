@@ -85,9 +85,23 @@ class DuckRouterConfiguration {
     }
 
     if (replaced != null) {
+      final replacedCompleter = _routeMapping[replaced.path]?.completer;
+
+      // If we have both a new completer (from the navigate call) and a replaced completer,
+      // we need to chain them so both get completed when the location is popped.
+      Completer? finalCompleter;
+      if (completer != null && replacedCompleter != null) {
+        // Create a combined completer that will complete both when resolved
+        finalCompleter = _createCombinedCompleter(completer, replacedCompleter,
+            location: location);
+      } else {
+        // Use whichever completer is available
+        finalCompleter = completer ?? replacedCompleter;
+      }
+
       _routeMapping[location.path] = LocationMatch(
         location: location,
-        completer: _routeMapping[replaced.path]?.completer,
+        completer: finalCompleter,
       );
       _routeMapping.remove(replaced.path);
       return;
@@ -128,6 +142,51 @@ class DuckRouterConfiguration {
       completer?.completeError(InvalidPopTypeException(location, value));
     }
     _routeMapping.remove(location.path);
+  }
+
+  /// Creates a combined completer that will complete both completers with the same result.
+  /// This is used when replacing a location to ensure both the original awaiter and
+  /// the new awaiter get the result when the location is popped.
+  Completer<T> _createCombinedCompleter<T>(
+      Completer<T> newCompleter, Completer replacedCompleter,
+      {required Location location}) {
+    final combinedCompleter = Completer<T>();
+
+    combinedCompleter.future.then((value) {
+      // Complete both completers with the same value
+      if (!newCompleter.isCompleted) {
+        try {
+          newCompleter.complete(value);
+        } on TypeError catch (_) {
+          replacedCompleter
+              .completeError(InvalidPopTypeException(location, value));
+        } catch (e) {
+          // If there's any other error, complete with the error instead
+          newCompleter.completeError(e);
+        }
+      }
+      if (!replacedCompleter.isCompleted) {
+        try {
+          replacedCompleter.complete(value);
+        } on TypeError catch (_) {
+          replacedCompleter
+              .completeError(InvalidPopTypeException(location, value));
+        } catch (e) {
+          // If there's any other error, complete with the error instead
+          replacedCompleter.completeError(e);
+        }
+      }
+    }).catchError((error, stackTrace) {
+      // Complete both completers with the same error
+      if (!newCompleter.isCompleted) {
+        newCompleter.completeError(error, stackTrace);
+      }
+      if (!replacedCompleter.isCompleted) {
+        replacedCompleter.completeError(error, stackTrace);
+      }
+    });
+
+    return combinedCompleter;
   }
 }
 

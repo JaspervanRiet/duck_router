@@ -1,3 +1,7 @@
+## 7.2.1
+
+ - **FIX**: completer not completed when used with replace ([#70](https://github.com/jaspervanriet/duck_router/issues/70)). ([20262f31](https://github.com/jaspervanriet/duck_router/commit/20262f315e06911316569d7a1f7ded7ad70d83d9))
+
 ## 7.2.0
 
  - **FEAT**: restoration of location arguments ([#68](https://github.com/jaspervanriet/duck_router/issues/68)). ([2549088f](https://github.com/jaspervanriet/duck_router/commit/2549088fb40c0b152fb3e9325c242d602011f375))

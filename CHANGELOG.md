@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-10-07
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.2.1`](#duck_router---v721)
+
+---
+
+#### `duck_router` - `v7.2.1`
+
+ - **FIX**: completer not completed when used with replace ([#70](https://github.com/jaspervanriet/duck_router/issues/70)). ([20262f31](https://github.com/jaspervanriet/duck_router/commit/20262f315e06911316569d7a1f7ded7ad70d83d9))
+
+
 ## 2025-09-14
 
 ### Changes

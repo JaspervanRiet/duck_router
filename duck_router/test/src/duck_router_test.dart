@@ -1059,14 +1059,14 @@ void main() {
       // Verify Child1's stack was NOT modified
       await tester.tap(find.text('Page 1'));
       await tester.pumpAndSettle();
-      final child1FinalSize =
-          shellState.currentRouterDelegate.currentConfiguration.locations.length;
+      final child1FinalSize = shellState
+          .currentRouterDelegate.currentConfiguration.locations.length;
 
       // Switch back to Child2 to verify its stack
       await tester.tap(find.text('Page 2'));
       await tester.pumpAndSettle();
-      final child2FinalSize =
-          shellState.currentRouterDelegate.currentConfiguration.locations.length;
+      final child2FinalSize = shellState
+          .currentRouterDelegate.currentConfiguration.locations.length;
 
       // The bug was: Child1's stack would get popped even though it's not visible
       // Expected behavior: Child1 should still have 3 locations

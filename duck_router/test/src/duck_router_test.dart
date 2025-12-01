@@ -997,6 +997,94 @@ void main() {
       expect(find.byType(Page1Screen), findsOneWidget);
     });
 
+    // Regression test for issue #74:
+    // https://github.com/JaspervanRiet/duck_router/issues/74
+    // Back button should not traverse inactive tab's navigation stack
+    testWidgets(
+        'Back button does not traverse inactive tab stack after switching tabs',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      await tester.pumpAndSettle();
+
+      // Verify we're on tab 1 (Child1) at root
+      expect(find.byType(Page1Screen), findsOneWidget);
+      expect(find.byType(Page2Screen), findsNothing);
+
+      final rootLocation = router
+          .routerDelegate.currentConfiguration.locations.first as RootLocation;
+      final shellState = rootLocation.state;
+
+      // Step 1: Navigate deep in Child1 (Tab A)
+      // Child1 -> Home -> Page1 (2 levels deep)
+      router.navigate(to: HomeLocation());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeScreen), findsOneWidget);
+
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      // Verify we're 3 levels deep in child1's stack
+      final child1Stack = shellState.currentRouterDelegate.currentConfiguration;
+      expect(child1Stack.locations.length, 3);
+      expect(child1Stack.locations[0], isA<Child1Location>());
+      expect(child1Stack.locations[1], isA<HomeLocation>());
+      expect(child1Stack.locations[2], isA<Page1Location>());
+
+      // Step 2: Switch to Child2 (Tab B)
+      await tester.tap(find.text('Page 2'));
+      await tester.pumpAndSettle();
+
+      // Verify we're now on child2, which should be at root (1 level)
+      expect(find.byType(Page2Screen), findsOneWidget);
+      expect(find.byType(Page1Screen), findsNothing);
+
+      final child2Stack = shellState.currentRouterDelegate.currentConfiguration;
+      expect(child2Stack.locations.length, 1);
+      expect(child2Stack.locations[0], isA<Child2Location>());
+
+      // Step 3: Press back button multiple times while on Child2
+      // This should NOT affect Child1's stack since it's inactive
+
+      // Press back button 3 times
+      for (var i = 0; i < 3; i++) {
+        await tester.binding.handlePopRoute();
+        await tester.pumpAndSettle();
+      }
+
+      // Verify Child1's stack was NOT modified
+      await tester.tap(find.text('Page 1'));
+      await tester.pumpAndSettle();
+      final child1FinalSize = shellState
+          .currentRouterDelegate.currentConfiguration.locations.length;
+
+      // Switch back to Child2 to verify its stack
+      await tester.tap(find.text('Page 2'));
+      await tester.pumpAndSettle();
+      final child2FinalSize = shellState
+          .currentRouterDelegate.currentConfiguration.locations.length;
+
+      // The bug was: Child1's stack would get popped even though it's not visible
+      // Expected behavior: Child1 should still have 3 locations
+      expect(
+        child1FinalSize,
+        3,
+        reason: 'Bug #74: Child1 (inactive tab) stack should not be modified '
+            'when back button is pressed while viewing Child2',
+      );
+
+      // Child2 should still be at root
+      expect(
+        child2FinalSize,
+        1,
+        reason: 'Child2 should still be at root',
+      );
+    });
+
     testWidgets('can reset', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: RootLocation(),

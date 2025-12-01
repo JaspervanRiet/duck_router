@@ -67,6 +67,7 @@ class DuckShellState extends State<DuckShell> {
   final List<_NestedRouterDelegate> _routerDelegates = [];
   final List<DuckInformationParser> _informationParsers = [];
   final List<DuckInformationProvider> _informationProviders = [];
+  final List<ChildBackButtonDispatcher> _backButtonDispatchers = [];
 
   @override
   void initState() {
@@ -99,20 +100,25 @@ class DuckShellState extends State<DuckShell> {
 
   @override
   Widget build(BuildContext context) {
+    if (_backButtonDispatchers.isEmpty) {
+      _backButtonDispatchers.add(
+        DuckRouter.of(context)
+            .backButtonDispatcher
+            .createChildBackButtonDispatcher(),
+      );
+      _backButtonDispatchers[0].takePriority();
+    }
+
     return IndexedStack(
       index: _currentIndex,
       children: widget.children.mapIndexed(
         (i, e) {
-          final backButtonDispatcher = DuckRouter.of(context)
-              .backButtonDispatcher
-              .createChildBackButtonDispatcher();
-          backButtonDispatcher.takePriority();
-
           return Router(
             routerDelegate: _routerDelegates[i],
             routeInformationParser: _informationParsers[i],
             routeInformationProvider: _informationProviders[i],
-            backButtonDispatcher: backButtonDispatcher,
+            backButtonDispatcher:
+                i == _currentIndex ? _backButtonDispatchers[0] : null,
           );
         },
       ).toList(),

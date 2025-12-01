@@ -1,3 +1,8 @@
+## 7.2.2
+
+ - **FIX**: back button doesn't exit app in nested routing ([#75](https://github.com/jaspervanriet/duck_router/issues/75)). ([14b2ed1a](https://github.com/jaspervanriet/duck_router/commit/14b2ed1af36afc92e4f21516b3d0ee706af4ccba))
+ - **DOCS**: deeplinking advanced scenarios. ([7de64d6e](https://github.com/jaspervanriet/duck_router/commit/7de64d6e634be3bf59fcacd9cb317d6576fd844d))
+
 ## 7.2.1
 
  - **FIX**: completer not completed when used with replace ([#70](https://github.com/jaspervanriet/duck_router/issues/70)). ([20262f31](https://github.com/jaspervanriet/duck_router/commit/20262f315e06911316569d7a1f7ded7ad70d83d9))

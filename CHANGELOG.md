@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-12-01
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.2.2`](#duck_router---v722)
+
+---
+
+#### `duck_router` - `v7.2.2`
+
+ - **FIX**: back button doesn't exit app in nested routing ([#75](https://github.com/jaspervanriet/duck_router/issues/75)). ([14b2ed1a](https://github.com/jaspervanriet/duck_router/commit/14b2ed1af36afc92e4f21516b3d0ee706af4ccba))
+ - **DOCS**: deeplinking advanced scenarios. ([7de64d6e](https://github.com/jaspervanriet/duck_router/commit/7de64d6e634be3bf59fcacd9cb317d6576fd844d))
+
+
 ## 2025-10-07
 
 ### Changes

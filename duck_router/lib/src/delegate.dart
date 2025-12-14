@@ -51,6 +51,11 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (doesStackContainPage) {
       currentConfiguration.locations.removeWhere((l) => l.path == page.name);
     }
+
+    final newLocation = currentConfiguration.locations.last;
+    if (newLocation is StatefulLocation) {
+      newLocation.state.takePriority();
+    }
   }
 
   /// See RouterDelegate.onPopPage.

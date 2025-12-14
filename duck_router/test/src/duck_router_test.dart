@@ -1085,6 +1085,91 @@ void main() {
       );
     });
 
+    // Regression test for other bug in issue #74:
+    // https://github.com/JaspervanRiet/duck_router/issues/74#issuecomment-2534896635
+    // When navigating from deep inside a tab to a root-level screen,
+    // back button should exit immediately, not traverse the tab's stack
+    testWidgets(
+        'Back button should exit immediately from root screen after navigating from deep tab stack',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      await tester.pumpAndSettle();
+
+      // Verify we're on tab 1 (Child1) at root
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      final rootLocation = router
+          .routerDelegate.currentConfiguration.locations.first as RootLocation;
+      final shellState = rootLocation.state;
+
+      // Step 1: Navigate deep inside Child1 (Tab A)
+      // Child1 -> Home -> Page2 (2 levels deep)
+      router.navigate(to: HomeLocation());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeScreen), findsOneWidget);
+
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      // Verify we're 3 levels deep in child1's stack
+      final child1Stack = shellState.currentRouterDelegate.currentConfiguration;
+      expect(child1Stack.locations.length, 3);
+      expect(child1Stack.locations[0], isA<Child1Location>());
+      expect(child1Stack.locations[1], isA<HomeLocation>());
+      expect(child1Stack.locations[2], isA<Page2Location>());
+
+      // Step 2: Navigate to a root-level screen
+      router.navigate(to: LoginLocation(), root: true);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(LoginScreen), findsOneWidget);
+      expect(find.byType(Page2Screen), findsNothing);
+
+      final rootStack = router.routerDelegate.currentConfiguration;
+      expect(rootStack.locations.length, 2);
+      expect(rootStack.locations[0], isA<RootLocation>());
+      expect(rootStack.locations[1], isA<LoginLocation>());
+
+      // Step 3: Press back button once
+      // Expected: Should pop back to RootLocation (the tab view)
+      // Bug: Have to press back multiple times (as many as screens in the tab)
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      // After one back press, we should be back at RootLocation
+      final rootStackAfterPop = router.routerDelegate.currentConfiguration;
+      expect(
+        rootStackAfterPop.locations.length,
+        1,
+        reason: 'Bug #74 (latest comment): Should only need one back press to '
+            'return to RootLocation, not multiple presses for each screen '
+            'that was in the tab stack',
+      );
+      expect(rootStackAfterPop.locations[0], isA<RootLocation>());
+
+      // We should be seeing the tab view again (Child1's stack should be preserved)
+      expect(find.byType(Page2Screen), findsOneWidget);
+      expect(find.byType(LoginScreen), findsNothing);
+
+      // Now should be able to traverse all the way back up to root
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(HomeScreen), findsOneWidget);
+      expect(find.byType(Page2Screen), findsNothing);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+      expect(find.byType(HomeScreen), findsNothing);
+    });
+
     testWidgets('can reset', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: RootLocation(),

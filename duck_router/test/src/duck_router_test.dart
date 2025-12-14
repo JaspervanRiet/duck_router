@@ -612,12 +612,12 @@ void main() {
       expect(locations.uri.path, '/home/login');
     });
 
-    testWidgets('Goes through as expected when not intercepting',
+    testWidgets('Preserves routing functionality when intercepting',
         (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
         interceptors: [
-          AuthInterceptor(isLoggedIn: () => true),
+          AuthInterceptor(isLoggedIn: () => false),
         ],
       );
 
@@ -628,7 +628,46 @@ void main() {
       await tester.pumpAndSettle();
 
       final locations = router.routerDelegate.currentConfiguration;
-      expect(locations.uri.path, '/home/sensitive');
+      expect(locations.uri.path, '/home/login');
+    });
+
+    testWidgets('Goes through as expected when not intercepting',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+        interceptors: [
+          AuthInterceptor(isLoggedIn: () => true),
+        ],
+      );
+
+      final router = await createRouter(config, tester);
+
+      router.navigate(to: Page1Location());
+
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+      var locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1');
+
+      router.navigate(
+        to: SensitiveLocation(),
+      );
+      await tester.pumpAndSettle();
+
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1/sensitive');
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1');
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeScreen), findsOneWidget);
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
     });
 
     testWidgets('Pushes on top if specified', (tester) async {
@@ -643,6 +682,47 @@ void main() {
       await tester.pumpAndSettle();
 
       final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1');
+    });
+
+    testWidgets('Preserves whole routing path when pushing on top',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+        interceptors: [
+          ConditionallyPushesOnTopInterceptor(),
+        ],
+      );
+
+      final router = await createRouter(config, tester);
+      await tester.pumpAndSettle();
+
+      router.navigate(to: Page1Location());
+
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+      var locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1');
+
+      // this will be intercepted
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+      expect(find.byType(Page3Screen), findsOneWidget);
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1/page2/page3');
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page2Screen), findsOneWidget);
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1/page2');
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      expect(find.byType(Page1Screen), findsOneWidget);
+      locations = router.routerDelegate.currentConfiguration;
       expect(locations.uri.path, '/home/page1');
     });
 

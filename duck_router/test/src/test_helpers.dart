@@ -199,6 +199,18 @@ class PushesOnTopInterceptor extends LocationInterceptor {
   }
 }
 
+class ConditionallyPushesOnTopInterceptor extends LocationInterceptor {
+  ConditionallyPushesOnTopInterceptor() : super(pushesOnTop: true);
+
+  @override
+  Location? execute(Location to, Location? from) {
+    if (to is Page2Location) {
+      return Page3Location();
+    }
+    return null;
+  }
+}
+
 class RootLocation extends StatefulLocation {
   @override
   String get path => 'root';

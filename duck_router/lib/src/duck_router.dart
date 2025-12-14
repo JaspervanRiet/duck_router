@@ -171,8 +171,18 @@ class DuckRouter implements RouterConfig<LocationStack> {
       throw DuplicateRouteException(to);
     }
 
-    if (currentRootLocation is StatefulLocation && !root) {
-      return currentRootLocation.state.navigate(to, replace: replace);
+    if (currentRootLocation is StatefulLocation) {
+      if (root) {
+        /// We are navigating from the root, so we can just continue, however,
+        /// we do need to have the root [BackButtonDispatcher] take priority
+        /// again, as opposed to the one in the shell.
+        ///
+        /// See also:
+        /// - [DuckShellState.build]
+        backButtonDispatcher.takePriority();
+      } else {
+        return currentRootLocation.state.navigate(to, replace: replace);
+      }
     }
 
     if (replace ?? false) {

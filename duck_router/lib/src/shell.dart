@@ -204,6 +204,10 @@ class DuckShellState extends State<DuckShell> {
     });
   }
 
+  void takePriority() {
+    _backButtonDispatchers[_currentIndex].takePriority();
+  }
+
   RouterDelegate get currentRouterDelegate => _routerDelegates[_currentIndex];
 }
 

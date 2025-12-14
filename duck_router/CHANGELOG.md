@@ -1,3 +1,7 @@
+## 7.2.3
+
+ - **FIX**: back button dispatcher prioritization ([#76](https://github.com/jaspervanriet/duck_router/issues/76)). ([a24cbc27](https://github.com/jaspervanriet/duck_router/commit/a24cbc27559593511c32cc5247a40d6c2f1f075b))
+
 ## 7.2.2
 
  - **FIX**: back button doesn't exit app in nested routing ([#75](https://github.com/jaspervanriet/duck_router/issues/75)). ([14b2ed1a](https://github.com/jaspervanriet/duck_router/commit/14b2ed1af36afc92e4f21516b3d0ee706af4ccba))

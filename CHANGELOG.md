@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2025-12-14
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.2.3`](#duck_router---v723)
+
+---
+
+#### `duck_router` - `v7.2.3`
+
+ - **FIX**: back button dispatcher prioritization ([#76](https://github.com/jaspervanriet/duck_router/issues/76)). ([a24cbc27](https://github.com/jaspervanriet/duck_router/commit/a24cbc27559593511c32cc5247a40d6c2f1f075b))
+
+
 ## 2025-12-01
 
 ### Changes

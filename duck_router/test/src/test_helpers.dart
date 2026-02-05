@@ -449,6 +449,26 @@ class RefreshableApp extends StatelessWidget {
   }
 }
 
+class NonPoppableScreen extends StatelessWidget {
+  const NonPoppableScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) => PopScope(
+        canPop: false,
+        child: const Placeholder(),
+      );
+}
+
+class NonPoppableLocation extends Location {
+  const NonPoppableLocation();
+
+  @override
+  String get path => 'non-poppable';
+
+  @override
+  LocationBuilder get builder => (context) => const NonPoppableScreen();
+}
+
 class TestDuckRestorer implements DuckRestorer {
   @override
   Location? fromJson(String path, Map<String, dynamic> json) {

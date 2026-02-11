@@ -56,6 +56,88 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
+    testWidgets('Pops via system back button', (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(
+        to: Page1Location(),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 1);
+      expect(locations2.uri.path, '/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+    });
+
+    testWidgets('Sequential system back button pops maintain correct stack',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 3);
+
+      // First back press: should remove Page2
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      var locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 2);
+      expect(locations2.uri.path, '/home/page1');
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      // Second back press: should remove Page1
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 1);
+      expect(locations2.uri.path, '/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+    });
+
+    testWidgets(
+        'System back button does not modify stack when pop is not allowed',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      router.navigate(to: NonPoppableLocation());
+      await tester.pumpAndSettle();
+
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+
+      // PopScope(canPop: false) prevents the pop from succeeding,
+      // so the stack should remain unchanged.
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 2);
+      expect(locations2.uri.path, '/home/non-poppable');
+    });
+
     testWidgets('Pops until X', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
@@ -561,6 +643,57 @@ void main() {
           expect(e, isInstanceOf<MissingCreateRouteException>());
         }
       });
+    });
+
+    /// See https://github.com/JaspervanRiet/duck_router/issues/78
+    ///
+    /// This test is to ensure that when navigating to a new page while a pop transition is in progress,
+    /// the stack is not corrupted.
+    testWidgets(
+        'Navigating to a new page while a pop transition is in progress does not corrupt the stack',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+
+      // Navigate to Page1 (the underlying screen)
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      // Navigate to Page2 (e.g. a modal shown on top of Page1)
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      var locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 3);
+
+      // Pop Page2 but do NOT wait for the transition to finish.
+      // This simulates the user closing a modal and immediately
+      // tapping a button on the underlying screen.
+      router.pop();
+      await tester.pump();
+
+      // While the pop animation is still in progress, navigate to Page3.
+      router.navigate(to: Page3Location());
+      await tester.pumpAndSettle();
+
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home/page1/page3');
+      expect(find.byType(Page3Screen), findsOneWidget);
+
+      // Now pop Page3 — should return to Page1, not Page2.
+      router.pop();
+      await tester.pumpAndSettle();
+
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+      expect(locations.uri.path, '/home/page1');
+      expect(find.byType(Page1Screen), findsOneWidget);
+      expect(find.byType(Page2Screen), findsNothing);
     });
 
     /// See https://github.com/JaspervanRiet/duck_router/issues/40

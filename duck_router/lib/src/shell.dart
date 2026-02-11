@@ -254,8 +254,13 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
 
   /// See RouterDelegate.onPopPage.
   void onPopPage(bool didPop, Object? result) {
+    if (!didPop) return;
+
     final currentLocation = currentConfiguration.locations.last;
     _routerConfiguration.removeLocation(currentLocation, result);
+
+    currentConfiguration.locations
+        .removeWhere((l) => l.path == currentLocation.path);
   }
 
   @override

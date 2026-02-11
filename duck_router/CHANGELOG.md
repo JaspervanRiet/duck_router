@@ -1,3 +1,7 @@
+## 7.2.4
+
+ - **FIX**: allow for navigating to new screen while still popping previous screen ([#79](https://github.com/jaspervanriet/duck_router/issues/79)). ([b3bdf3a7](https://github.com/jaspervanriet/duck_router/commit/b3bdf3a78cd39d6d58b9fc69a47689ef2ce32db0))
+
 ## 7.2.3
 
  - **FIX**: back button dispatcher prioritization ([#76](https://github.com/jaspervanriet/duck_router/issues/76)). ([a24cbc27](https://github.com/jaspervanriet/duck_router/commit/a24cbc27559593511c32cc5247a40d6c2f1f075b))

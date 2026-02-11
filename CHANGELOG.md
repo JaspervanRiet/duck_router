@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-02-11
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.2.4`](#duck_router---v724)
+
+---
+
+#### `duck_router` - `v7.2.4`
+
+ - **FIX**: allow for navigating to new screen while still popping previous screen ([#79](https://github.com/jaspervanriet/duck_router/issues/79)). ([b3bdf3a7](https://github.com/jaspervanriet/duck_router/commit/b3bdf3a78cd39d6d58b9fc69a47689ef2ce32db0))
+
+
 ## 2025-12-14
 
 ### Changes

@@ -173,6 +173,16 @@ class DuckShellState extends State<DuckShell> {
   }
 
   bool popUntil(LocationPredicate predicate) {
+    return _popUntilInternal(predicate);
+  }
+
+  bool popUntilWithResult<T extends Object?>(
+      LocationPredicate predicate, T? result) {
+    return _popUntilInternal(predicate, result);
+  }
+
+  bool _popUntilInternal<T extends Object?>(LocationPredicate predicate,
+      [T? result]) {
     final navigatorKey = _navigatorKeys[_currentIndex];
     if (navigatorKey.currentState == null) {
       return false;
@@ -185,9 +195,9 @@ class DuckShellState extends State<DuckShell> {
       return false;
     }
 
-    navigatorKey.currentState?.popUntil((route) {
+    navigatorKey.currentState?.popUntilWithResult((route) {
       return route.settings.name == destination.path;
-    });
+    }, result);
 
     return true;
   }

@@ -132,6 +132,16 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
   }
 
   void popUntil(LocationPredicate predicate) {
+    _popUntilInternal(predicate);
+  }
+
+  void popUntilWithResult<T extends Object?>(
+      LocationPredicate predicate, T? result) {
+    _popUntilInternal(predicate, result);
+  }
+
+  void _popUntilInternal<T extends Object?>(LocationPredicate predicate,
+      [T? result]) {
     final currentLocation = currentConfiguration.locations.last;
 
     if (currentLocation is StatefulLocation) {
@@ -140,8 +150,10 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        final result = currentLocation.state.popUntil(predicate);
-        if (result) {
+        final found = result != null
+            ? currentLocation.state.popUntilWithResult(predicate, result)
+            : currentLocation.state.popUntil(predicate);
+        if (found) {
           return;
         }
       }
@@ -157,9 +169,9 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (navigatorKey.currentState?.canPop() ?? false) {
       state = navigatorKey.currentState;
     }
-    state?.popUntil((route) {
+    state?.popUntilWithResult((route) {
       return route.settings.name == destination.path;
-    });
+    }, result);
   }
 
   /// Reset the router to the root

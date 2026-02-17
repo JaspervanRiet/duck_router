@@ -233,6 +233,61 @@ void main() {
       expect(locations2.uri.path, '/home');
     });
 
+    /// Screen A --- navigates to and waits for result of ---> Screen B
+    /// Screen B --- navigates to ---> Screen C
+    /// Screen C --- popUntil Screen A with result ---> Screen A
+    testWidgets('popUntilWithResult returns result to awaiting location',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      final locations = router.routerDelegate.currentConfiguration;
+      expect(locations.uri.path, '/home');
+
+      // Screen A navigates to Screen B and awaits result
+      int result = 0;
+      router
+          .navigate<int>(
+        to: Page1Location(),
+      )
+          .then((value) {
+        return result = value!;
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Page1Screen), findsOneWidget);
+
+      // Screen B navigates to Screen C and awaits result
+      bool screenBCompleted = false;
+      int? screenBResult = -1;
+      router
+          .navigate<int>(
+        to: Page2Location(),
+      )
+          .then((value) {
+        screenBCompleted = true;
+        screenBResult = value;
+      });
+      await tester.pumpAndSettle();
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      final locations2 = router.routerDelegate.currentConfiguration;
+      expect(locations2.locations.length, 3);
+
+      // Screen C pops until Screen A with result
+      router.popUntilWithResult((location) => location is HomeLocation, 42);
+      await tester.pumpAndSettle();
+
+      final locations3 = router.routerDelegate.currentConfiguration;
+      expect(locations3.locations.length, 1);
+      expect(locations3.uri.path, '/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+      expect(result, equals(42));
+      expect(screenBCompleted, isTrue);
+      expect(screenBResult, isNull);
+    });
+
     testWidgets('Resets to root', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),

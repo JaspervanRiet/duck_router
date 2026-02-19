@@ -40,22 +40,11 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
 
   /// See RouterDelegate.onDidRemovePage.
   void _onDidRemovePage(Page<Object?> page) {
-    /// There's two cases where this function is used:
-    /// 1. When a page is popped from the stack
-    /// 2. When a page is replaced
-    ///
-    /// In scenario 2, `setNewRoutePath` is called with the new configuration
-    /// before this function, so the page will already have been removed.
-    final doesStackContainPage =
-        currentConfiguration.locations.any((l) => l.path == page.name);
-    if (doesStackContainPage) {
-      currentConfiguration.locations.removeWhere((l) => l.path == page.name);
-    }
-
-    final newLocation = currentConfiguration.locations.last;
-    if (newLocation is StatefulLocation) {
-      newLocation.state.takePriority();
-    }
+    // Stack removal is handled eagerly in [_onPopPage] (for pops) and in
+    // the navigate/pop/reset methods (for declarative changes). Removing
+    // here would incorrectly remove a newly pushed page that shares the
+    // same path as the page that was just popped.
+    // We still need this callback, as this is required by the [Navigator].
   }
 
   /// See RouterDelegate.onPopPage.
@@ -67,6 +56,11 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
 
     currentConfiguration.locations
         .removeWhere((l) => l.path == currentLocation.path);
+
+    final newLocation = currentConfiguration.locations.lastOrNull;
+    if (newLocation is StatefulLocation) {
+      newLocation.state.takePriority();
+    }
   }
 
   @override

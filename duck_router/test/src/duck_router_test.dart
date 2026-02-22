@@ -236,7 +236,7 @@ void main() {
     /// Screen A --- navigates to and waits for result of ---> Screen B
     /// Screen B --- navigates to ---> Screen C
     /// Screen C --- popUntil Screen A with result ---> Screen A
-    testWidgets('popUntilWithResult returns result to awaiting location',
+    testWidgets('popUntil with result returns result to awaiting location',
         (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
@@ -276,7 +276,7 @@ void main() {
       expect(locations2.locations.length, 3);
 
       // Screen C pops until Screen A with result
-      router.popUntilWithResult((location) => location is HomeLocation, 42);
+      router.popUntil((location) => location is HomeLocation, 42);
       await tester.pumpAndSettle();
 
       final locations3 = router.routerDelegate.currentConfiguration;

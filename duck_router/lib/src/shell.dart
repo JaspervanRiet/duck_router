@@ -172,17 +172,7 @@ class DuckShellState extends State<DuckShell> {
     navigatorKey.currentState?.pop(result);
   }
 
-  bool popUntil(LocationPredicate predicate) {
-    return _popUntilInternal(predicate);
-  }
-
-  bool popUntilWithResult<T extends Object?>(
-      LocationPredicate predicate, T? result) {
-    return _popUntilInternal(predicate, result);
-  }
-
-  bool _popUntilInternal<T extends Object?>(LocationPredicate predicate,
-      [T? result]) {
+  bool popUntil<T extends Object?>(LocationPredicate predicate, [T? result]) {
     final navigatorKey = _navigatorKeys[_currentIndex];
     if (navigatorKey.currentState == null) {
       return false;

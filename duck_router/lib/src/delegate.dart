@@ -131,17 +131,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     state?.pop(result);
   }
 
-  void popUntil(LocationPredicate predicate) {
-    _popUntilInternal(predicate);
-  }
-
-  void popUntilWithResult<T extends Object?>(
-      LocationPredicate predicate, T? result) {
-    _popUntilInternal(predicate, result);
-  }
-
-  void _popUntilInternal<T extends Object?>(LocationPredicate predicate,
-      [T? result]) {
+  void popUntil<T extends Object?>(LocationPredicate predicate, [T? result]) {
     final currentLocation = currentConfiguration.locations.last;
 
     if (currentLocation is StatefulLocation) {
@@ -150,9 +140,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       if (currentLocation.state.currentRouterDelegate.currentConfiguration
               .locations.length >
           1) {
-        final found = result != null
-            ? currentLocation.state.popUntilWithResult(predicate, result)
-            : currentLocation.state.popUntil(predicate);
+        final found = currentLocation.state.popUntil(predicate, result);
         if (found) {
           return;
         }

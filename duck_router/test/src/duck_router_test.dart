@@ -696,6 +696,56 @@ void main() {
       expect(find.byType(Page2Screen), findsNothing);
     });
 
+    /// When rapidly popping a page and then pushing the
+    /// same page back, the _onDidRemovePage callback (which fires after
+    /// the transition animation completes) must not remove the newly
+    /// pushed page from the stack. Because pages are matched by path,
+    /// the callback could incorrectly match the new page and remove it.
+    testWidgets(
+        'Rapidly popping and re-pushing the same page does not corrupt the stack',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+
+      // Build up a stack: Home -> Page1 -> Page2
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+
+      var locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 3);
+      expect(locations.uri.path, '/home/page1/page2');
+
+      // Pop Page2 but do NOT wait for the transition to finish.
+      router.pop();
+      await tester.pump();
+
+      // While the pop animation is still in progress, push the same
+      // page (Page2) back onto the stack.
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+
+      // The new Page2 should be on the stack.
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 3);
+      expect(locations.uri.path, '/home/page1/page2');
+      expect(find.byType(Page2Screen), findsOneWidget);
+
+      // Popping should go back to Page1.
+      router.pop();
+      await tester.pumpAndSettle();
+
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+      expect(locations.uri.path, '/home/page1');
+      expect(find.byType(Page1Screen), findsOneWidget);
+      expect(find.byType(HomeScreen), findsNothing);
+    });
+
     /// See https://github.com/JaspervanRiet/duck_router/issues/40
     ///
     /// This test is to ensure that the router does not error when

@@ -245,11 +245,6 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
   /// See RouterDelegate.onDidRemovePage.
   void _onDidRemovePage(Page<Object?> page) {
     /// Please refer to DuckRouterDelegate._onDidRemovePage
-    final doesStackContainPage =
-        currentConfiguration.locations.any((l) => l.path == page.name);
-    if (doesStackContainPage) {
-      currentConfiguration.locations.removeWhere((l) => l.path == page.name);
-    }
   }
 
   /// See RouterDelegate.onPopPage.

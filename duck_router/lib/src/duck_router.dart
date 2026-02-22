@@ -223,8 +223,11 @@ class DuckRouter implements RouterConfig<LocationStack> {
   }
 
   /// Pop until the given predicate is satisfied.
-  void popUntil(LocationPredicate predicate) {
-    routerDelegate.popUntil(predicate);
+  ///
+  /// If [result] is provided, it will be passed back to the destination
+  /// location, completing any awaited [navigate] call.
+  void popUntil<T extends Object?>(LocationPredicate predicate, [T? result]) {
+    routerDelegate.popUntil(predicate, result);
   }
 
   /// Reset the router to the root location.

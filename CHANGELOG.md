@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-02-22
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.2.5`](#duck_router---v725)
+
+---
+
+#### `duck_router` - `v7.2.5`
+
+ - **FIX**: resolve error when popping and pushing same page ([#81](https://github.com/jaspervanriet/duck_router/issues/81)). ([9eb0ab4e](https://github.com/jaspervanriet/duck_router/commit/9eb0ab4ec48626dad13257728289d5dd76444bed))
+
+
 ## 2026-02-11
 
 ### Changes

@@ -1,3 +1,7 @@
+## 7.2.5
+
+ - **FIX**: resolve error when popping and pushing same page ([#81](https://github.com/jaspervanriet/duck_router/issues/81)). ([9eb0ab4e](https://github.com/jaspervanriet/duck_router/commit/9eb0ab4ec48626dad13257728289d5dd76444bed))
+
 ## 7.2.4
 
  - **FIX**: allow for navigating to new screen while still popping previous screen ([#79](https://github.com/jaspervanriet/duck_router/issues/79)). ([b3bdf3a7](https://github.com/jaspervanriet/duck_router/commit/b3bdf3a78cd39d6d58b9fc69a47689ef2ce32db0))

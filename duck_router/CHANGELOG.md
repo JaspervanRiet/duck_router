@@ -1,3 +1,7 @@
+## 7.3.0
+
+ - **FEAT**: add pop until with result method ([#80](https://github.com/jaspervanriet/duck_router/issues/80)). ([f864f94d](https://github.com/jaspervanriet/duck_router/commit/f864f94dde7b127996ce326f56fabc12880d84b7))
+
 ## 7.2.5
 
  - **FIX**: resolve error when popping and pushing same page ([#81](https://github.com/jaspervanriet/duck_router/issues/81)). ([9eb0ab4e](https://github.com/jaspervanriet/duck_router/commit/9eb0ab4ec48626dad13257728289d5dd76444bed))

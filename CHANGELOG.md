@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-03-29
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.3.0`](#duck_router---v730)
+
+---
+
+#### `duck_router` - `v7.3.0`
+
+ - **FEAT**: add pop until with result method ([#80](https://github.com/jaspervanriet/duck_router/issues/80)). ([f864f94d](https://github.com/jaspervanriet/duck_router/commit/f864f94dde7b127996ce326f56fabc12880d84b7))
+
+
 ## 2026-02-22
 
 ### Changes

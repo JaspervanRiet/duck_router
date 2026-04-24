@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:duck_router/duck_router.dart';
+import 'package:duck_router/src/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -14,13 +15,16 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
   DuckRouterDelegate({
     required DuckRouterConfiguration configuration,
     required DuckRouterShellBuilder shellBuilder,
+    required DuckInformationProvider informationProvider,
   })  : _configuration = configuration,
         _shellBuilder = shellBuilder,
+        _informationProvider = informationProvider,
         currentConfiguration =
             LocationStack(locations: [configuration.initialLocation]);
 
   final DuckRouterConfiguration _configuration;
   final DuckRouterShellBuilder _shellBuilder;
+  final DuckInformationProvider _informationProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +65,9 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (newLocation is StatefulLocation) {
       newLocation.state.takePriority();
     }
+
+    _informationProvider.syncValue(currentConfiguration);
+    notifyListeners();
   }
 
   @override
@@ -182,6 +189,7 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       currentConfiguration.locations.firstOrNull ??
           _configuration.initialLocation
     ]);
+    _informationProvider.syncValue(currentConfiguration);
     notifyListeners();
   }
 }

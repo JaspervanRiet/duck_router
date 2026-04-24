@@ -80,19 +80,20 @@ class DuckShellState extends State<DuckShell> {
       );
       final stack = LocationStack(locations: [c]);
       _stacks.add(stack);
+      _informationProviders.add(DuckInformationProvider(
+        stack: stack,
+        configuration: widget.configuration,
+      ));
       _routerDelegates.add(_NestedRouterDelegate(
         stack: _stacks[index],
         navigatorKey: _navigatorKeys[index],
         onNewPath: (config) => _stacks[index] = config,
         configuration: widget.configuration,
+        informationProvider: _informationProviders[index],
       ));
 
       _informationParsers
           .add(DuckInformationParser(configuration: widget.configuration));
-      _informationProviders.add(DuckInformationProvider(
-        stack: stack,
-        configuration: widget.configuration,
-      ));
     }
 
     super.initState();
@@ -220,14 +221,17 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
     required LocationStack stack,
     required _NewPathCallback onNewPath,
     required DuckRouterConfiguration configuration,
+    required DuckInformationProvider informationProvider,
   })  : _navigatorKey = navigatorKey,
         currentConfiguration = stack,
         _onNewPath = onNewPath,
-        _routerConfiguration = configuration;
+        _routerConfiguration = configuration,
+        _informationProvider = informationProvider;
 
   final _NewPathCallback _onNewPath;
   final GlobalKey<NavigatorState> _navigatorKey;
   final DuckRouterConfiguration _routerConfiguration;
+  final DuckInformationProvider _informationProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -256,6 +260,9 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
 
     currentConfiguration.locations
         .removeWhere((l) => l.path == currentLocation.path);
+
+    _informationProvider.syncValue(currentConfiguration);
+    notifyListeners();
   }
 
   @override

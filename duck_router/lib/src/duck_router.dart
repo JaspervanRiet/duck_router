@@ -61,19 +61,20 @@ class DuckRouter implements RouterConfig<LocationStack> {
     WidgetsFlutterBinding.ensureInitialized();
 
     backButtonDispatcher = RootBackButtonDispatcher();
+    routeInformationProvider = DuckInformationProvider(
+      stack: _initialLocation(configuration.initialLocation),
+      configuration: configuration,
+    );
     routerDelegate = DuckRouterDelegate(
       configuration: configuration,
       shellBuilder: (context, child) => InheritedDuckRouter(
         router: this,
         child: child,
       ),
+      informationProvider: routeInformationProvider,
     );
     routeInformationParser =
         DuckInformationParser(configuration: configuration);
-    routeInformationProvider = DuckInformationProvider(
-      stack: _initialLocation(configuration.initialLocation),
-      configuration: configuration,
-    );
   }
 
   /// Find the current DuckRouter in the widget tree.

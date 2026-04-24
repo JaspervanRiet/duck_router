@@ -69,6 +69,53 @@ class DuckInformationProvider extends RouteInformationProvider
     return completer.future;
   }
 
+  /// Synchronises [_value] with the current [LocationStack] after a pop.
+  ///
+  /// [_value] is only updated on forward navigation (via [navigate]). When a
+  /// route is popped, [DuckRouterDelegate] updates its
+  /// [DuckRouterDelegate.currentConfiguration] but [_value] still points to
+  /// the popped location.
+  ///
+  /// This becomes a problem whenever Flutter's [Router] re-reads [value]:
+  ///
+  /// - **Hot reload / reassemble**: [Router] re-reads [value] in
+  ///   `didChangeDependencies` and feeds it through
+  ///   [DuckInformationParser.parseRouteInformation].
+  /// - **Widget rebuild**: any ancestor rebuild that causes the [Router] to
+  ///   call `didChangeDependencies` (e.g. an [InheritedWidget] change or a
+  ///   widget tree restructure) triggers the same re-read.
+  ///
+  /// In both cases, a stale [_value] causes the parser to re-process the
+  /// popped location and re-add it to the stack — reopening the route the
+  /// user just closed.
+  ///
+  /// This method is called by the delegate after every pop to keep [_value]
+  /// in sync with the delegate's stack. It mirrors the same
+  /// [RouteInformation] / [LocationState] structure used by the constructor
+  /// and [navigate], but without a [Completer] — no future result is expected
+  /// for a location that is already on the stack.
+  ///
+  /// Note: this method intentionally does NOT call [notifyListeners]. Notifying
+  /// the provider's listeners would trigger [Router] to re-parse the value
+  /// through [DuckInformationParser], which would re-run interceptors and
+  /// potentially re-push routes that were just popped. Instead, the delegate
+  /// calls [ChangeNotifier.notifyListeners] on itself after syncing. [Router]
+  /// handles delegate notifications through a separate path
+  /// (`_handleRouterDelegateNotification`) that updates its internal route
+  /// information cache directly from [RouterDelegate.currentConfiguration]
+  /// — without re-parsing.
+  void syncValue(LocationStack stack) {
+    _value = RouteInformation(
+      uri: stack.uri,
+      state: LocationState(
+        location: stack.locations.last,
+        baseLocationStack: stack.copyWith(
+          locations: stack.locations.sublist(0, stack.locations.length - 1),
+        ),
+      ),
+    );
+  }
+
   void _platformReportsNewRouteInformation(RouteInformation routeInformation) {
     if (_value == routeInformation) {
       return;

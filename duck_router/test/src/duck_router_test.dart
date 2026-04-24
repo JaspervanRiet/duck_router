@@ -3,8 +3,10 @@
 import 'dart:async';
 
 import 'package:duck_router/src/configuration.dart';
+import 'package:duck_router/src/duck_router.dart';
 import 'package:duck_router/src/exception.dart';
 import 'package:duck_router/src/location.dart';
+import 'package:duck_router/src/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -1843,6 +1845,114 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.byType(Page1Screen), findsOneWidget);
       });
+    });
+
+    testWidgets('nested provider value reflects current stack after pop',
+        (tester) async {
+      final streamController = StreamController<int>.broadcast();
+      addTearDown(() => streamController.close());
+
+      final config = DuckRouterConfiguration(
+        initialLocation: RootLocation(),
+      );
+
+      final router = DuckRouter.withConfig(configuration: config);
+      final appKey = GlobalKey();
+
+      await tester.pumpWidget(
+        StreamBuilder(
+          stream: streamController.stream,
+          builder: (context, snapshot) {
+            Widget child = KeyedSubtree(
+              key: appKey,
+              child: MaterialApp.router(routerConfig: router),
+            );
+            if (snapshot.data == 3) {
+              child = Container(child: child);
+            }
+            return child;
+          },
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Navigate inside the nested (stateful) location.
+      router.navigate(to: Page2Location());
+      await tester.pumpAndSettle();
+
+      final statefulLocation = router.routerDelegate.currentConfiguration
+          .locations.last as StatefulLocation;
+      var innerConfig =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(innerConfig.uri.path, '/child1/page2');
+
+      // Pop inside the nested stack.
+      router.pop();
+      await tester.pumpAndSettle();
+
+      innerConfig =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(innerConfig.locations.length, 1);
+      expect(innerConfig.uri.path, '/child1');
+
+      // Trigger a rebuild (simulates hot reload).
+      streamController.add(3);
+      await tester.pumpAndSettle();
+
+      // The popped page should NOT reappear.
+      innerConfig =
+          statefulLocation.state.currentRouterDelegate.currentConfiguration;
+      expect(
+        innerConfig.locations.length,
+        1,
+        reason: 'Nested provider value should be updated after pop. '
+            'A stale value causes hot reload to re-push the popped route.',
+      );
+      expect(innerConfig.uri.path, '/child1');
+    });
+
+    testWidgets('provider value reflects current stack after pop',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = await createRouter(config, tester);
+      await tester.pumpAndSettle();
+
+      // Navigate to Page1.
+      router.navigate(to: Page1Location());
+      await tester.pumpAndSettle();
+
+      var locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 2);
+      expect(locations.uri.path, '/home/page1');
+
+      // Verify provider value points to Page1.
+      var providerState =
+          router.routeInformationProvider.value.state as LocationState;
+      expect(providerState.location, isA<Page1Location>());
+
+      // Pop Page1.
+      router.pop();
+      await tester.pumpAndSettle();
+
+      locations = router.routerDelegate.currentConfiguration;
+      expect(locations.locations.length, 1);
+      expect(locations.uri.path, '/home');
+      expect(find.byType(HomeScreen), findsOneWidget);
+
+      // BUG: After pop, provider value should reflect the current stack
+      // (HomeLocation), but it still points to the popped Page1Location.
+      providerState =
+          router.routeInformationProvider.value.state as LocationState;
+      expect(
+        providerState.location,
+        isA<HomeLocation>(),
+        reason: 'Provider value should be updated after pop to reflect '
+            'the current stack. A stale value causes hot reload to '
+            're-push the popped route.',
+      );
     });
   });
 

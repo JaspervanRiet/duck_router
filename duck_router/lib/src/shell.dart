@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:duck_router/duck_router.dart';
 import 'package:duck_router/src/parser.dart';
 import 'package:duck_router/src/provider.dart';
+import 'package:duck_router/src/state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -89,10 +90,20 @@ class DuckShellState extends State<DuckShell> {
 
       _informationParsers
           .add(DuckInformationParser(configuration: widget.configuration));
-      _informationProviders.add(DuckInformationProvider(
+      final provider = DuckInformationProvider(
         stack: stack,
         configuration: widget.configuration,
-      ));
+      );
+      _informationProviders.add(provider);
+      _routerDelegates[index].addListener(() {
+        final providerLocation =
+            (provider.value.state as LocationState).location;
+        final delegateLocations =
+            _routerDelegates[index].currentConfiguration.locations;
+        if (!delegateLocations.contains(providerLocation)) {
+          provider.syncValue(_routerDelegates[index].currentConfiguration);
+        }
+      });
     }
 
     super.initState();
@@ -256,6 +267,8 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
 
     currentConfiguration.locations
         .removeWhere((l) => l.path == currentLocation.path);
+
+    notifyListeners();
   }
 
   @override

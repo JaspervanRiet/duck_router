@@ -61,6 +61,8 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (newLocation is StatefulLocation) {
       newLocation.state.takePriority();
     }
+
+    notifyListeners();
   }
 
   @override

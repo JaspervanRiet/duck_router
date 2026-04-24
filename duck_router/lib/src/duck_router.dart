@@ -5,6 +5,7 @@ import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
 import 'package:duck_router/src/parser.dart';
 import 'package:duck_router/src/provider.dart';
+import 'package:duck_router/src/state.dart';
 import 'package:flutter/material.dart';
 
 /// A builder for a shell around the [DuckRouter].
@@ -74,6 +75,14 @@ class DuckRouter implements RouterConfig<LocationStack> {
       stack: _initialLocation(configuration.initialLocation),
       configuration: configuration,
     );
+    routerDelegate.addListener(() {
+      final providerLocation =
+          (routeInformationProvider.value.state as LocationState).location;
+      final delegateLocations = routerDelegate.currentConfiguration.locations;
+      if (!delegateLocations.contains(providerLocation)) {
+        routeInformationProvider.syncValue(routerDelegate.currentConfiguration);
+      }
+    });
   }
 
   /// Find the current DuckRouter in the widget tree.

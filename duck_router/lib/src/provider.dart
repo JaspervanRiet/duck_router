@@ -69,6 +69,24 @@ class DuckInformationProvider extends RouteInformationProvider
     return completer.future;
   }
 
+  /// Synchronises [_value] with the current [LocationStack].
+  ///
+  /// Called after pops/resets to prevent stale [_value] from causing
+  /// [Router] to re-push a popped route on rebuild or hot reload.
+  ///
+  void syncValue(LocationStack stack) {
+    _value = RouteInformation(
+      uri: stack.uri,
+      state: LocationState(
+        location: stack.locations.last,
+        baseLocationStack: stack.copyWith(
+          locations: stack.locations.sublist(0, stack.locations.length - 1),
+        ),
+      ),
+    );
+    notifyListeners();
+  }
+
   void _platformReportsNewRouteInformation(RouteInformation routeInformation) {
     if (_value == routeInformation) {
       return;

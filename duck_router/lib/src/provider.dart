@@ -5,7 +5,6 @@ import 'package:duck_router/src/configuration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:duck_router/src/location.dart';
 import 'state.dart';
 
@@ -77,10 +76,6 @@ class DuckInformationProvider extends RouteInformationProvider
   /// delegate's [RouterDelegate.currentConfiguration]. Without this, [_value]
   /// would keep pointing at a popped location, and the [Router] would re-push
   /// it on rebuild or hot reload by re-reading [_value].
-  ///
-  /// Also forwards the new route information to the engine so the platform
-  /// (browser URL bar, OS back stack) reflects the current stack — mirroring
-  /// [PlatformRouteInformationProvider.routerReportsNewRouteInformation].
   @override
   void routerReportsNewRouteInformation(
     RouteInformation routeInformation, {
@@ -92,12 +87,6 @@ class DuckInformationProvider extends RouteInformationProvider
       return;
     }
     _value = routeInformation;
-
-    SystemNavigator.selectMultiEntryHistory();
-    SystemNavigator.routeInformationUpdated(
-      uri: routeInformation.uri,
-      replace: type != RouteInformationReportingType.navigate,
-    );
   }
 
   /// Returns the current [Location] the provider points to, regardless of
@@ -110,11 +99,7 @@ class DuckInformationProvider extends RouteInformationProvider
       return state.location;
     }
     if (state is Map<Object?, Object?>) {
-      try {
-        return _codec.decode(state).locations.lastOrNull;
-      } catch (_) {
-        return null;
-      }
+      return _codec.decode(state).locations.lastOrNull;
     }
     return null;
   }

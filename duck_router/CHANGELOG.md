@@ -1,3 +1,7 @@
+## 7.3.1
+
+ - **FIX**: sync route information provider value after pop ([#82](https://github.com/jaspervanriet/duck_router/issues/82)). ([bbd3d14b](https://github.com/jaspervanriet/duck_router/commit/bbd3d14bc9e274017548e2e885aac20cb445e3d3))
+
 ## 7.3.0
 
  - **FEAT**: add pop until with result method ([#80](https://github.com/jaspervanriet/duck_router/issues/80)). ([f864f94d](https://github.com/jaspervanriet/duck_router/commit/f864f94dde7b127996ce326f56fabc12880d84b7))

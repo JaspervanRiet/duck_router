@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2026-05-14
+
+### Changes
+
+---
+
+Packages with breaking changes:
+
+ - There are no breaking changes in this release.
+
+Packages with other changes:
+
+ - [`duck_router` - `v7.3.1`](#duck_router---v731)
+
+---
+
+#### `duck_router` - `v7.3.1`
+
+ - **FIX**: sync route information provider value after pop ([#82](https://github.com/jaspervanriet/duck_router/issues/82)). ([bbd3d14b](https://github.com/jaspervanriet/duck_router/commit/bbd3d14bc9e274017548e2e885aac20cb445e3d3))
+
+
 ## 2026-03-29
 
 ### Changes

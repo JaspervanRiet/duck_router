@@ -74,7 +74,20 @@ class DuckInformationProvider extends RouteInformationProvider
   /// Called after pops/resets to prevent stale [_value] from causing
   /// [Router] to re-push a popped route on rebuild or hot reload.
   ///
+  /// No-op (and no notification) when [_value] already matches [stack], to
+  /// avoid spurious parse/restore round-trips through the [Router].
   void syncValue(LocationStack stack) {
+    final currentState = _value.state;
+    if (currentState is LocationState) {
+      final currentStack = LocationStack(
+        locations: [
+          ...currentState.baseLocationStack.locations,
+          currentState.location,
+        ],
+      );
+      if (currentStack == stack) return;
+    }
+
     _value = RouteInformation(
       uri: stack.uri,
       state: LocationState(

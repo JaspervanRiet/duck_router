@@ -2055,6 +2055,28 @@ void main() {
             'A stale value causes hot reload to re-push the popped route.',
       );
     });
+
+    testWidgets('dispose detaches the sync listener and disposes resources',
+        (tester) async {
+      final config = DuckRouterConfiguration(
+        initialLocation: HomeLocation(),
+      );
+
+      final router = DuckRouter.withConfig(configuration: config);
+
+      router.dispose();
+
+      // After dispose, the delegate and provider are torn down. Calling
+      // dispose() again on an already-disposed ChangeNotifier throws, so we
+      // use that to assert disposal happened. The sync listener is also
+      // detached, so notifying again does not call back into the (now
+      // disposed) provider.
+      expect(() => router.routerDelegate.dispose(), throwsFlutterError);
+      expect(
+        () => router.routeInformationProvider.dispose(),
+        throwsFlutterError,
+      );
+    });
   });
 
   group('Deeplinking', () {

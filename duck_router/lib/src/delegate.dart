@@ -62,6 +62,9 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
       newLocation.state.takePriority();
     }
 
+    // Notify so that [DuckRouter] can re-sync the [DuckInformationProvider]'s
+    // cached value to the new stack. Otherwise the provider keeps pointing at
+    // the popped location, and [Router] will re-push it on rebuild/hot reload.
     notifyListeners();
   }
 

@@ -5,7 +5,6 @@ import 'package:duck_router/src/interceptor.dart';
 import 'package:duck_router/src/location.dart';
 import 'package:duck_router/src/parser.dart';
 import 'package:duck_router/src/provider.dart';
-import 'package:duck_router/src/state.dart';
 import 'package:flutter/material.dart';
 
 /// A builder for a shell around the [DuckRouter].
@@ -75,20 +74,6 @@ class DuckRouter implements RouterConfig<LocationStack> {
       stack: _initialLocation(configuration.initialLocation),
       configuration: configuration,
     );
-    routerDelegate.addListener(_syncProviderIfStale);
-  }
-
-  /// Re-syncs [routeInformationProvider] when the delegate's stack no longer
-  /// contains the location the provider currently points to (e.g. after a pop
-  /// triggered by the system back button). Without this, [Router] can re-push
-  /// the popped route on rebuild/hot reload by re-reading the stale value.
-  void _syncProviderIfStale() {
-    final providerLocation =
-        (routeInformationProvider.value.state as LocationState).location;
-    final delegateLocations = routerDelegate.currentConfiguration.locations;
-    if (!delegateLocations.contains(providerLocation)) {
-      routeInformationProvider.syncValue(routerDelegate.currentConfiguration);
-    }
   }
 
   /// Disposes the router and its associated resources.
@@ -102,7 +87,6 @@ class DuckRouter implements RouterConfig<LocationStack> {
   /// and never need to call this; callers who replace the router at runtime
   /// are responsible for invoking [dispose] on the previous instance.
   void dispose() {
-    routerDelegate.removeListener(_syncProviderIfStale);
     routerDelegate.dispose();
     routeInformationProvider.dispose();
   }

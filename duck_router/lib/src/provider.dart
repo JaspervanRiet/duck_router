@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:duck_router/src/configuration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:duck_router/src/location.dart';
 import 'state.dart';
 
@@ -17,6 +19,7 @@ class DuckInformationProvider extends RouteInformationProvider
     required LocationStack stack,
     required DuckRouterConfiguration configuration,
   })  : _configuration = configuration,
+        _codec = LocationStackCodec(configuration: configuration),
         _value = RouteInformation(
           uri: stack.uri,
           state: LocationState(
@@ -34,6 +37,7 @@ class DuckInformationProvider extends RouteInformationProvider
   RouteInformation _value;
 
   final DuckRouterConfiguration _configuration;
+  final LocationStackCodec _codec;
 
   static WidgetsBinding get _binding => WidgetsBinding.instance;
 
@@ -69,35 +73,50 @@ class DuckInformationProvider extends RouteInformationProvider
     return completer.future;
   }
 
-  /// Synchronises [_value] with the current [LocationStack].
+  /// Syncs [_value] with what the [Router] reports after rebuilding from the
+  /// delegate's [RouterDelegate.currentConfiguration]. Without this, [_value]
+  /// would keep pointing at a popped location, and the [Router] would re-push
+  /// it on rebuild or hot reload by re-reading [_value].
   ///
-  /// Called after pops/resets to prevent stale [_value] from causing
-  /// [Router] to re-push a popped route on rebuild or hot reload.
-  ///
-  /// No-op (and no notification) when [_value] already matches [stack], to
-  /// avoid spurious parse/restore round-trips through the [Router].
-  void syncValue(LocationStack stack) {
-    final currentState = _value.state;
-    if (currentState is LocationState) {
-      final currentStack = LocationStack(
-        locations: [
-          ...currentState.baseLocationStack.locations,
-          currentState.location,
-        ],
-      );
-      if (currentStack == stack) return;
+  /// Also forwards the new route information to the engine so the platform
+  /// (browser URL bar, OS back stack) reflects the current stack — mirroring
+  /// [PlatformRouteInformationProvider.routerReportsNewRouteInformation].
+  @override
+  void routerReportsNewRouteInformation(
+    RouteInformation routeInformation, {
+    RouteInformationReportingType type = RouteInformationReportingType.none,
+  }) {
+    if (_value.uri == routeInformation.uri &&
+        const DeepCollectionEquality()
+            .equals(_value.state, routeInformation.state)) {
+      return;
     }
+    _value = routeInformation;
 
-    _value = RouteInformation(
-      uri: stack.uri,
-      state: LocationState(
-        location: stack.locations.last,
-        baseLocationStack: stack.copyWith(
-          locations: stack.locations.sublist(0, stack.locations.length - 1),
-        ),
-      ),
+    SystemNavigator.selectMultiEntryHistory();
+    SystemNavigator.routeInformationUpdated(
+      uri: routeInformation.uri,
+      replace: type != RouteInformationReportingType.navigate,
     );
-    notifyListeners();
+  }
+
+  /// Returns the current [Location] the provider points to, regardless of
+  /// whether [value]'s state is a freshly built [LocationState] (after a
+  /// [navigate]) or the encoded [Map] form (after a [Router] rebuild reported
+  /// via [routerReportsNewRouteInformation]).
+  Location? get currentLocation {
+    final state = _value.state;
+    if (state is LocationState) {
+      return state.location;
+    }
+    if (state is Map<Object?, Object?>) {
+      try {
+        return _codec.decode(state).locations.lastOrNull;
+      } catch (_) {
+        return null;
+      }
+    }
+    return null;
   }
 
   void _platformReportsNewRouteInformation(RouteInformation routeInformation) {
@@ -106,10 +125,11 @@ class DuckInformationProvider extends RouteInformationProvider
     }
 
     if (_configuration.onDeepLink != null) {
-      final currentState = _value.state as LocationState;
+      final currentLocation = this.currentLocation;
+      if (currentLocation == null) return;
       final stackToGoTo = _configuration.onDeepLink!(
         routeInformation.uri,
-        currentState.location,
+        currentLocation,
       );
 
       if (stackToGoTo == null || stackToGoTo.isEmpty) {

@@ -4,7 +4,6 @@ import 'package:collection/collection.dart';
 import 'package:duck_router/duck_router.dart';
 import 'package:duck_router/src/parser.dart';
 import 'package:duck_router/src/provider.dart';
-import 'package:duck_router/src/state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -68,7 +67,6 @@ class DuckShellState extends State<DuckShell> {
   final List<_NestedRouterDelegate> _routerDelegates = [];
   final List<DuckInformationParser> _informationParsers = [];
   final List<DuckInformationProvider> _informationProviders = [];
-  final List<VoidCallback> _syncListeners = [];
   final List<ChildBackButtonDispatcher> _backButtonDispatchers = [];
 
   @override
@@ -96,21 +94,6 @@ class DuckShellState extends State<DuckShell> {
         configuration: widget.configuration,
       );
       _informationProviders.add(provider);
-      final delegate = _routerDelegates[index];
-      // Re-sync the provider's cached value whenever the delegate's stack no
-      // longer contains the location the provider points to. See
-      // [DuckRouter._syncProviderIfStale] for details.
-      void syncIfStale() {
-        final providerLocation =
-            (provider.value.state as LocationState).location;
-        final delegateLocations = delegate.currentConfiguration.locations;
-        if (!delegateLocations.contains(providerLocation)) {
-          provider.syncValue(delegate.currentConfiguration);
-        }
-      }
-
-      _syncListeners.add(syncIfStale);
-      delegate.addListener(syncIfStale);
     }
 
     super.initState();
@@ -146,7 +129,6 @@ class DuckShellState extends State<DuckShell> {
   @override
   void dispose() {
     for (var i = 0; i < _routerDelegates.length; i++) {
-      _routerDelegates[i].removeListener(_syncListeners[i]);
       _routerDelegates[i].dispose();
       _informationProviders[i].dispose();
     }
@@ -252,6 +234,9 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
   final GlobalKey<NavigatorState> _navigatorKey;
   final DuckRouterConfiguration _routerConfiguration;
 
+  /// See [DuckRouterDelegate._isHandlingBackButton].
+  bool _isHandlingBackButton = false;
+
   @override
   Widget build(BuildContext context) {
     return DuckNavigator(
@@ -280,11 +265,22 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
     currentConfiguration.locations
         .removeWhere((l) => l.path == currentLocation.path);
 
-    // Notify so [DuckShellState]'s listener can re-sync the nested
-    // [DuckInformationProvider] to the new stack. Otherwise the provider keeps
-    // pointing at the popped location, and [Router] will re-push it on
-    // rebuild/hot reload.
-    notifyListeners();
+    // Notify so the nested [Router] rebuilds and reports the new
+    // configuration back to its [DuckInformationProvider] via
+    // [routerReportsNewRouteInformation]. See [DuckRouterDelegate._onPopPage].
+    if (!_isHandlingBackButton) notifyListeners();
+  }
+
+  @override
+  Future<bool> popRoute() async {
+    final state = navigatorKey.currentState;
+    if (state == null) return false;
+    _isHandlingBackButton = true;
+    try {
+      return await state.maybePop();
+    } finally {
+      _isHandlingBackButton = false;
+    }
   }
 
   @override

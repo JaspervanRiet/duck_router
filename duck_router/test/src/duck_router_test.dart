@@ -6,7 +6,6 @@ import 'package:duck_router/src/configuration.dart';
 import 'package:duck_router/src/duck_router.dart';
 import 'package:duck_router/src/exception.dart';
 import 'package:duck_router/src/location.dart';
-import 'package:duck_router/src/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -1990,9 +1989,8 @@ void main() {
       expect(locations.uri.path, '/home/page1');
 
       // Verify provider value points to Page1.
-      var providerState =
-          router.routeInformationProvider.value.state as LocationState;
-      expect(providerState.location, isA<Page1Location>());
+      expect(router.routeInformationProvider.currentLocation,
+          isA<Page1Location>());
 
       // Pop Page1.
       router.pop();
@@ -2005,10 +2003,8 @@ void main() {
 
       // BUG: After pop, provider value should reflect the current stack
       // (HomeLocation), but it still points to the popped Page1Location.
-      providerState =
-          router.routeInformationProvider.value.state as LocationState;
       expect(
-        providerState.location,
+        router.routeInformationProvider.currentLocation,
         isA<HomeLocation>(),
         reason: 'Provider value should be updated after pop to reflect '
             'the current stack. A stale value causes hot reload to '
@@ -2033,9 +2029,8 @@ void main() {
       expect(locations.locations.length, 2);
 
       // Verify provider value points to the flow.
-      var providerState =
-          router.routeInformationProvider.value.state as LocationState;
-      expect(providerState.location, isA<TestFlowLocation>());
+      expect(router.routeInformationProvider.currentLocation,
+          isA<TestFlowLocation>());
 
       // Pop via system back button (bypasses DuckRouter.pop).
       await tester.binding.handlePopRoute();
@@ -2046,18 +2041,15 @@ void main() {
       expect(locations.uri.path, '/home');
 
       // After back button pop, provider value should reflect current stack.
-      providerState =
-          router.routeInformationProvider.value.state as LocationState;
       expect(
-        providerState.location,
+        router.routeInformationProvider.currentLocation,
         isA<HomeLocation>(),
         reason: 'Provider value should be updated after back button pop. '
             'A stale value causes hot reload to re-push the popped route.',
       );
     });
 
-    testWidgets('dispose detaches the sync listener and disposes resources',
-        (tester) async {
+    testWidgets('dispose tears down the delegate and provider', (tester) async {
       final config = DuckRouterConfiguration(
         initialLocation: HomeLocation(),
       );
@@ -2066,11 +2058,8 @@ void main() {
 
       router.dispose();
 
-      // After dispose, the delegate and provider are torn down. Calling
-      // dispose() again on an already-disposed ChangeNotifier throws, so we
-      // use that to assert disposal happened. The sync listener is also
-      // detached, so notifying again does not call back into the (now
-      // disposed) provider.
+      // Calling dispose() again on an already-disposed ChangeNotifier throws,
+      // which lets us assert disposal happened on both components.
       expect(() => router.routerDelegate.dispose(), throwsFlutterError);
       expect(
         () => router.routeInformationProvider.dispose(),

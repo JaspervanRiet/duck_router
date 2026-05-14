@@ -22,6 +22,12 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
   final DuckRouterConfiguration _configuration;
   final DuckRouterShellBuilder _shellBuilder;
 
+  /// Set while [popRoute] is delegating to [NavigatorState.maybePop]. The
+  /// [Router] will rebuild and re-report on its own when [popRoute]'s future
+  /// resolves (see [_RouterState._handleRoutePopped]), so [_onPopPage] skips
+  /// the otherwise-required [notifyListeners] on that path.
+  bool _isHandlingBackButton = false;
+
   @override
   Widget build(BuildContext context) {
     return _shellBuilder(
@@ -61,6 +67,15 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     if (newLocation is StatefulLocation) {
       newLocation.state.takePriority();
     }
+
+    // Notify so [Router] rebuilds and reports the new configuration back to
+    // [DuckInformationProvider] via [routerReportsNewRouteInformation].
+    // Without this, the provider's cached value keeps pointing at the popped
+    // location and [Router] re-pushes it on rebuild/hot reload.
+    //
+    // Skipped on the back-button path: [Router] already rebuilds + reports
+    // after [popRoute] resolves, so notifying here would just double up.
+    if (!_isHandlingBackButton) notifyListeners();
   }
 
   @override
@@ -90,7 +105,12 @@ class DuckRouterDelegate extends RouterDelegate<LocationStack>
     }
 
     if (state != null) {
-      return state.maybePop();
+      _isHandlingBackButton = true;
+      try {
+        return await state.maybePop();
+      } finally {
+        _isHandlingBackButton = false;
+      }
     }
 
     return false;

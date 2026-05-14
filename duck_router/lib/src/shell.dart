@@ -89,10 +89,11 @@ class DuckShellState extends State<DuckShell> {
 
       _informationParsers
           .add(DuckInformationParser(configuration: widget.configuration));
-      _informationProviders.add(DuckInformationProvider(
+      final provider = DuckInformationProvider(
         stack: stack,
         configuration: widget.configuration,
-      ));
+      );
+      _informationProviders.add(provider);
     }
 
     super.initState();
@@ -127,6 +128,10 @@ class DuckShellState extends State<DuckShell> {
 
   @override
   void dispose() {
+    for (var i = 0; i < _routerDelegates.length; i++) {
+      _routerDelegates[i].dispose();
+      _informationProviders[i].dispose();
+    }
     super.dispose();
   }
 
@@ -229,6 +234,9 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
   final GlobalKey<NavigatorState> _navigatorKey;
   final DuckRouterConfiguration _routerConfiguration;
 
+  /// See [DuckRouterDelegate._isHandlingBackButton].
+  bool _isHandlingBackButton = false;
+
   @override
   Widget build(BuildContext context) {
     return DuckNavigator(
@@ -256,6 +264,23 @@ class _NestedRouterDelegate extends RouterDelegate<LocationStack>
 
     currentConfiguration.locations
         .removeWhere((l) => l.path == currentLocation.path);
+
+    // Notify so the nested [Router] rebuilds and reports the new
+    // configuration back to its [DuckInformationProvider] via
+    // [routerReportsNewRouteInformation]. See [DuckRouterDelegate._onPopPage].
+    if (!_isHandlingBackButton) notifyListeners();
+  }
+
+  @override
+  Future<bool> popRoute() async {
+    final state = navigatorKey.currentState;
+    if (state == null) return false;
+    _isHandlingBackButton = true;
+    try {
+      return await state.maybePop();
+    } finally {
+      _isHandlingBackButton = false;
+    }
   }
 
   @override

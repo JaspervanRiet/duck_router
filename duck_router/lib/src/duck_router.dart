@@ -76,6 +76,21 @@ class DuckRouter implements RouterConfig<LocationStack> {
     );
   }
 
+  /// Disposes the router and its associated resources.
+  ///
+  /// After calling this, the router must not be used anymore.
+  ///
+  /// Note: this is not wired into any framework-driven teardown. Flutter's
+  /// [Router] does not dispose its [RouterConfig], and [InheritedDuckRouter]
+  /// is built inside [routerDelegate], so it cannot own this instance's
+  /// lifecycle. Most apps hold a single [DuckRouter] for the app's lifetime
+  /// and never need to call this; callers who replace the router at runtime
+  /// are responsible for invoking [dispose] on the previous instance.
+  void dispose() {
+    routerDelegate.dispose();
+    routeInformationProvider.dispose();
+  }
+
   /// Find the current DuckRouter in the widget tree.
   ///
   /// This method throws when it is called during redirects.

@@ -2348,8 +2348,8 @@ void main() {
       final router = await createRouter(config, tester);
       await tester.pumpAndSettle();
 
-      expect(router.routerDelegate.currentConfiguration.uri.path,
-          '/page1/page2');
+      expect(
+          router.routerDelegate.currentConfiguration.uri.path, '/page1/page2');
       expect(router.configuration.findLocation('page1'), isNotNull);
     });
 
